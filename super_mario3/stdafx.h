@@ -11,8 +11,10 @@
 #include <memory.h>
 #include <tchar.h>
 #include <iostream>
+#include "commonMacroFunction.h"
 #include "keyManager.h"
 #include "imageManager.h"
+#include "cameraManager.h"
 
 using namespace std;
 
@@ -24,12 +26,16 @@ using namespace std;
 #define WINNAME (LPTSTR)(TEXT("Super Mario Bros.3"))
 #define WINSTARTX 50	//윈도우 창 시작좌표 (left)
 #define WINSTARTY 50	//윈도우 창 시작좌표 (top)
-#define WINSIZEX 512	//윈도우 가로크기
-#define WINSIZEY 512	//윈도우 세로크기
+#define WINSIZEX 768	//윈도우 가로크기
+#define WINSIZEY 768	//윈도우 세로크기
+#define BACKGROUNDX 8352 //배경 가로 크기
+#define BACKGROUNDY 1296  //배경 세로 크기
 #define WINSTYLE WS_CAPTION | WS_SYSMENU
 
 #define KEYMANAGER keyManager::getSingleton()
 #define IMAGEMANAGER imageManager::getSingleton()
+#define CAMERAMANAGER cameraManager::getSingleton()
+
 
 #define SAFE_DELETE(p) {if(p) {delete(p); (p) = nullptr;}}
 #define SAFE_RELEASE(p) {if(p) {(p)->release(); (p) = NULL;}}

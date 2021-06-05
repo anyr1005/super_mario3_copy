@@ -147,6 +147,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cameraManager.h" />
+    <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
@@ -158,6 +160,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />

@@ -47,7 +47,7 @@ HRESULT image::init(const char * fileName, int width, int height, BOOL trans, CO
 {
 	if (_imageInfo != NULL) release();
 
-	//DC를 가져다 사용할땐 GetDC()
+	//DC를 가져다 사용
 	HDC hdc = GetDC(_hWnd);
 
 	_imageInfo = new IMAGE_INFO;
@@ -85,7 +85,7 @@ HRESULT image::init(const char* fileName, float x, float y, int width, int heigh
 {
 	if (_imageInfo != NULL) release();
 
-	//DC를 가져다 사용할땐 GetDC()
+	//DC를 가져다 사용
 	HDC hdc = GetDC(_hWnd);
 
 	_imageInfo = new IMAGE_INFO;
@@ -130,7 +130,7 @@ HRESULT image::init(const char* fileName, int width, int height, int frameX, int
 {
 	if (_imageInfo != NULL) release();
 
-	//DC를 가져다 사용할땐 GetDC()
+	//DC를 가져다 사용
 	HDC hdc = GetDC(_hWnd);
 
 	_imageInfo = new IMAGE_INFO;

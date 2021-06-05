@@ -19,6 +19,7 @@ HRESULT gameNode::init(bool managerInit)
 		SetTimer(_hWnd, 1, 10, NULL);
 		KEYMANAGER->init();
 		IMAGEMANAGER->init();
+		CAMERAMANAGER->init();
 	}
 
 	return S_OK;
@@ -34,6 +35,9 @@ void gameNode::release()
 
 		IMAGEMANAGER->release();
 		IMAGEMANAGER->releaseSingleton();
+
+		CAMERAMANAGER->release();
+		CAMERAMANAGER->releaseSingleton();
 	}
 	
 

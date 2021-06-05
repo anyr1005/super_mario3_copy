@@ -57,6 +57,12 @@
     <ClInclude Include="imageManager.h">
       <Filter>2DGameFramework\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="cameraManager.h">
+      <Filter>2DGameFramework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="commonMacroFunction.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -78,6 +84,9 @@
       <Filter>2DGameFramework\image</Filter>
     </ClCompile>
     <ClCompile Include="imageManager.cpp">
+      <Filter>2DGameFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="cameraManager.cpp">
       <Filter>2DGameFramework\Manager</Filter>
     </ClCompile>
   </ItemGroup>
