@@ -28,6 +28,9 @@
     <Filter Include="2DGameFramework\image">
       <UniqueIdentifier>{73affc36-76a7-43ee-9dc2-13a65e5a5209}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\map">
+      <UniqueIdentifier>{5b6cd72a-6544-4bc7-9528-f4a1b902c59b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -63,6 +66,15 @@
     <ClInclude Include="commonMacroFunction.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="block.h">
+      <Filter>playGround\map</Filter>
+    </ClInclude>
+    <ClInclude Include="mapManager.h">
+      <Filter>playGround\map</Filter>
+    </ClInclude>
+    <ClInclude Include="qBlock.h">
+      <Filter>playGround\map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -88,6 +100,15 @@
     </ClCompile>
     <ClCompile Include="cameraManager.cpp">
       <Filter>2DGameFramework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="block.cpp">
+      <Filter>playGround\map</Filter>
+    </ClCompile>
+    <ClCompile Include="mapManager.cpp">
+      <Filter>playGround\map</Filter>
+    </ClCompile>
+    <ClCompile Include="qBlock.cpp">
+      <Filter>playGround\map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
