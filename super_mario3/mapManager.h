@@ -15,16 +15,23 @@ private:
 	typedef vector<block*>::iterator viBlock;
 
 private:
+	//물음표 박스
 	vBlock _vQBlock;
 	viBlock _viQBlock;
+	
+	//금색박스
 	vBlock _vGBlock;
 	viBlock _viGBlock;
+	
+	//코인
 	vBlock _vCoinBlock;
 	viBlock _viCoinBlock;
+
+	//블록 제외 올라갈 수 있는 모든 물체
 	RECT _object[OBJECTMAX];
 
 	//나무블록은 가로막히는것 빼곤 기능이 없으므로 RECT 처리
-	RECT _wood_block[WOODBLOCKMAX];
+	RECT _woodBlock[WOODBLOCKMAX];
 	
 public:
 	virtual HRESULT init();
@@ -36,7 +43,7 @@ public:
 	void setGoldenBlock();
 	void setCoinBlock();
 	void setObject();
-
+	void setWoodBlock();
 
 	void removeQuestionBlock(int arrNum);
 	void removeGoldenBlock();

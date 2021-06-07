@@ -13,7 +13,7 @@ HRESULT playGround::init()
 
 	map = IMAGEMANAGER->findImage("map");
 
-	_player.x = 200;
+	_player.x = BACKGROUNDX/2;
 	_player.y = BACKGROUNDY - 72;
 
 	_player.rc = RectMakeCenter(_player.x, _player.y, 48, 48);
@@ -28,10 +28,6 @@ HRESULT playGround::init()
 
 	_mManager = new mapManager;
 	_mManager->init();
-	_mManager->setQuestionBlock();
-	_mManager->setGoldenBlock();
-	_mManager->setCoinBlock();
-	_mManager->setObject();
 
 	return S_OK;
 }

@@ -3,6 +3,11 @@
 
 HRESULT mapManager::init()
 {
+	setQuestionBlock();
+	setGoldenBlock();
+	setCoinBlock();
+	setObject();
+	setWoodBlock();
 	return S_OK;
 }
 
@@ -48,6 +53,10 @@ void mapManager::render()
 		{
 			Rectangle(getMemDC(), _object[i]);
 		}
+		for (int i = 0; i < WOODBLOCKMAX; i++)
+		{
+			Rectangle(getMemDC(), _woodBlock[i]);
+		}
 	}
 }
 
@@ -57,7 +66,7 @@ void mapManager::setQuestionBlock()
 	{
 		question_block* qBlock;
 		qBlock = new question_block;
-		qBlock->init("qBlock", PointMake(552+48*i, BACKGROUNDY - 216));
+		qBlock->init("qBlock", PointMake(552 + 48 * i, BACKGROUNDY - 216));
 		_vQBlock.push_back(qBlock);
 	}
 
@@ -74,9 +83,9 @@ void mapManager::setQuestionBlock()
 			qBlock->init("qBlock", PointMake(696 + 48 * i, BACKGROUNDY - 360));
 		}
 		_vQBlock.push_back(qBlock);
-		
+
 	}
-	
+
 	for (int i = 0; i < 3; i++)
 	{
 		question_block* qBlock;
@@ -93,7 +102,7 @@ void mapManager::setQuestionBlock()
 		_vQBlock.push_back(qBlock);
 	}
 }
-	
+
 void mapManager::setGoldenBlock()
 {
 	for (int i = 0; i < 9; i++)
@@ -138,7 +147,7 @@ void mapManager::setGoldenBlock()
 		{
 			gBlock->init("gBlock", PointMake(BACKGROUNDX - 2472 + 48 * i, BACKGROUNDY - 168));
 		}
-		
+
 		_vGBlock.push_back(gBlock);
 	}
 }
@@ -149,7 +158,7 @@ void mapManager::setCoinBlock()
 	{
 		coin_block* coinBlock;
 		coinBlock = new coin_block;
-		coinBlock->init("coin", PointMake(BACKGROUNDX/2 - 840 + 96 * i, BACKGROUNDY - 408 - 96 * i));
+		coinBlock->init("coin", PointMake(BACKGROUNDX / 2 - 840 + 96 * i, BACKGROUNDY - 408 - 96 * i));
 		_vCoinBlock.push_back(coinBlock);
 	}
 	for (int i = 0; i < 3; i++)
@@ -208,26 +217,37 @@ void mapManager::setObject()
 {
 	_object[0] = RectMake(720, BACKGROUNDY - 192, 144, 30);
 	_object[1] = RectMake(816, BACKGROUNDY - 288, 144, 30);
-	
+
 	_object[2] = RectMake(1200, BACKGROUNDY - 192, 240, 30);
 	_object[3] = RectMake(1392, BACKGROUNDY - 288, 192, 30);
 	_object[4] = RectMake(1536, BACKGROUNDY - 384, 192, 30);
 	_object[5] = RectMake(1536, BACKGROUNDY - 144, 288, 30);
-	
+
 	for (int i = 6; i < 9; i++)
 	{
 		_object[i] = RectMake(BACKGROUNDX / 2 - 384 + 96 * (i % 6), BACKGROUNDY - 144 - 96 * (i % 6), 336, 30);
 	}
 	_object[9] = RectMake(BACKGROUNDX - 2016, BACKGROUNDY - 192, 144, 30);
 	_object[10] = RectMake(BACKGROUNDX - 1920, BACKGROUNDY - 480, 144, 30);
-	
+
 	//하늘에 있는 부유물
 	_object[11] = RectMake(BACKGROUNDX / 2 - 240, 432, 192, 30);
 
 	//구름
 	_object[12] = RectMake(BACKGROUNDX / 2 + 48, 576, 192, 48);
 	_object[13] = RectMake(BACKGROUNDX / 2 + 288, 528, 624, 48);
-	
+
+}
+
+void mapManager::setWoodBlock()
+{
+	_woodBlock[0] = RectMake(BACKGROUNDX / 2 + 336, BACKGROUNDY - 288, 96, 48);
+	_woodBlock[1] = RectMake(BACKGROUNDX / 2 + 528, BACKGROUNDY - 96, 144, 48);
+	_woodBlock[2] = RectMake(BACKGROUNDX / 2 + 528 + 48, BACKGROUNDY - 144, 96, 48);
+	_woodBlock[3] = RectMake(BACKGROUNDX / 2 + 528 + 48 + 48, BACKGROUNDY - 144 - 48, 48, 48);
+	_woodBlock[4] = RectMake(BACKGROUNDX / 2 + 528 + 48 + 48 + 192, BACKGROUNDY - 144 - 48, 48, 48);
+	_woodBlock[5] = RectMake(BACKGROUNDX / 2 + 528 + 48 + 48 + 192, BACKGROUNDY - 144, 96, 48);
+	_woodBlock[6] = RectMake(BACKGROUNDX / 2 + 528 + 48 + 48 + 192, BACKGROUNDY - 144 + 48, 144, 48);
 }
 
 void mapManager::removeQuestionBlock(int arrNum)
