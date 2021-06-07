@@ -53,7 +53,7 @@ void mapManager::render()
 		{
 			Rectangle(getMemDC(), _object[i]);
 		}
-		for (int i = 0; i < WOODBLOCKMAX; i++)
+		for (int i = 0; i < _woodBlock.size(); i++)
 		{
 			Rectangle(getMemDC(), _woodBlock[i]);
 		}
@@ -215,39 +215,50 @@ void mapManager::setCoinBlock()
 
 void mapManager::setObject()
 {
-	_object[0] = RectMake(720, BACKGROUNDY - 192, 144, 30);
-	_object[1] = RectMake(816, BACKGROUNDY - 288, 144, 30);
-
-	_object[2] = RectMake(1200, BACKGROUNDY - 192, 240, 30);
-	_object[3] = RectMake(1392, BACKGROUNDY - 288, 192, 30);
-	_object[4] = RectMake(1536, BACKGROUNDY - 384, 192, 30);
-	_object[5] = RectMake(1536, BACKGROUNDY - 144, 288, 30);
-
-	for (int i = 6; i < 9; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		_object[i] = RectMake(BACKGROUNDX / 2 - 384 + 96 * (i % 6), BACKGROUNDY - 144 - 96 * (i % 6), 336, 30);
+		_object.push_back(RectMake(720 + 96 * i, BACKGROUNDY - 192 - 96 * i, 144, 30));
 	}
-	_object[9] = RectMake(BACKGROUNDX - 2016, BACKGROUNDY - 192, 144, 30);
-	_object[10] = RectMake(BACKGROUNDX - 1920, BACKGROUNDY - 480, 144, 30);
+
+	for (int i = 0; i < 2; i++)
+	{
+		_object.push_back(RectMake(1200 + 192 * i, BACKGROUNDY - 192 - 96 * i, 240 - 48 * i, 30));
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		_object.push_back(RectMake(1536, BACKGROUNDY - 384 + 240 * i, 192 + 96 * i, 30));
+	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		_object.push_back(RectMake(BACKGROUNDX / 2 - 384 + 96 * i, BACKGROUNDY - 144 - 96 * i , 336, 30));
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		_object.push_back(RectMake(BACKGROUNDX - 2016 + 96 * i, BACKGROUNDY - 192 - 288 * i, 144, 30));
+	}
 
 	//하늘에 있는 부유물
-	_object[11] = RectMake(BACKGROUNDX / 2 - 240, 432, 192, 30);
+	_object.push_back(RectMake(BACKGROUNDX / 2 - 240, 432, 192, 30));
 
 	//구름
-	_object[12] = RectMake(BACKGROUNDX / 2 + 48, 576, 192, 48);
-	_object[13] = RectMake(BACKGROUNDX / 2 + 288, 528, 624, 48);
+	_object.push_back(RectMake(BACKGROUNDX / 2 + 48, 576, 192, 48));
+	_object.push_back(RectMake(BACKGROUNDX / 2 + 288, 528, 624, 48));
 
 }
 
 void mapManager::setWoodBlock()
 {
-	_woodBlock[0] = RectMake(BACKGROUNDX / 2 + 336, BACKGROUNDY - 288, 96, 48);
-	_woodBlock[1] = RectMake(BACKGROUNDX / 2 + 528, BACKGROUNDY - 96, 144, 48);
-	_woodBlock[2] = RectMake(BACKGROUNDX / 2 + 528 + 48, BACKGROUNDY - 144, 96, 48);
-	_woodBlock[3] = RectMake(BACKGROUNDX / 2 + 528 + 48 + 48, BACKGROUNDY - 144 - 48, 48, 48);
-	_woodBlock[4] = RectMake(BACKGROUNDX / 2 + 528 + 48 + 48 + 192, BACKGROUNDY - 144 - 48, 48, 48);
-	_woodBlock[5] = RectMake(BACKGROUNDX / 2 + 528 + 48 + 48 + 192, BACKGROUNDY - 144, 96, 48);
-	_woodBlock[6] = RectMake(BACKGROUNDX / 2 + 528 + 48 + 48 + 192, BACKGROUNDY - 144 + 48, 144, 48);
+	_woodBlock.push_back(RectMake(BACKGROUNDX / 2 + 336, BACKGROUNDY - 288, 96, 48));
+	for (int i = 0; i < 3; i++)
+	{
+		_woodBlock.push_back(RectMake(BACKGROUNDX / 2 + 528 + (48 * i), BACKGROUNDY - 96 - (48 * i), 144 - 48 * i, 48));
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		_woodBlock.push_back(RectMake(BACKGROUNDX / 2 + 816, BACKGROUNDY - 96 - (48 * i), 144 - 48 * i, 48));
+	}
 }
 
 void mapManager::removeQuestionBlock(int arrNum)

@@ -28,10 +28,10 @@ private:
 	viBlock _viCoinBlock;
 
 	//블록 제외 올라갈 수 있는 모든 물체
-	RECT _object[OBJECTMAX];
+	vector<RECT> _object;
 
 	//나무블록은 가로막히는것 빼곤 기능이 없으므로 RECT 처리
-	RECT _woodBlock[WOODBLOCKMAX];
+	vector<RECT> _woodBlock;
 	
 public:
 	virtual HRESULT init();
