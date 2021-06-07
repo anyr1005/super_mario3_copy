@@ -31,6 +31,12 @@
     <Filter Include="playGround\map">
       <UniqueIdentifier>{5b6cd72a-6544-4bc7-9528-f4a1b902c59b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\block">
+      <UniqueIdentifier>{a2c45b02-e446-4ad0-832f-ebf7378ee5fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\player">
+      <UniqueIdentifier>{97f25aed-1983-49ad-ab92-69f5e231cee3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -66,20 +72,26 @@
     <ClInclude Include="commonMacroFunction.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="block.h">
-      <Filter>playGround\map</Filter>
-    </ClInclude>
     <ClInclude Include="mapManager.h">
       <Filter>playGround\map</Filter>
     </ClInclude>
-    <ClInclude Include="question_block.h">
-      <Filter>playGround\map</Filter>
+    <ClInclude Include="block.h">
+      <Filter>playGround\block</Filter>
     </ClInclude>
-    <ClInclude Include="golden_block.h">
-      <Filter>playGround\map</Filter>
+    <ClInclude Include="blockManager.h">
+      <Filter>playGround\block</Filter>
     </ClInclude>
     <ClInclude Include="coin_block.h">
-      <Filter>playGround\map</Filter>
+      <Filter>playGround\block</Filter>
+    </ClInclude>
+    <ClInclude Include="golden_block.h">
+      <Filter>playGround\block</Filter>
+    </ClInclude>
+    <ClInclude Include="question_block.h">
+      <Filter>playGround\block</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -107,20 +119,26 @@
     <ClCompile Include="cameraManager.cpp">
       <Filter>2DGameFramework\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="block.cpp">
-      <Filter>playGround\map</Filter>
-    </ClCompile>
     <ClCompile Include="mapManager.cpp">
       <Filter>playGround\map</Filter>
     </ClCompile>
-    <ClCompile Include="question_block.cpp">
-      <Filter>playGround\map</Filter>
+    <ClCompile Include="block.cpp">
+      <Filter>playGround\block</Filter>
     </ClCompile>
-    <ClCompile Include="golden_block.cpp">
-      <Filter>playGround\map</Filter>
+    <ClCompile Include="blockManager.cpp">
+      <Filter>playGround\block</Filter>
     </ClCompile>
     <ClCompile Include="coin_block.cpp">
-      <Filter>playGround\map</Filter>
+      <Filter>playGround\block</Filter>
+    </ClCompile>
+    <ClCompile Include="golden_block.cpp">
+      <Filter>playGround\block</Filter>
+    </ClCompile>
+    <ClCompile Include="question_block.cpp">
+      <Filter>playGround\block</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

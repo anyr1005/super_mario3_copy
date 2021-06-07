@@ -1,6 +1,7 @@
 #pragma once
 #include "gameNode.h"
 #include "mapManager.h"
+#include "blockManager.h"
 
 struct tagPlayer
 {
@@ -13,6 +14,7 @@ private:
 	image* map;
 	tagPlayer _player;
 	mapManager* _mManager;
+	blockManager* _bManager;
 
 	//¶¥
 	RECT _ground[6];

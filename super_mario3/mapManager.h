@@ -7,25 +7,16 @@
 
 #define GROUNDMAX 6
 
+struct tagPipe
+{
+	RECT body;
+	RECT head;
+};
+
 class mapManager : public gameNode
 {
 private:
-	typedef vector<block*> vBlock;
-	typedef vector<block*>::iterator viBlock;
-
-private:
-	//물음표 박스
-	vBlock _vQBlock;
-	viBlock _viQBlock;
 	
-	//금색박스
-	vBlock _vGBlock;
-	viBlock _viGBlock;
-	
-	//코인
-	vBlock _vCoinBlock;
-	viBlock _viCoinBlock;
-
 	//블록 제외 올라갈 수 있는 모든 물체
 	vector<RECT> _object;
 
@@ -34,6 +25,8 @@ private:
 
 	//땅
 	RECT _ground[6];
+
+	vector<tagPipe> _pipe;
 	
 public:
 	virtual HRESULT init();
@@ -41,15 +34,9 @@ public:
 	virtual void update();
 	virtual void render();
 
-	void setQuestionBlock();
-	void setGoldenBlock();
-	void setCoinBlock();
 	void setObject();
 	void setWoodBlock();
 	void setGround();
-
-	void removeQuestionBlock(int arrNum);
-	void removeGoldenBlock();
-	void removeCoinBlock();
+	void setPipe();
 };
 

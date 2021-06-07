@@ -3,12 +3,10 @@
 
 HRESULT mapManager::init()
 {
-	setQuestionBlock();
-	setGoldenBlock();
-	setCoinBlock();
 	setObject();
 	setWoodBlock();
 	setGround();
+	setPipe();
 	return S_OK;
 }
 
@@ -18,36 +16,12 @@ void mapManager::release()
 
 void mapManager::update()
 {
-	for (_viQBlock = _vQBlock.begin(); _viQBlock != _vQBlock.end(); ++_viQBlock)
-	{
-		(*_viQBlock)->update();
-	}
-	for (_viGBlock = _vGBlock.begin(); _viGBlock != _vGBlock.end(); ++_viGBlock)
-	{
-		(*_viGBlock)->update();
-	}
-	for (_viCoinBlock = _vCoinBlock.begin(); _viCoinBlock != _vCoinBlock.end(); ++_viCoinBlock)
-	{
-		(*_viCoinBlock)->update();
-	}
+
 }
 
 void mapManager::render()
 {
-	for (_viQBlock = _vQBlock.begin(); _viQBlock != _vQBlock.end(); ++_viQBlock)
-	{
-		(*_viQBlock)->render();
-	}
 
-	for (_viGBlock = _vGBlock.begin(); _viGBlock != _vGBlock.end(); ++_viGBlock)
-	{
-		(*_viGBlock)->render();
-	}
-
-	for (_viCoinBlock = _vCoinBlock.begin(); _viCoinBlock != _vCoinBlock.end(); ++_viCoinBlock)
-	{
-		(*_viCoinBlock)->render();
-	}
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		for (int i = 0; i < _object.size(); i++)
@@ -62,159 +36,11 @@ void mapManager::render()
 		{
 			Rectangle(getMemDC(), _ground[i]);
 		}
-	}
-}
-
-void mapManager::setQuestionBlock()
-{
-	for (int i = 0; i < 2; i++)
-	{
-		question_block* qBlock;
-		qBlock = new question_block;
-		qBlock->init("qBlock", PointMake(552 + 48 * i, BACKGROUNDY - 216));
-		_vQBlock.push_back(qBlock);
-	}
-
-	for (int i = 0; i < 3; i++)
-	{
-		question_block* qBlock;
-		qBlock = new question_block;
-		if (i == 2)
+		for (int i = 0; i < _pipe.size(); i++)
 		{
-			qBlock->init("qBlock", PointMake(1272, BACKGROUNDY - 312));
+			Rectangle(getMemDC(), _pipe[i].head);
+			Rectangle(getMemDC(), _pipe[i].body);
 		}
-		else
-		{
-			qBlock->init("qBlock", PointMake(696 + 48 * i, BACKGROUNDY - 360));
-		}
-		_vQBlock.push_back(qBlock);
-
-	}
-
-	for (int i = 0; i < 3; i++)
-	{
-		question_block* qBlock;
-		qBlock = new question_block;
-		if (i == 2)
-		{
-			qBlock->init("qBlock", PointMake(BACKGROUNDX / 2 + 264, BACKGROUNDY - 168));
-		}
-		else
-		{
-			qBlock->init("qBlock", PointMake(1992 + 144 * i, BACKGROUNDY - 120 - 96 * i));
-		}
-
-		_vQBlock.push_back(qBlock);
-	}
-}
-
-void mapManager::setGoldenBlock()
-{
-	for (int i = 0; i < 9; i++)
-	{
-		golden_block* gBlock;
-		gBlock = new golden_block;
-		if (i >= 7)
-		{
-			gBlock->init("gBlock", PointMake(BACKGROUNDX - 2568 + 48 * i + 96, BACKGROUNDY - 72));
-		}
-		else
-		{
-			gBlock->init("gBlock", PointMake(BACKGROUNDX - 2568 + 48 * i, BACKGROUNDY - 72));
-		}
-		_vGBlock.push_back(gBlock);
-	}
-
-	for (int i = 0; i < 6; i++)
-	{
-		golden_block* gBlock;
-		gBlock = new golden_block;
-		if (i == 5)
-		{
-			gBlock->init("gBlock", PointMake(BACKGROUNDX - 2520 + 48 * i + 144, BACKGROUNDY - 120));
-		}
-		else
-		{
-			gBlock->init("gBlock", PointMake(BACKGROUNDX - 2520 + 48 * i, BACKGROUNDY - 120));
-		}
-		_vGBlock.push_back(gBlock);
-	}
-
-	for (int i = 0; i < 5; i++)
-	{
-		golden_block* gBlock;
-		gBlock = new golden_block;
-		if (i == 4)
-		{
-			gBlock->init("gBlock", PointMake(BACKGROUNDX / 2 + 168, 408));
-		}
-		else
-		{
-			gBlock->init("gBlock", PointMake(BACKGROUNDX - 2472 + 48 * i, BACKGROUNDY - 168));
-		}
-
-		_vGBlock.push_back(gBlock);
-	}
-}
-
-void mapManager::setCoinBlock()
-{
-	for (int i = 0; i < 4; i++)
-	{
-		coin_block* coinBlock;
-		coinBlock = new coin_block;
-		coinBlock->init("coin", PointMake(BACKGROUNDX / 2 - 840 + 96 * i, BACKGROUNDY - 408 - 96 * i));
-		_vCoinBlock.push_back(coinBlock);
-	}
-	for (int i = 0; i < 3; i++)
-	{
-		coin_block* coinBlock;
-		coinBlock = new coin_block;
-		coinBlock->init("coin", PointMake(BACKGROUNDX / 2 - 168 + 48 * i, 264));
-		_vCoinBlock.push_back(coinBlock);
-	}
-	for (int i = 0; i < 14; i++)
-	{
-		coin_block* coinBlock;
-		coinBlock = new coin_block;
-		int x, y = 0;
-		if (i == 13)
-		{
-			x = BACKGROUNDX / 2 + 648 + 48 * i;
-			y = 408;
-		}
-		else if (i == 12)
-		{
-			x = BACKGROUNDX / 2 + 600 + 48 * i;
-			y = 312;
-		}
-		else if (i == 11)
-		{
-			x = BACKGROUNDX / 2 + 504 + 48 * i;
-			y = 408;
-		}
-		else if (i == 10)
-		{
-			x = BACKGROUNDX / 2 + 456 + 48 * i;
-			y = 456;
-		}
-		else if (i >= 6)
-		{
-			x = BACKGROUNDX / 2 + 408 + 48 * i;
-			y = 360;
-		}
-		else if (i >= 2)
-		{
-			x = BACKGROUNDX / 2 + 360 + 48 * i;
-			y = 408;
-		}
-		else
-		{
-			x = BACKGROUNDX / 2 + 264 + 48 * i;
-			y = 360;
-		}
-		coinBlock->init("coin", PointMake(x, y));
-		_vCoinBlock.push_back(coinBlock);
 	}
 }
 
@@ -236,7 +62,7 @@ void mapManager::setObject()
 
 	for (int i = 0; i < 3; i++)
 	{
-		_object.push_back(RectMake(BACKGROUNDX / 2 - 384 + 96 * i, BACKGROUNDY - 144 - 96 * i , 336, 30));
+		_object.push_back(RectMake(BACKGROUNDX / 2 - 384 + 96 * i, BACKGROUNDY - 144 - 96 * i, 336, 30));
 	}
 
 	for (int i = 0; i < 2; i++)
@@ -251,6 +77,9 @@ void mapManager::setObject()
 	_object.push_back(RectMake(BACKGROUNDX / 2 + 48, 576, 192, 48));
 	_object.push_back(RectMake(BACKGROUNDX / 2 + 288, 528, 624, 48));
 
+	//파이프 몸통만 있는 것
+	_object.push_back(RectMake(BACKGROUNDX - 1677, BACKGROUNDY - 144, 90, 96));
+
 }
 
 void mapManager::setWoodBlock()
@@ -264,6 +93,10 @@ void mapManager::setWoodBlock()
 	{
 		_woodBlock.push_back(RectMake(BACKGROUNDX / 2 + 816, BACKGROUNDY - 96 - (48 * i), 144 - 48 * i, 48));
 	}
+	for (int i = 0; i < 2; i++)
+	{
+		_woodBlock.push_back(RectMake(BACKGROUNDX - 1680, BACKGROUNDY - 192 * (i + 1), 96, 48));
+	}
 }
 
 void mapManager::setGround()
@@ -276,15 +109,27 @@ void mapManager::setGround()
 	_ground[5] = RectMake(BACKGROUNDX - 1680, BACKGROUNDY - 48, 1680, 48);
 }
 
-void mapManager::removeQuestionBlock(int arrNum)
+void mapManager::setPipe()
 {
-	_vQBlock.erase(_vQBlock.begin() + arrNum);
-}
+	tagPipe pipe;
+	pipe.head = RectMake(1056, BACKGROUNDY - 192, 96, 48);
+	pipe.body = RectMake(1059, BACKGROUNDY - 144, 90, 96);
+	_pipe.push_back(pipe);
 
-void mapManager::removeGoldenBlock()
-{
-}
+	for (int i = 0; i < 2; i++)
+	{
 
-void mapManager::removeCoinBlock()
-{
+		tagPipe pipe;
+		pipe.head = RectMake(BACKGROUNDX / 2 + 1104 + 192 * i, BACKGROUNDY - 144 - 48 * i, 96, 48);
+		pipe.body = RectMake(BACKGROUNDX / 2 + 1107 + 192 * i, BACKGROUNDY - 96 - 48 * i, 90, 48 + 48 * i);
+		_pipe.push_back(pipe);
+	}
+	
+	pipe.head = RectMake(BACKGROUNDX - 1680, 336, 96, 48);
+	pipe.body = RectMake(BACKGROUNDX - 1677, 384, 90, 528);
+	_pipe.push_back(pipe);
+	
+	pipe.head = RectMake(BACKGROUNDX - 1488, BACKGROUNDY - 144, 96, 48);
+	pipe.body = RectMake(BACKGROUNDX - 1485, BACKGROUNDY - 96, 90, 48);
+	_pipe.push_back(pipe);
 }

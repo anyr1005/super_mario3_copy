@@ -23,6 +23,8 @@ HRESULT playGround::init()
 	_mManager = new mapManager;
 	_mManager->init();
 
+	_bManager = new blockManager;
+	_bManager->init();
 	return S_OK;
 }
 
@@ -59,6 +61,7 @@ void playGround::update()
 	}
 	_player.rc = RectMakeCenter(_player.x, _player.y, 48, 48);
 	_mManager->update();
+	_bManager->update();
 	CAMERAMANAGER->updateCamera(_player.rc, 0.42f, 0.57f, 0.3f, 0.7f);
 	
 }
@@ -71,8 +74,9 @@ void playGround::render()
 
 	map->render(getMemDC(), 0, 0);
 	Rectangle(getMemDC(), _player.rc);
-
+	_bManager->render();
 	_mManager->render();
+	
 	//==================================================
 	CAMERAMANAGER->render(this->getBackBuffer(), getHDC());
 }
