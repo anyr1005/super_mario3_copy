@@ -10,15 +10,14 @@ HRESULT playGround::init()
 	IMAGEMANAGER->addFrameImage("qBlock", "img/question_block.bmp", 192, 48, 4, 1, true, RGB(255,0,255));
 	IMAGEMANAGER->addFrameImage("gBlock", "img/golden_block.bmp", 192, 48, 4, 1, true, RGB(255,0,255));
 	IMAGEMANAGER->addFrameImage("coin", "img/coin.bmp", 168, 48, 4, 1, true, RGB(255, 0, 255));
+	
 
 	map = IMAGEMANAGER->findImage("map");
 
-	_player.x = BACKGROUNDX/2;
-	_player.y = BACKGROUNDY - 72;
+	_player = new player;
+	_player->init();
 
-	_player.rc = RectMakeCenter(_player.x, _player.y, 48, 48);
-
-	CAMERAMANAGER->setCameraCenter(_player.x, _player.y);
+	CAMERAMANAGER->setCameraCenter(_player->getX(), _player->getY());
 
 	_mManager = new mapManager;
 	_mManager->init();
@@ -41,28 +40,11 @@ void playGround::update()
 {
 	gameNode::update();
 
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-	{
-		_player.x -= 5;
-	}
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-	{
-		_player.x += 5;
-	}
-
-	if (KEYMANAGER->isStayKeyDown(VK_UP))
-	{
-		_player.y -= 5;
-	}
-
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-	{
-		_player.y += 5;
-	}
-	_player.rc = RectMakeCenter(_player.x, _player.y, 48, 48);
+	
 	_mManager->update();
 	_bManager->update();
-	CAMERAMANAGER->updateCamera(_player.rc, 0.42f, 0.57f, 0.3f, 0.7f);
+	_player->update();
+	CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0.3f, 0.7f);
 	
 }
 
@@ -73,9 +55,9 @@ void playGround::render()
 	//==================================================
 
 	map->render(getMemDC(), 0, 0);
-	Rectangle(getMemDC(), _player.rc);
 	_bManager->render();
 	_mManager->render();
+	_player->render();
 	
 	//==================================================
 	CAMERAMANAGER->render(this->getBackBuffer(), getHDC());

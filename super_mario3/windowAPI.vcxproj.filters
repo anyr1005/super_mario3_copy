@@ -37,6 +37,9 @@
     <Filter Include="playGround\player">
       <UniqueIdentifier>{97f25aed-1983-49ad-ab92-69f5e231cee3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\playerState">
+      <UniqueIdentifier>{e66e055e-9c4e-40f8-bfec-3070f341c472}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -91,6 +94,18 @@
       <Filter>playGround\block</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
+      <Filter>playGround\player</Filter>
+    </ClInclude>
+    <ClInclude Include="playerState.h">
+      <Filter>playGround\playerState</Filter>
+    </ClInclude>
+    <ClInclude Include="playerIdle.h">
+      <Filter>playGround\playerState</Filter>
+    </ClInclude>
+    <ClInclude Include="playerWalk.h">
+      <Filter>playGround\playerState</Filter>
+    </ClInclude>
+    <ClInclude Include="playerRun.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -138,6 +153,18 @@
       <Filter>playGround\block</Filter>
     </ClCompile>
     <ClCompile Include="player.cpp">
+      <Filter>playGround\player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerState.cpp">
+      <Filter>playGround\playerState</Filter>
+    </ClCompile>
+    <ClCompile Include="playerIdle.cpp">
+      <Filter>playGround\playerState</Filter>
+    </ClCompile>
+    <ClCompile Include="playerWalk.cpp">
+      <Filter>playGround\playerState</Filter>
+    </ClCompile>
+    <ClCompile Include="playerRun.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

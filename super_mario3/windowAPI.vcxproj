@@ -154,15 +154,19 @@
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="golden_block.h" />
+    <ClInclude Include="playerIdle.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="imageManager.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="mapManager.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="playerRun.h" />
+    <ClInclude Include="playerWalk.h" />
     <ClInclude Include="playGround.h" />
     <ClInclude Include="question_block.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="singletonBase.h" />
+    <ClInclude Include="playerState.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -173,13 +177,17 @@
     <ClCompile Include="coin_block.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="golden_block.cpp" />
+    <ClCompile Include="playerIdle.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="mapManager.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="playerRun.cpp" />
+    <ClCompile Include="playerWalk.cpp" />
     <ClCompile Include="playGround.cpp" />
     <ClCompile Include="question_block.cpp" />
+    <ClCompile Include="playerState.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

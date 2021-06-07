@@ -2,17 +2,13 @@
 #include "gameNode.h"
 #include "mapManager.h"
 #include "blockManager.h"
+#include "player.h"
 
-struct tagPlayer
-{
-	RECT rc;
-	float x, y;
-};
 class playGround : public gameNode
 {
 private:
 	image* map;
-	tagPlayer _player;
+	player* _player;
 	mapManager* _mManager;
 	blockManager* _bManager;
 
