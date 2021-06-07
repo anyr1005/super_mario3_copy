@@ -8,11 +8,12 @@ HRESULT playGround::init()
 
 	IMAGEMANAGER->addImage("map", "img/map.bmp", BACKGROUNDX, BACKGROUNDY, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("qBlock", "img/question_block.bmp", 192, 48, 4, 1, true, RGB(255,0,255));
-
+	IMAGEMANAGER->addFrameImage("gBlock", "img/golden_block.bmp", 192, 48, 4, 1, true, RGB(255,0,255));
+	IMAGEMANAGER->addFrameImage("coin", "img/coin.bmp", 168, 48, 4, 1, true, RGB(255, 0, 255));
 
 	map = IMAGEMANAGER->findImage("map");
 
-	_player.x = 100;
+	_player.x = 200;
 	_player.y = BACKGROUNDY - 72;
 
 	_player.rc = RectMakeCenter(_player.x, _player.y, 48, 48);
@@ -28,6 +29,9 @@ HRESULT playGround::init()
 	_mManager = new mapManager;
 	_mManager->init();
 	_mManager->setQuestionBlock();
+	_mManager->setGoldenBlock();
+	_mManager->setCoinBlock();
+	_mManager->setObject();
 
 	return S_OK;
 }
@@ -65,7 +69,7 @@ void playGround::update()
 	}
 	_player.rc = RectMakeCenter(_player.x, _player.y, 48, 48);
 	_mManager->update();
-	CAMERAMANAGER->updateCamera(_player.rc, 0.42f, 0.57f, 0, 0);
+	CAMERAMANAGER->updateCamera(_player.rc, 0.42f, 0.57f, 0.3f, 0.7f);
 	
 }
 

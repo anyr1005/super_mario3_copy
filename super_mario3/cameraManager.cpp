@@ -13,7 +13,6 @@ HRESULT cameraManager::init()
 {
 	_cameraBuffer = new image;
 	_cameraBuffer->init(WINSIZEX, WINSIZEY);
-	_seeLine = false;
 	for (int i = 0; i < 2; i++)
 	{
 		x[i] = 0;
@@ -33,7 +32,7 @@ void cameraManager::render(image* backBuffer, HDC frontDC)
 	HDC cameraDC = _cameraBuffer->getMemDC();
 	HDC backDC = backBuffer->getMemDC();
 
-	if (_seeLine)
+	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		for (int i = 0; i < 2; i++)
 		{

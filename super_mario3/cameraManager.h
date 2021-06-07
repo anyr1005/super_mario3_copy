@@ -6,7 +6,6 @@ class cameraManager : public singletonBase<cameraManager>
 {
 private:
 	image* _cameraBuffer;
-	bool _seeLine;
 	float x[2];
 	float y[2];
 	void cameraRange(); //카메라가 배경 밖으로 나가지 않게 만드는 함수
@@ -45,9 +44,6 @@ public:
 	만약 빼고싶은 것이 있다면 0을 넣으면 됨 (x축, y축 하나씩이면 float 두개만 넣는 updateCamera 추천)
 	*/
 	void updateCamera(RECT& player, float ratioX1, float ratioX2, float ratioY1, float ratioY2);
-
-	void setSeeLine(bool b) { _seeLine = b; }
-	bool getSeeLine() { return _seeLine; }
 
 	/*
 	void setCameraX(float x) { _cameraBuffer->setX(x); }

@@ -72,7 +72,13 @@
     <ClInclude Include="mapManager.h">
       <Filter>playGround\map</Filter>
     </ClInclude>
-    <ClInclude Include="qBlock.h">
+    <ClInclude Include="question_block.h">
+      <Filter>playGround\map</Filter>
+    </ClInclude>
+    <ClInclude Include="golden_block.h">
+      <Filter>playGround\map</Filter>
+    </ClInclude>
+    <ClInclude Include="coin_block.h">
       <Filter>playGround\map</Filter>
     </ClInclude>
   </ItemGroup>
@@ -107,7 +113,13 @@
     <ClCompile Include="mapManager.cpp">
       <Filter>playGround\map</Filter>
     </ClCompile>
-    <ClCompile Include="qBlock.cpp">
+    <ClCompile Include="question_block.cpp">
+      <Filter>playGround\map</Filter>
+    </ClCompile>
+    <ClCompile Include="golden_block.cpp">
+      <Filter>playGround\map</Filter>
+    </ClCompile>
+    <ClCompile Include="coin_block.cpp">
       <Filter>playGround\map</Filter>
     </ClCompile>
   </ItemGroup>

@@ -30,8 +30,9 @@ void block::update()
 	if (_count % 10 == 0)
 	{
 		if (_currentFrameX >= _imageName->getMaxFrameX()) _currentFrameX = 0;
+		else _currentFrameX++;
 		_imageName->setFrameX(_currentFrameX);
-		_currentFrameX++;
+		
 
 		_count = 0;
 	}
