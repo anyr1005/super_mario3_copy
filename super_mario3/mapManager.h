@@ -5,8 +5,7 @@
 #include "gameNode.h"
 #include <vector>
 
-#define OBJECTMAX 14
-#define WOODBLOCKMAX 7
+#define GROUNDMAX 6
 
 class mapManager : public gameNode
 {
@@ -32,6 +31,9 @@ private:
 
 	//나무블록은 가로막히는것 빼곤 기능이 없으므로 RECT 처리
 	vector<RECT> _woodBlock;
+
+	//땅
+	RECT _ground[6];
 	
 public:
 	virtual HRESULT init();
@@ -44,6 +46,7 @@ public:
 	void setCoinBlock();
 	void setObject();
 	void setWoodBlock();
+	void setGround();
 
 	void removeQuestionBlock(int arrNum);
 	void removeGoldenBlock();

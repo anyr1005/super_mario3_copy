@@ -8,6 +8,7 @@ HRESULT mapManager::init()
 	setCoinBlock();
 	setObject();
 	setWoodBlock();
+	setGround();
 	return S_OK;
 }
 
@@ -49,13 +50,17 @@ void mapManager::render()
 	}
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
-		for (int i = 0; i < OBJECTMAX; i++)
+		for (int i = 0; i < _object.size(); i++)
 		{
 			Rectangle(getMemDC(), _object[i]);
 		}
 		for (int i = 0; i < _woodBlock.size(); i++)
 		{
 			Rectangle(getMemDC(), _woodBlock[i]);
+		}
+		for (int i = 0; i < GROUNDMAX; i++)
+		{
+			Rectangle(getMemDC(), _ground[i]);
 		}
 	}
 }
@@ -259,6 +264,16 @@ void mapManager::setWoodBlock()
 	{
 		_woodBlock.push_back(RectMake(BACKGROUNDX / 2 + 816, BACKGROUNDY - 96 - (48 * i), 144 - 48 * i, 48));
 	}
+}
+
+void mapManager::setGround()
+{
+	_ground[0] = RectMake(0, BACKGROUNDY - 48, 1872, 48);
+	_ground[1] = RectMake(_ground[0].right, BACKGROUNDY - 96, 1392, 96);
+	_ground[2] = RectMake(BACKGROUNDX / 2 - 720, BACKGROUNDY - 48, 1056, 48);
+	_ground[3] = RectMake(BACKGROUNDX / 2 + 432, BACKGROUNDY - 48, 240, 48);
+	_ground[4] = RectMake(BACKGROUNDX / 2 + 816, BACKGROUNDY - 48, 1632, 48);
+	_ground[5] = RectMake(BACKGROUNDX - 1680, BACKGROUNDY - 48, 1680, 48);
 }
 
 void mapManager::removeQuestionBlock(int arrNum)

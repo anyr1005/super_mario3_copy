@@ -18,12 +18,6 @@ HRESULT playGround::init()
 
 	_player.rc = RectMakeCenter(_player.x, _player.y, 48, 48);
 
-	_ground[0] = RectMake(0, BACKGROUNDY - 48, 1872, 48);
-	_ground[1] = RectMake(_ground[0].right, BACKGROUNDY - 96, 1392, 96);
-	_ground[2] = RectMake(BACKGROUNDX/2 - 720, BACKGROUNDY - 48, 1056, 48);
-	_ground[3] = RectMake(BACKGROUNDX/2 + 432, BACKGROUNDY - 48, 240, 48);
-	_ground[4] = RectMake(BACKGROUNDX/2 + 816, BACKGROUNDY - 48, 1632, 48);
-	_ground[5] = RectMake(BACKGROUNDX - 1680, BACKGROUNDY - 48, 1680, 48);
 	CAMERAMANAGER->setCameraCenter(_player.x, _player.y);
 
 	_mManager = new mapManager;
@@ -78,13 +72,6 @@ void playGround::render()
 	map->render(getMemDC(), 0, 0);
 	Rectangle(getMemDC(), _player.rc);
 
-	if (KEYMANAGER->isToggleKey(VK_TAB))
-	{
-		for (int i = 0; i < 6; i++)
-		{
-			Rectangle(getMemDC(), _ground[i]);
-		}
-	}
 	_mManager->render();
 	//==================================================
 	CAMERAMANAGER->render(this->getBackBuffer(), getHDC());
