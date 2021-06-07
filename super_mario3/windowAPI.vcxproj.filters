@@ -106,7 +106,7 @@
       <Filter>playGround\playerState</Filter>
     </ClInclude>
     <ClInclude Include="playerRun.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>playGround\playerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -165,7 +165,7 @@
       <Filter>playGround\playerState</Filter>
     </ClCompile>
     <ClCompile Include="playerRun.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>playGround\playerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

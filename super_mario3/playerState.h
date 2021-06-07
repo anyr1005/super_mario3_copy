@@ -2,7 +2,7 @@
 #include "player.h"
 
 class player;
-#define ACCEL 0.1f
+#define ACCEL 0.2f
 #define BASICSPEED 5
 #define SPEEDMAX 12
 

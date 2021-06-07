@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "playerWalk.h"
+#include "playerRun.h"
 
 playerState * playerWalk::handleInput(player * player)
 {
