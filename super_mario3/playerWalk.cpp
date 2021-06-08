@@ -3,6 +3,7 @@
 #include "playerRun.h"
 #include "playerSlip.h"
 #include "playerSkid.h"
+#include "playerJump.h"
 
 playerState * playerWalk::handleInput(player * player)
 {
@@ -27,6 +28,10 @@ playerState * playerWalk::handleInput(player * player)
 	if (player->getRunSpeed() >= SPEEDMAX)
 	{
 		return new playerRun;
+	}
+	if (KEYMANAGER->isOnceKeyDown('X'))
+	{
+		return new playerJump;
 	}
 	return nullptr;
 }

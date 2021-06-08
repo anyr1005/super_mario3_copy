@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "playerIdle.h"
 #include "playerWalk.h"
+#include "playerJump.h"
 
 playerState* playerIdle::handleInput(player * player)
 {
@@ -15,6 +16,10 @@ playerState* playerIdle::handleInput(player * player)
 		player->setIsRight(true);
 		//걷는 상태로 바꾸기
 		return new playerWalk;
+	}
+	if (KEYMANAGER->isOnceKeyDown('X'))
+	{
+		return new playerJump;
 	}
 	return nullptr;
 }
