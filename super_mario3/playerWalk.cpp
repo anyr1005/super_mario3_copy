@@ -2,11 +2,26 @@
 #include "playerWalk.h"
 #include "playerRun.h"
 #include "playerSlip.h"
+#include "playerSkid.h"
 
 playerState * playerWalk::handleInput(player * player)
 {
-	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
 	{
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			player->setIsRight(true);
+			return new playerSkid;
+		}
+		return new playerSlip;
+	}
+	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	{
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			player->setIsRight(false);
+			return new playerSkid;
+		}
 		return new playerSlip;
 	}
 	if (player->getRunSpeed() >= SPEEDMAX)
@@ -39,6 +54,11 @@ void playerWalk::update(player * player)
 		if (player->getRunSpeed() < BASICSPEED) player->setRunSpeed(BASICSPEED);
 	}
 
+	if (player->getRunSpeed() < BASICSPEED)
+	{
+		player->setRunSpeed(player->getRunSpeed() + ACCEL);
+	}
+
 	_count++;
 	if (_count % 10 == 0)
 	{
@@ -53,7 +73,6 @@ void playerWalk::update(player * player)
 		{
 			player->getImage()->setFrameY(0);
 		}
-		
 	}
 }
 

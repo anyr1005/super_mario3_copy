@@ -11,11 +11,26 @@ playerState * playerRun::handleInput(player * player)
 		return new playerWalk;
 	}
 	
-	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
 	{
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			player->setIsRight(true);
+			return new playerSkid;
+		}
 		return new playerSlip;
 	}
 	
+	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	{
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			player->setIsRight(false);
+			return new playerSkid;
+		}
+		return new playerSlip;
+	}
+
 	return nullptr;
 
 }
