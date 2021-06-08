@@ -4,6 +4,11 @@
 
 playerState * playerSkid::handleInput(player * player)
 {
+	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	{
+		player->setRunSpeed(BASICSPEED);
+		return new playerIdle;
+	}
 	if (player->getRunSpeed() <= 0)
 	{
 		player->setRunSpeed(0);
