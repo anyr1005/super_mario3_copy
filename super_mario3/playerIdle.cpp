@@ -21,7 +21,6 @@ playerState* playerIdle::handleInput(player * player)
 	{
 		return new playerJump;
 	}
-
 	return nullptr;
 }
 
@@ -36,10 +35,18 @@ void playerIdle::update(player* player)
 	{
 		player->getImage()->setFrameY(0);
 	}
+	if (!player->getIsOnGround())
+	{
+		player->setY(player->getY() - _jumpPower);
+		_jumpPower -= _gravity;
+		player->setJumpPower(_jumpPower);
+	}
 }
 
 void playerIdle::enter(player* player)
 {
 	player->setImage("mario_walk");
 	_count = 0;
+	_jumpPower = -4.0f;
+	_gravity = 0.2f;
 }

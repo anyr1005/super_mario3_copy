@@ -48,30 +48,30 @@ void mapManager::setObject()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		_object.push_back(RectMake(720 + 96 * i, BACKGROUNDY - 192 - 96 * i, 144, 30));
+		_object.push_back(RectMake(720 + 96 * i, BACKGROUNDY - 192 - 96 * i, 144, 10));
 	}
 
 	for (int i = 0; i < 2; i++)
 	{
-		_object.push_back(RectMake(1200 + 192 * i, BACKGROUNDY - 192 - 96 * i, 240 - 48 * i, 30));
+		_object.push_back(RectMake(1200 + 192 * i, BACKGROUNDY - 192 - 96 * i, 240 - 48 * i, 10));
 	}
 	for (int i = 0; i < 2; i++)
 	{
-		_object.push_back(RectMake(1536, BACKGROUNDY - 384 + 240 * i, 192 + 96 * i, 30));
+		_object.push_back(RectMake(1536, BACKGROUNDY - 384 + 240 * i, 192 + 96 * i, 10));
 	}
 
 	for (int i = 0; i < 3; i++)
 	{
-		_object.push_back(RectMake(BACKGROUNDX / 2 - 384 + 96 * i, BACKGROUNDY - 144 - 96 * i, 336, 30));
+		_object.push_back(RectMake(BACKGROUNDX / 2 - 384 + 96 * i, BACKGROUNDY - 144 - 96 * i, 336, 10));
 	}
 
 	for (int i = 0; i < 2; i++)
 	{
-		_object.push_back(RectMake(BACKGROUNDX - 2016 + 96 * i, BACKGROUNDY - 192 - 288 * i, 144, 30));
+		_object.push_back(RectMake(BACKGROUNDX - 2016 + 96 * i, BACKGROUNDY - 192 - 288 * i, 144, 10));
 	}
 
 	//하늘에 있는 부유물
-	_object.push_back(RectMake(BACKGROUNDX / 2 - 240, 432, 192, 30));
+	_object.push_back(RectMake(BACKGROUNDX / 2 - 240, 432, 192, 10));
 
 	//구름
 	_object.push_back(RectMake(BACKGROUNDX / 2 + 48, 576, 192, 48));

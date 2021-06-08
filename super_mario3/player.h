@@ -2,9 +2,11 @@
 #include "gameNode.h"
 #include "playerState.h"
 #include "mapManager.h"
+#include "blockManager.h"
 
 class playerState;
 class mapManager;
+class blockManager;
 
 class player : public gameNode
 {
@@ -20,6 +22,8 @@ private:
 	playerState* _state; //상태
 
 	mapManager* _mManager;
+
+	blockManager* _bManager;
 
 	bool _isLRCollison;
 
@@ -37,6 +41,8 @@ public:
 	void collisonObject();
 	void collisonPipe();
 	
+	void collisonQBlock();
+
 	//============================================
 	//			## 설정자 ##
 
@@ -53,6 +59,8 @@ public:
 	void setIsRight(bool b) { _isRight = b; }
 
 	void setMapManagerMemeoryAddressLink(mapManager* mManager) { _mManager = mManager; }
+
+	void setBlockManagerMemoryAddressLink(blockManager* blockManager) { _bManager = blockManager; }
 
 	void setJumpPower(float jumpPower) { _jumpPower = jumpPower; }
 

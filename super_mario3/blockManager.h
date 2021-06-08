@@ -37,5 +37,7 @@ public :
 	void removeQuestionBlock(int arrNum);
 	void removeGoldenBlock(int arrNum);
 	void removeCoinBlock(int arrNum);
+
+	vector<block*> getQBlock() { return _vQBlock; }
 };
 

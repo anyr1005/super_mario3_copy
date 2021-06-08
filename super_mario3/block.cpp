@@ -11,6 +11,9 @@ HRESULT block::init(const char * imageName, POINT position)
 	_currentFrameX = _currentFrameY = 0;
 	_count = 0;
 
+	_isChange = false;
+	_isCrashed = false;
+
 	_imageName = IMAGEMANAGER->findImage(imageName);
 
 	_rc = RectMakeCenter(position.x, position.y,
@@ -36,6 +39,11 @@ void block::update()
 
 		_count = 0;
 	}
+
+	if (_isChange)
+	{
+		change();
+	}
 }
 
 void block::render()
@@ -45,4 +53,8 @@ void block::render()
 	{
 		Rectangle(getMemDC(), _rc);
 	}
+}
+
+void block::change()
+{
 }

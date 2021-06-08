@@ -71,7 +71,9 @@ void playerWalk::update(player * player)
 	}
 	if (!player->getIsOnGround())
 	{
-		
+		player->setY(player->getY() - _jumpPower);
+		_jumpPower -= _gravity;
+		player->setJumpPower(_jumpPower);
 	}
 
 	_count++;
@@ -95,4 +97,6 @@ void playerWalk::enter(player * player)
 {
 	player->setImage("mario_walk");
 	_count = _index = 0;
+	_jumpPower = -4.0f;
+	_gravity = 0.2f;
 }

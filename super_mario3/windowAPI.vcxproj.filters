@@ -114,6 +114,9 @@
     <ClInclude Include="playerJump.h">
       <Filter>playGround\playerState</Filter>
     </ClInclude>
+    <ClInclude Include="playerFall.h">
+      <Filter>playGround\playerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -177,6 +180,9 @@
       <Filter>playGround\playerState</Filter>
     </ClCompile>
     <ClCompile Include="playerJump.cpp">
+      <Filter>playGround\playerState</Filter>
+    </ClCompile>
+    <ClCompile Include="playerFall.cpp">
       <Filter>playGround\playerState</Filter>
     </ClCompile>
   </ItemGroup>

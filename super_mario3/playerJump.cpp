@@ -1,9 +1,13 @@
 #include "stdafx.h"
 #include "playerJump.h"
+#include "playerIdle.h"
 
 playerState * playerJump::handleInput(player * player)
 {
-
+	if (player->getIsOnGround())
+	{
+		return new playerIdle;
+	}
 	return nullptr;
 }
 

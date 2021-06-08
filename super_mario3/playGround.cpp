@@ -7,10 +7,6 @@ HRESULT playGround::init()
 	gameNode::init(true);
 
 	IMAGEMANAGER->addImage("map", "img/map.bmp", BACKGROUNDX, BACKGROUNDY, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("qBlock", "img/question_block.bmp", 192, 48, 4, 1, true, RGB(255,0,255));
-	IMAGEMANAGER->addFrameImage("gBlock", "img/golden_block.bmp", 192, 48, 4, 1, true, RGB(255,0,255));
-	IMAGEMANAGER->addFrameImage("coin", "img/coin.bmp", 168, 48, 4, 1, true, RGB(255, 0, 255));
-	
 
 	map = IMAGEMANAGER->findImage("map");
 
@@ -26,6 +22,7 @@ HRESULT playGround::init()
 	_bManager->init();
 
 	_player->setMapManagerMemeoryAddressLink(_mManager);
+	_player->setBlockManagerMemoryAddressLink(_bManager);
 	return S_OK;
 }
 
@@ -33,8 +30,6 @@ HRESULT playGround::init()
 void playGround::release()
 {
 	gameNode::release();
-
-	
 }
 
 
