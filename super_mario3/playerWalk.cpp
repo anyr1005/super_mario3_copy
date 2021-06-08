@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "playerWalk.h"
-#include "playerRun.h"
 #include "playerSlip.h"
 #include "playerSkid.h"
 #include "playerJump.h"
@@ -25,10 +24,7 @@ playerState * playerWalk::handleInput(player * player)
 		}
 		return new playerSlip;
 	}
-	if (player->getRunSpeed() >= SPEEDMAX)
-	{
-		return new playerRun;
-	}
+	
 	if (KEYMANAGER->isOnceKeyDown('X'))
 	{
 		return new playerJump;
@@ -62,6 +58,15 @@ void playerWalk::update(player * player)
 	if (player->getRunSpeed() < BASICSPEED)
 	{
 		player->setRunSpeed(player->getRunSpeed() + ACCEL);
+	}
+
+	if (player->getRunSpeed() >= SPEEDMAX)
+	{
+		player->setImage("mario_run");
+	}
+	else
+	{
+		player->setImage("mario_walk");
 	}
 
 	_count++;

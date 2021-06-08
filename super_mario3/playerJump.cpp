@@ -35,6 +35,12 @@ void playerJump::enter(player * player)
 {
 	_jumpPower = 9.0f;
 	_gravity = 0.2f;
-
-	player->setImage("mario_jump");
+	if (player->getRunSpeed() == SPEEDMAX)
+	{
+		player->setImage("mario_run_jump");
+	}
+	else
+	{
+		player->setImage("mario_jump");
+	}
 }
