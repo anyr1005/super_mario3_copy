@@ -108,6 +108,12 @@
     <ClInclude Include="playerRun.h">
       <Filter>playGround\playerState</Filter>
     </ClInclude>
+    <ClInclude Include="playerSkid.h">
+      <Filter>playGround\playerState</Filter>
+    </ClInclude>
+    <ClInclude Include="playerSlip.h">
+      <Filter>playGround\playerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -165,6 +171,12 @@
       <Filter>playGround\playerState</Filter>
     </ClCompile>
     <ClCompile Include="playerRun.cpp">
+      <Filter>playGround\playerState</Filter>
+    </ClCompile>
+    <ClCompile Include="playerSkid.cpp">
+      <Filter>playGround\playerState</Filter>
+    </ClCompile>
+    <ClCompile Include="playerSlip.cpp">
       <Filter>playGround\playerState</Filter>
     </ClCompile>
   </ItemGroup>

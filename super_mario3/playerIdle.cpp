@@ -4,8 +4,15 @@
 
 playerState* playerIdle::handleInput(player * player)
 {
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT) || KEYMANAGER->isStayKeyDown(VK_RIGHT))
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
+		player->setIsRight(false);
+		//걷는 상태로 바꾸기
+		return new playerWalk;
+	}
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+	{
+		player->setIsRight(true);
 		//걷는 상태로 바꾸기
 		return new playerWalk;
 	}
@@ -15,7 +22,14 @@ playerState* playerIdle::handleInput(player * player)
 void playerIdle::update(player* player)
 {
 	player->getImage()->setFrameX(0);
-	player->getImage()->setFrameY(0);
+	if (player->getIsRight())
+	{
+		player->getImage()->setFrameY(1);
+	}
+	else
+	{
+		player->getImage()->setFrameY(0);
+	}
 }
 
 void playerIdle::enter(player* player)

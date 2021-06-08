@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "playerRun.h"
 #include "playerWalk.h"
+#include "playerSkid.h"
+#include "playerSlip.h"
 
 playerState * playerRun::handleInput(player * player)
 {
@@ -8,6 +10,12 @@ playerState * playerRun::handleInput(player * player)
 	{
 		return new playerWalk;
 	}
+	
+	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	{
+		return new playerSlip;
+	}
+	
 	return nullptr;
 
 }
@@ -36,10 +44,17 @@ void playerRun::update(player * player)
 	_count++;
 	if (_count % 10 == 0)
 	{
+		if (player->getIsRight())
+		{
+			player->getImage()->setFrameY(1);
+		}
+		else
+		{
+			player->getImage()->setFrameY(0);
+		}
 		if (_index >= player->getImage()->getMaxFrameX()) _index = 0;
 		else _index++;
 		player->getImage()->setFrameX(_index);
-		player->getImage()->setFrameY(0);
 	}
 }
 

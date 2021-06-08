@@ -161,6 +161,8 @@
     <ClInclude Include="mapManager.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerRun.h" />
+    <ClInclude Include="playerSkid.h" />
+    <ClInclude Include="playerSlip.h" />
     <ClInclude Include="playerWalk.h" />
     <ClInclude Include="playGround.h" />
     <ClInclude Include="question_block.h" />
@@ -184,6 +186,8 @@
     <ClCompile Include="mapManager.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerRun.cpp" />
+    <ClCompile Include="playerSkid.cpp" />
+    <ClCompile Include="playerSlip.cpp" />
     <ClCompile Include="playerWalk.cpp" />
     <ClCompile Include="playGround.cpp" />
     <ClCompile Include="question_block.cpp" />

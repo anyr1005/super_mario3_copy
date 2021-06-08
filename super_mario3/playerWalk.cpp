@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "playerWalk.h"
 #include "playerRun.h"
+#include "playerSlip.h"
 
 playerState * playerWalk::handleInput(player * player)
 {
 	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
-		return new playerIdle;
+		return new playerSlip;
 	}
 	if (player->getRunSpeed() >= SPEEDMAX)
 	{
@@ -19,10 +20,12 @@ void playerWalk::update(player * player)
 {
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
+		player->setIsRight(false);
 		player->setX(player->getX() - player->getRunSpeed());
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
+		player->setIsRight(true);
 		player->setX(player->getX() + player->getRunSpeed());
 	}
 	if (KEYMANAGER->isStayKeyDown('Z'))
@@ -42,7 +45,15 @@ void playerWalk::update(player * player)
 		if (_index >= player->getImage()->getMaxFrameX()) _index = 0;
 		else _index++;
 		player->getImage()->setFrameX(_index);
-		player->getImage()->setFrameY(0);
+		if (player->getIsRight())
+		{
+			player->getImage()->setFrameY(1);
+		}
+		else
+		{
+			player->getImage()->setFrameY(0);
+		}
+		
 	}
 }
 
@@ -50,5 +61,4 @@ void playerWalk::enter(player * player)
 {
 	player->setImage("mario_walk");
 	_count = _index = 0;
-	
 }

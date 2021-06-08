@@ -8,6 +8,8 @@ HRESULT player::init()
 	IMAGEMANAGER->addFrameImage("mario_skid", "img/mario/mario_skid.bmp", 42, 96, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("mario_run", "img/mario/mario_run.bmp", 96, 96, 2, 2, true, RGB(255, 0, 255));
 
+	_isRight = true;
+
 	_state = new playerIdle;
 	_state->enter(this);
 
@@ -17,13 +19,7 @@ HRESULT player::init()
 	_rc = RectMakeCenter(_x, _y, 45, 48);
 
 	_runSpeed = BASICSPEED;
-
-	_friction = FRICTION;
-
-	_index = _count = 0;
-
 	
-
 	return S_OK;
 }
 

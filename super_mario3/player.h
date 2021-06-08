@@ -4,23 +4,19 @@
 
 class playerState;
 
-#define BASICSPEED 5
-#define SPEEDMAX 12
-#define ACCEL 0.1f
-#define FRICTION 0.2f
-
 class player : public gameNode
 {
 private:
-	image* _img;
+	image* _img; //플레이어 이미지
 	RECT _rc;
-	float _x, _y;
-	float _runSpeed;
-	float _jumpSpeed;
-	float _friction;
-	int _count, _index;
+	float _x, _y; //중점 x, y 좌표
+	float _runSpeed; //달리는 속도
+	float _jumpSpeed; //점프 속도
 
-	playerState* _state;
+	bool _isRight; //오른쪽 왼쪽 방향 구분
+
+	playerState* _state; //상태
+
 
 public:
 	virtual HRESULT init();
@@ -30,8 +26,10 @@ public:
 
 	virtual void handleInput();
 
-	float getX() { return _x; }
-	float getY() { return _y; }
+	
+	//============================================
+	//			## 설정자 ##
+
 	void setX(float x) { _x = x; }
 	void setY(float y) { _y = y; }
 
@@ -40,12 +38,23 @@ public:
 		_img = IMAGEMANAGER->findImage(imgName);
 	}
 
+	void setRunSpeed(float speed) { _runSpeed = speed; }
+
+	void setIsRight(bool b) { _isRight = b; }
+
+	//============================================
+	//			## 접근자 ##
+
+	float getX() { return _x; }
+	float getY() { return _y; }
+
 	image* getImage() { return _img; }
 
 	RECT& getRect() { return _rc; }
 
 	float getRunSpeed() { return _runSpeed; }
 
-	void setRunSpeed(float speed) { _runSpeed = speed; }
+	bool getIsRight() { return _isRight; }
+	//============================================
 };
 
