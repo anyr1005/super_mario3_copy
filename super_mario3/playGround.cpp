@@ -24,6 +24,8 @@ HRESULT playGround::init()
 
 	_bManager = new blockManager;
 	_bManager->init();
+
+	_player->setMapManagerMemeoryAddressLink(_mManager);
 	return S_OK;
 }
 

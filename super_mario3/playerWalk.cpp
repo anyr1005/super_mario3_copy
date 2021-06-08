@@ -15,6 +15,7 @@ playerState * playerWalk::handleInput(player * player)
 		}
 		return new playerSlip;
 	}
+
 	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
@@ -44,7 +45,7 @@ void playerWalk::update(player * player)
 		player->setIsRight(true);
 		player->setX(player->getX() + player->getRunSpeed());
 	}
-	if (KEYMANAGER->isStayKeyDown('Z'))
+	if (KEYMANAGER->isStayKeyDown('Z') && !player->getIsLRCollison())
 	{
 		player->setRunSpeed(player->getRunSpeed()+ACCEL);
 		if (player->getRunSpeed() > SPEEDMAX) player->setRunSpeed(SPEEDMAX);
@@ -67,6 +68,10 @@ void playerWalk::update(player * player)
 	else
 	{
 		player->setImage("mario_walk");
+	}
+	if (!player->getIsOnGround())
+	{
+		
 	}
 
 	_count++;

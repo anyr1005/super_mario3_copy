@@ -13,6 +13,8 @@ struct tagPipe
 	RECT head;
 };
 
+class player;
+
 class mapManager : public gameNode
 {
 private:
@@ -24,9 +26,12 @@ private:
 	vector<RECT> _woodBlock;
 
 	//¶¥
-	RECT _ground[6];
+	vector<RECT> _ground;
 
 	vector<tagPipe> _pipe;
+
+	//collisonÃ³¸®¸¦ À§ÇØ player °¡Á®¿È
+	player* _player;
 	
 public:
 	virtual HRESULT init();
@@ -38,5 +43,11 @@ public:
 	void setWoodBlock();
 	void setGround();
 	void setPipe();
+
+	vector<RECT> getGround() { return _ground; }
+
+	vector<RECT> getObject() { return _object; }
+
+	vector<tagPipe> getPipe() { return _pipe; }
 };
 

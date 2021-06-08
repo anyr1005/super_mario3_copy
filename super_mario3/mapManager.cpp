@@ -77,9 +77,6 @@ void mapManager::setObject()
 	_object.push_back(RectMake(BACKGROUNDX / 2 + 48, 576, 192, 48));
 	_object.push_back(RectMake(BACKGROUNDX / 2 + 288, 528, 624, 48));
 
-	//파이프 몸통만 있는 것
-	_object.push_back(RectMake(BACKGROUNDX - 1677, BACKGROUNDY - 144, 90, 96));
-
 }
 
 void mapManager::setWoodBlock()
@@ -101,12 +98,12 @@ void mapManager::setWoodBlock()
 
 void mapManager::setGround()
 {
-	_ground[0] = RectMake(0, BACKGROUNDY - 48, 1872, 48);
-	_ground[1] = RectMake(_ground[0].right, BACKGROUNDY - 96, 1392, 96);
-	_ground[2] = RectMake(BACKGROUNDX / 2 - 720, BACKGROUNDY - 48, 1056, 48);
-	_ground[3] = RectMake(BACKGROUNDX / 2 + 432, BACKGROUNDY - 48, 240, 48);
-	_ground[4] = RectMake(BACKGROUNDX / 2 + 816, BACKGROUNDY - 48, 1632, 48);
-	_ground[5] = RectMake(BACKGROUNDX - 1680, BACKGROUNDY - 48, 1680, 48);
+	_ground.push_back(RectMake(0, BACKGROUNDY - 48, 1872, 48));
+	_ground.push_back(RectMake(_ground[0].right, BACKGROUNDY - 96, 1392, 96));
+	_ground.push_back(RectMake(BACKGROUNDX / 2 - 720, BACKGROUNDY - 48, 1056, 48));
+	_ground.push_back(RectMake(BACKGROUNDX / 2 + 432, BACKGROUNDY - 48, 240, 48));
+	_ground.push_back(RectMake(BACKGROUNDX / 2 + 816, BACKGROUNDY - 48, 1632, 48));
+	_ground.push_back(RectMake(BACKGROUNDX - 1680, BACKGROUNDY - 48, 1680, 48));
 }
 
 void mapManager::setPipe()
@@ -131,5 +128,10 @@ void mapManager::setPipe()
 	
 	pipe.head = RectMake(BACKGROUNDX - 1488, BACKGROUNDY - 144, 96, 48);
 	pipe.body = RectMake(BACKGROUNDX - 1485, BACKGROUNDY - 96, 90, 48);
+	_pipe.push_back(pipe);
+
+	//파이프 몸통만 있는 것 head와 body를 같게 해서 넣어줌
+	pipe.body = RectMake(BACKGROUNDX - 1677, BACKGROUNDY - 144, 90, 96);
+	pipe.head = RectMake(BACKGROUNDX - 1677, BACKGROUNDY - 144, 90, 96);
 	_pipe.push_back(pipe);
 }

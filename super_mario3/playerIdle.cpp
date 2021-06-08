@@ -21,6 +21,7 @@ playerState* playerIdle::handleInput(player * player)
 	{
 		return new playerJump;
 	}
+
 	return nullptr;
 }
 
