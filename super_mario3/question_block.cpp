@@ -24,5 +24,6 @@ void question_block::change()
 			_isCrashed = true;
 		}
 		_countMove++;
+		_changeCount = 0;
 	}
 }

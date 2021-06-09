@@ -8,7 +8,12 @@ HRESULT blockManager::init()
 	IMAGEMANAGER->addFrameImage("coin", "img/block/coin.bmp", 168, 48, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("q_change", "img/block/question_box_change.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("q_change_complete", "img/block/question_box_change_complete.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
-
+	_coin = new coin;
+	_coin->init();
+	/*
+	_mushroom = new mushroom;
+	_mushroom->init();
+	*/
 	setQuestionBlock();
 	setGoldenBlock();
 	setCoinBlock();
@@ -33,6 +38,9 @@ void blockManager::update()
 	{
 		(*_viCoinBlock)->update();
 	}
+	_coin->update();
+	//_mushroom->update();
+
 	/*
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
@@ -57,6 +65,9 @@ void blockManager::render()
 	{
 		(*_viCoinBlock)->render();
 	}
+
+	_coin->render();
+	//_mushroom->render();
 }
 
 void blockManager::setQuestionBlock()

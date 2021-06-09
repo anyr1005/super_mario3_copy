@@ -3,13 +3,13 @@
 #include "golden_block.h"
 #include "coin_block.h"
 #include "gameNode.h"
+#include "items.h"
 #include <vector>
 class blockManager : public gameNode
 {
 private:
 	typedef vector<block*> vBlock;
 	typedef vector<block*>::iterator viBlock;
-
 
 private:
 	//물음표 박스
@@ -23,6 +23,9 @@ private:
 	//코인
 	vBlock _vCoinBlock;
 	viBlock _viCoinBlock;
+
+	coin* _coin;
+	mushroom* _mushroom;
 
 public :
 	virtual HRESULT init();
@@ -39,5 +42,7 @@ public :
 	void removeCoinBlock(int arrNum);
 
 	vector<block*> getQBlock() { return _vQBlock; }
+
+	coin* getCoin() { return _coin; }
 };
 

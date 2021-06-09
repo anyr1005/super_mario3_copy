@@ -10,6 +10,7 @@ HRESULT player::init()
 	IMAGEMANAGER->addFrameImage("mario_run", "img/mario/mario_run.bmp", 96, 96, 2, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("mario_jump", "img/mario/mario_jump.bmp", 48, 96, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("mario_run_jump", "img/mario/mario_run_jump.bmp", 48, 96, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("mario_idle", "img/mario/mario_idle.bmp", 36, 90, 1, 2, true, RGB(255, 0, 255));
 	_isRight = true;
 
 	_state = new playerIdle;
@@ -47,7 +48,6 @@ void player::update()
 
 void player::render()
 {
-	_img->frameRender(getMemDC(), _rc.left, _rc.top);
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		Rectangle(getMemDC(), _rc);
@@ -58,6 +58,7 @@ void player::render()
 		sprintf_s(str, "%d", _isOnGround);
 		TextOut(getMemDC(), _x, _y+20, str, strlen(str));
 	}
+	_img->frameRender(getMemDC(), _rc.left, _rc.top);
 }
 
 
@@ -245,6 +246,8 @@ void player::collisonQBlock()
 					if (!_bManager->getQBlock()[i]->getIsCrashed())
 					{
 						_bManager->getQBlock()[i]->setIsChange(true);
+						RECT rc = _bManager->getQBlock()[i]->getRect();
+						_bManager->getCoin()->fire((rc.right + rc.left)/2, (rc.bottom + rc.top)/2);
 					}
 					_y += height;
 					_state = new playerFall;

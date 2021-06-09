@@ -45,7 +45,7 @@ void playerIdle::update(player* player)
 
 void playerIdle::enter(player* player)
 {
-	player->setImage("mario_walk");
+	player->setImage("mario_idle");
 	_count = 0;
 	_jumpPower = -4.0f;
 	_gravity = 0.2f;

@@ -3,20 +3,11 @@
 
 //block들의 부모 클래스
 
-enum Item
-{
-	COIN,
-	LIFE,
-	MARIO,
-	SWITCH
-};
-
 class block : public gameNode
 {
 protected:
 	image* _imageName;
 	RECT _rc;
-	Item _item;
 
 	int _currentFrameX;
 	int _currentFrameY;

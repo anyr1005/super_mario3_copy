@@ -16,6 +16,18 @@ void playerFall::update(player * player)
 	player->setY(player->getY() - _jumpPower);
 	_jumpPower -= _gravity;
 	player->setJumpPower(_jumpPower);
+
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+	{
+		player->setIsRight(false);
+		player->setX(player->getX() - player->getRunSpeed());
+	}
+
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+	{
+		player->setIsRight(true);
+		player->setX(player->getX() + player->getRunSpeed());
+	}
 }
 
 void playerFall::enter(player * player)
