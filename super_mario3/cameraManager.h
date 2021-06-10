@@ -51,10 +51,11 @@ public:
 
 	float getCameraX() { return _cameraBuffer->getX(); }
 	float getCameraY() { return _cameraBuffer->getY(); }
+	*/
 
 	float getCameraCenterX() { return _cameraBuffer->getCenterX(); }
 	float getCameraCenterY() { return _cameraBuffer->getCenterY(); }
-	*/
+	
 
 	HDC getCameraBuffer() { return _cameraBuffer->getMemDC(); }
 };

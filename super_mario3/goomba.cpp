@@ -19,6 +19,8 @@ HRESULT goomba::init(EnemyState es, POINT position)
 
 	_rc = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
 
+	_collisonRange = RectMakeCenter(_x, _rc.bottom - 24, 48, 48);
+
 	return S_OK;
 }
 
@@ -112,9 +114,14 @@ void goomba::move()
 	}
 	//=====================================
 	_rc = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
+	_collisonRange = RectMakeCenter(_x, _rc.bottom - 24, 48, 48);
 }
 
 void goomba::draw()
 {
 	_image->frameRender(getMemDC(), _rc.left, _rc.top, _currentFrameX, _currentFrameY);
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		Rectangle(getMemDC(), _collisonRange);
+	}
 }

@@ -22,7 +22,6 @@ HRESULT enemyManager::init()
 
 	//»µ²ûÇÃ¶ó¿ö ÀÌ¹ÌÁö
 
-
 	setGoomba();
 	setKTroopa();
 	return S_OK;
@@ -30,6 +29,7 @@ HRESULT enemyManager::init()
 
 void enemyManager::release()
 {
+
 }
 
 void enemyManager::update()

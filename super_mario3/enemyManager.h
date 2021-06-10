@@ -3,6 +3,9 @@
 #include "koopa_troopa.h"
 #include "goomba.h"
 #include <vector>
+#include "player.h"
+
+class player;
 
 class enemyManager : public gameNode
 {
@@ -18,6 +21,7 @@ private:
 	vEnemy _vFlower;
 	viEnemy _viFlower;
 
+	player* _player;
 public:
 	virtual HRESULT init();
 	virtual void release();
@@ -31,6 +35,12 @@ public:
 	void removeGoomba(int arrNum);
 	void removeKTroopa(int arrNum);
 	void removeFlower(int arrNum);
+
+	void goombaCollison();
+	void troopaCollison();
+	void flowerCollison();
+
+	void setPlayerMemeoryAddressLink(player* p) { _player = p; }
 
 };
 

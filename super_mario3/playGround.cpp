@@ -27,7 +27,10 @@ HRESULT playGround::init()
 
 	_player->setMapManagerMemeoryAddressLink(_mManager);
 	_player->setBlockManagerMemoryAddressLink(_bManager);
+	
 	_bManager->setMapManagerMemeoryAddressLink(_mManager);
+
+	_eManager->setPlayerMemeoryAddressLink(_player);
 	return S_OK;
 }
 

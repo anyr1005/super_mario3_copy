@@ -29,6 +29,10 @@ void enemy::update()
 
 void enemy::render()
 {
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		Rectangle(getMemDC(), _rc);
+	}
 	draw();
 }
 
