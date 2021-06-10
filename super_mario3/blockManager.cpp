@@ -10,10 +10,10 @@ HRESULT blockManager::init()
 	IMAGEMANAGER->addFrameImage("q_change_complete", "img/block/question_box_change_complete.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
 	_coin = new coin;
 	_coin->init();
-	/*
+
 	_mushroom = new mushroom;
 	_mushroom->init();
-	*/
+
 	setQuestionBlock();
 	setGoldenBlock();
 	setCoinBlock();
@@ -26,8 +26,19 @@ void blockManager::release()
 
 void blockManager::update()
 {
+	
 	for (_viQBlock = _vQBlock.begin(); _viQBlock != _vQBlock.end(); ++_viQBlock)
 	{
+		if (!(*_viQBlock)->getIsFire() && (*_viQBlock)->getIsCrashed())
+		{
+			RECT rc = (*_viQBlock)->getRect();
+			if ((*_viQBlock)->getItem() == MUSHROOM)
+			{
+				//슈퍼버섯
+				_mushroom->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, false);
+				(*_viQBlock)->setIsFire(true);
+			}
+		}
 		(*_viQBlock)->update();
 	}
 	for (_viGBlock = _vGBlock.begin(); _viGBlock != _vGBlock.end(); ++_viGBlock)
@@ -38,19 +49,16 @@ void blockManager::update()
 	{
 		(*_viCoinBlock)->update();
 	}
+	
 	_coin->update();
-	//_mushroom->update();
-
-	/*
-	if (KEYMANAGER->isOnceKeyDown('A'))
-	{
-		_vQBlock[0]->setIsChange(true);
-	}
-	*/
+	_mushroom->update();
+	mushroomCollision();
 }
 
 void blockManager::render()
 {
+	_coin->render();
+	_mushroom->render();
 	for (_viQBlock = _vQBlock.begin(); _viQBlock != _vQBlock.end(); ++_viQBlock)
 	{
 		(*_viQBlock)->render();
@@ -65,9 +73,6 @@ void blockManager::render()
 	{
 		(*_viCoinBlock)->render();
 	}
-
-	_coin->render();
-	//_mushroom->render();
 }
 
 void blockManager::setQuestionBlock()
@@ -77,6 +82,7 @@ void blockManager::setQuestionBlock()
 		question_block* qBlock;
 		qBlock = new question_block;
 		qBlock->init("qBlock", PointMake(552 + 48 * i, BACKGROUNDY - 216));
+		qBlock->setItem(COIN);
 		_vQBlock.push_back(qBlock);
 	}
 
@@ -87,10 +93,19 @@ void blockManager::setQuestionBlock()
 		if (i == 2)
 		{
 			qBlock->init("qBlock", PointMake(1272, BACKGROUNDY - 312));
+			qBlock->setItem(COIN);
 		}
 		else
 		{
 			qBlock->init("qBlock", PointMake(696 + 48 * i, BACKGROUNDY - 360));
+			if (i == 1)
+			{
+				qBlock->setItem(MUSHROOM);
+			}
+			else
+			{
+				qBlock->setItem(COIN);
+			}
 		}
 		_vQBlock.push_back(qBlock);
 
@@ -103,10 +118,19 @@ void blockManager::setQuestionBlock()
 		if (i == 2)
 		{
 			qBlock->init("qBlock", PointMake(BACKGROUNDX / 2 + 264, BACKGROUNDY - 168));
+			qBlock->setItem(MUSHROOM);
 		}
 		else
 		{
 			qBlock->init("qBlock", PointMake(1992 + 144 * i, BACKGROUNDY - 120 - 96 * i));
+			if (i == 0)
+			{
+				qBlock->setItem(MUSHROOM);
+			}
+			else
+			{
+				qBlock->setItem(COIN);
+			}
 		}
 
 		_vQBlock.push_back(qBlock);
@@ -155,7 +179,7 @@ void blockManager::setGoldenBlock()
 		}
 		else
 		{
-			gBlock->init("gBlock", PointMake(BACKGROUNDX - 2472 + 48 * i, BACKGROUNDY - 168));
+		gBlock->init("gBlock", PointMake(BACKGROUNDX - 2472 + 48 * i, BACKGROUNDY - 168));
 		}
 
 		_vGBlock.push_back(gBlock);
@@ -236,4 +260,198 @@ void blockManager::removeGoldenBlock(int arrNum)
 void blockManager::removeCoinBlock(int arrNum)
 {
 	_vCoinBlock.erase(_vCoinBlock.begin() + arrNum);
+}
+
+void blockManager::mushroomCollision()
+{
+	for (int i = 0; i < _mushroom->getVMushroom().size(); i++)
+	{
+		if (_mushroom->getVMushroom()[i].state == UP) continue;
+
+		RECT temp;
+		RECT mushroomRect = _mushroom->getVMushroom()[i].rc;
+		
+		_mushroom->setIsOnGround(i, false);
+		
+		for (int j = 0; j < _vQBlock.size(); j++)
+		{
+			RECT qBlock = _vQBlock[j]->getRect();
+			if (mushroomRect.bottom == qBlock.top && mushroomRect.right > qBlock.left && mushroomRect.left < qBlock.right)
+			{
+				_mushroom->setIsOnGround(i, true);
+			}
+			if (IntersectRect(&temp, &mushroomRect, &qBlock))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//상하 충돌
+				if (width > height)
+				{
+					//위에서 충돌
+					if (_mushroom->getVMushroom()[i].y < (qBlock.top + qBlock.bottom) / 2)
+					{
+						_mushroom->setIsOnGround(i, true);
+						_mushroom->setY(i, _mushroom->getVMushroom()[i].y - height);
+					}
+					//아래에서 충돌 없음
+				}
+				else //좌우 충돌
+				{
+					//왼쪽에서 충돌
+					if (_mushroom->getVMushroom()[i].x < (qBlock.left + qBlock.right) / 2)
+					{
+						_mushroom->setX(i, _mushroom->getVMushroom()[i].x - width);
+						_mushroom->setState(i, LEFT);
+					}
+					else //오른쪽 충돌
+					{
+						_mushroom->setX(i, _mushroom->getVMushroom()[i].x + width);
+						_mushroom->setState(i, RIGHT);
+					}
+				}
+			}
+		}
+		
+		for (int j = 0; j < _mManager->getGround().size(); j++)
+		{
+			RECT ground = _mManager->getGround()[j];
+			if (mushroomRect.bottom == ground.top && mushroomRect.right > ground.left && mushroomRect.left < ground.right)
+			{
+				_mushroom->setIsOnGround(i, true);
+			}
+			if (IntersectRect(&temp, &mushroomRect, &ground))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//상하 충돌
+				if (width > height)
+				{
+					//위에서 충돌
+					if (_mushroom->getVMushroom()[i].y < (ground.top + ground.bottom) / 2)
+					{
+						_mushroom->setIsOnGround(i, true);
+						_mushroom->setY(i, _mushroom->getVMushroom()[i].y - height);
+					}
+					//아래에서 충돌 없음
+				}
+				else //좌우 충돌
+				{
+					//왼쪽에서 충돌
+					if (_mushroom->getVMushroom()[i].x < (ground.left + ground.right) / 2)
+					{
+						_mushroom->setX(i, _mushroom->getVMushroom()[i].x - width);
+						_mushroom->setState(i, LEFT);
+					}
+					else //오른쪽 충돌
+					{
+						_mushroom->setX(i, _mushroom->getVMushroom()[i].x + width);
+						_mushroom->setState(i, RIGHT);
+					}
+				}
+			}
+		}
+		
+		for (int j = 0; j < _mManager->getObject().size(); j++)
+		{
+			RECT object = _mManager->getObject()[j];
+			if (mushroomRect.bottom == object.top && mushroomRect.right > object.left && mushroomRect.left < object.right)
+			{
+				_mushroom->setIsOnGround(i, true);
+			}
+			if (IntersectRect(&temp, &mushroomRect, &object))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//상하 충돌
+				if (width > height)
+				{
+					//위에서 충돌
+					if (_mushroom->getVMushroom()[i].y < (object.top + object.bottom) / 2)
+					{
+						_mushroom->setIsOnGround(i, true);
+						_mushroom->setY(i, _mushroom->getVMushroom()[i].y - height);
+						break;
+					}
+					//아래에서 충돌 없음
+				}
+				//좌우 충돌 없음
+			}
+		}
+
+		for (int j = 0; j < _mManager->getPipe().size(); j++)
+		{
+			RECT head = _mManager->getPipe()[j].head;
+			RECT body = _mManager->getPipe()[j].body;
+			if (mushroomRect.bottom == head.top && mushroomRect.right > head.left && mushroomRect.left < head.right)
+			{
+				_mushroom->setIsOnGround(i, true);
+			}
+			if (IntersectRect(&temp, &mushroomRect, &head))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//상하 충돌
+				if (width > height)
+				{
+					//위에서 충돌
+					if (_mushroom->getVMushroom()[i].y < (head.top + head.bottom) / 2)
+					{
+						_mushroom->setIsOnGround(i, true);
+						_mushroom->setY(i, _mushroom->getVMushroom()[i].y - height);
+						break;
+					}
+				}
+				else //좌우 충돌
+				{
+					//왼쪽에서 충돌
+					if (_mushroom->getVMushroom()[i].x < (head.left + head.right) / 2)
+					{
+						_mushroom->setX(i, _mushroom->getVMushroom()[i].x - width);
+						_mushroom->setState(i, LEFT);
+						break;
+					}
+					else //오른쪽 충돌
+					{
+						_mushroom->setX(i, _mushroom->getVMushroom()[i].x + width);
+						_mushroom->setState(i, RIGHT);
+						break;
+					}
+				}
+			}
+
+			if (IntersectRect(&temp, &mushroomRect, &body))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//상하 충돌
+				if (width > height)
+				{
+					//위에서 충돌
+					if (_mushroom->getVMushroom()[i].y < (body.top + body.bottom) / 2)
+					{
+						_mushroom->setIsOnGround(i, true);
+						_mushroom->setY(i, _mushroom->getVMushroom()[i].y - height);
+						break;
+					}
+				}
+				else //좌우 충돌
+				{
+					//왼쪽에서 충돌
+					if (_mushroom->getVMushroom()[i].y < (body.top + body.bottom) / 2)
+					{
+						_mushroom->setX(i, _mushroom->getVMushroom()[i].x - width);
+						_mushroom->setState(i, LEFT);
+						break;
+					}
+					else //오른쪽 충돌
+					{
+						_mushroom->setX(i, _mushroom->getVMushroom()[i].x + width);
+						_mushroom->setState(i, RIGHT);
+						break;
+					}
+				}
+				
+			}
+		}
+	}
 }

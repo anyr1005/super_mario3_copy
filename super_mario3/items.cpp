@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "items.h"
 
+//================== C O I N ====================
 HRESULT coin::init()
 {
 	return S_OK;
@@ -19,6 +20,12 @@ void coin::render()
 {
 	for (_viCoin = _vCoin.begin(); _viCoin != _vCoin.end(); ++_viCoin)
 	{
+		//렉트 보여줌
+		if (KEYMANAGER->isToggleKey(VK_TAB))
+		{
+			Rectangle(getMemDC(), _viCoin->rc);
+		}
+
 		//코인이 점프하고 멈춘게 아니라면 코인이미지
 		if (!_viCoin->isStop)
 		{
@@ -72,11 +79,10 @@ void coin::fire(float x, float y)
 	item.effectImage = new image;
 	item.effectImage->init("img/block/coin_effect.bmp", 144, 48, 3, 1, true, RGB(0, 0, 0));
 	item.jumpPower = 6.0f;
-	item.gravity = 0.1f;
 	item.x = item.fireX = x;
 	item.y = item.fireY = y;
 
-	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getFrameWidth(), item.itemImage->getFrameWidth());
+	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getFrameWidth(), item.itemImage->getFrameHeight());
 
 	_vCoin.push_back(item);
 }
@@ -85,18 +91,20 @@ void coin::move()
 {
 	for (_viCoin = _vCoin.begin(); _viCoin != _vCoin.end();)
 	{
-		//코인 점프
-		_viCoin->y -= _viCoin->jumpPower;
-		_viCoin->jumpPower -= _viCoin->gravity;
+		if (!_viCoin->isStop)
+		{
+			//코인 점프
+			_viCoin->y -= _viCoin->jumpPower;
+			_viCoin->jumpPower -= GRAVITY;
 
-		_viCoin->rc = RectMakeCenter(_viCoin->x, _viCoin->y, _viCoin->itemImage->getFrameWidth(), _viCoin->itemImage->getFrameWidth());
+		}
+		_viCoin->rc = RectMakeCenter(_viCoin->x, _viCoin->y, _viCoin->itemImage->getFrameWidth(), _viCoin->itemImage->getFrameHeight());
 	
 		//코인이 점프하다 어느정도 위치까지 내려오면 멈춤
-		if (_viCoin->fireY - _viCoin->y < 120 && _viCoin->jumpPower < 0)
+		if (_viCoin->fireY - _viCoin->y < 100 && _viCoin->jumpPower < 0)
 		{
-			_viCoin->y = _viCoin->fireY - 120;
+			_viCoin->y = _viCoin->fireY - 100;
 			_viCoin->jumpPower = 0;
-			_viCoin->gravity = 0;
 			_viCoin->isStop = true;
 		}
 	
@@ -113,6 +121,9 @@ void coin::move()
 	}
 }
 
+//===============================================
+
+//============== M U S H R O O M ================
 HRESULT mushroom::init()
 {
 	return S_OK;
@@ -129,6 +140,17 @@ void mushroom::update()
 
 void mushroom::render()
 {
+	for (_viMushroom = _vMushroom.begin(); _viMushroom != _vMushroom.end(); ++_viMushroom)
+	{
+		if (KEYMANAGER->isToggleKey(VK_TAB))
+		{
+			char str[128];
+			sprintf_s(str, "땅? %d 상태? %d", _viMushroom->isOnGround, _viMushroom->state);
+			TextOut(getMemDC(), _viMushroom->rc.left, _viMushroom->rc.top - 20, str, strlen(str));
+			Rectangle(getMemDC(), _viMushroom->rc);
+		}
+		_viMushroom->itemImage->render(getMemDC(), _viMushroom->rc.left, _viMushroom->rc.top);
+	}
 }
 
 void mushroom::fire(float x, float y, bool isRight)
@@ -138,9 +160,12 @@ void mushroom::fire(float x, float y, bool isRight)
 	ZeroMemory(&item, sizeof(tagItem));
 	item.itemImage = new image;
 	item.itemImage->init("img/item/mushroom.bmp", 48, 48, true, RGB(255, 0, 255));
-	item.x = x;
-	item.y = y;
-	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getFrameWidth(), item.itemImage->getFrameWidth());
+	item.x = item.fireX = x;
+	item.y = item.fireY = y;
+	item.isOnGround = false;
+	item.state = UP;
+	item.fallPower = 4.0f;
+	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getWidth(), item.itemImage->getHeight());
 
 	_vMushroom.push_back(item);
 }
@@ -149,30 +174,40 @@ void mushroom::move()
 {
 	for (_viMushroom = _vMushroom.begin(); _viMushroom != _vMushroom.end();)
 	{
-		//버섯이 블록에서 완전히 나왔으면
-		if (_viMushroom->isFired)
+
+		switch (_viMushroom->state)
 		{
-			//오른쪽으로 움직임
-			if (_viMushroom->isRight)
-			{
-				_viMushroom->x += 5;
-			}
-			else //왼쪽으로 움직임
-			{
-				_viMushroom->x -= 5;
-			}
-			if (!_viMushroom->isOnGround) //공중이라면
-			{
-				_viMushroom->y += 4.0f;
-			}
+		case UP:
+			_viMushroom->y -= 2;
+			break;
+		case LEFT:
+			_viMushroom->x -= ITEMSPEED;
+			break;
+		case RIGHT:
+			_viMushroom->x += ITEMSPEED;
+			break;
+		default:
+			break;
 		}
-		else //다 나오지 않았으면 블럭 위로 나옴
+
+		if (_viMushroom->fireY - _viMushroom->y > _viMushroom->itemImage->getHeight() && _viMushroom->state == UP)
 		{
-			_viMushroom->y += 5;
+			_viMushroom->y = _viMushroom->fireY - _viMushroom->itemImage->getHeight();
+			_viMushroom->state = RIGHT;
+		}
+		if (!_viMushroom->isOnGround && _viMushroom->state != UP) //공중이라면
+		{
+			_viMushroom->y += _viMushroom->fallPower;
+			_viMushroom->fallPower += GRAVITY;
+		}
+		else if(_viMushroom->isOnGround)
+		{
+			_viMushroom->fallPower = 4.0f;
 		}
 		
-		_viMushroom->rc = RectMakeCenter(_viMushroom->x, _viMushroom->y, _viMushroom->itemImage->getFrameWidth(), _viMushroom->itemImage->getFrameWidth());
+		_viMushroom->rc = RectMakeCenter(_viMushroom->x, _viMushroom->y, _viMushroom->itemImage->getWidth(), _viMushroom->itemImage->getHeight());
 
+		
 		//맵 밖으로 나가면 삭제
 		if (_viMushroom->y > BACKGROUNDY || _viMushroom->x <0 || _viMushroom->x>BACKGROUNDX)
 		{
@@ -182,6 +217,8 @@ void mushroom::move()
 			_viMushroom = _vMushroom.erase(_viMushroom);
 		}
 		else ++_viMushroom;
+		
+		//나온지 몇초 지나면 삭제되게도 구현필요
 	}
 }
 
@@ -192,3 +229,5 @@ void mushroom::removeMushroom(int arrNum)
 	SAFE_DELETE(_vMushroom[arrNum].itemImage);
 	_vMushroom.erase(_vMushroom.begin() + arrNum );
 }
+
+//===============================================

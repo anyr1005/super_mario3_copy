@@ -2,12 +2,14 @@
 #include "gameNode.h"
 #include <vector>
 
+#define ITEMSPEED 5
+#define GRAVITY 0.1f
+
 enum state
 {
 	UP,
 	LEFT,
-	RIGHT,
-	FALL
+	RIGHT
 };
 
 struct tagCoin
@@ -19,7 +21,6 @@ struct tagCoin
 	float fireX, fireY; //처음 좌표
 	int count; //프레임 렌더용 함수
 	float jumpPower;
-	float gravity;
 	bool isStop;
 };
 
@@ -28,9 +29,9 @@ struct tagItem
 	image* itemImage; //아이템 이미지
 	RECT rc;
 	float x, y; // 중점 좌표
-	bool isRight; //오른쪽으로 움직일지 왼쪽으로 움직일지
-	bool isFired; //발사가 완료 되었는지(블럭에서 완전히 나왔는지 확인)
+	float fireX, fireY; //처음 좌표
 	bool isOnGround; //땅 위에 있는지 확인
+	float fallPower;
 	state state;
 };
 
@@ -72,6 +73,12 @@ public:
 	void move();
 
 	void removeMushroom(int arrNum);
+
+	void setIsOnGround(int arrNum, bool b) { _vMushroom[arrNum].isOnGround = b; }
+
+	void setX(int arrNum, float x) { _vMushroom[arrNum].x = x; }
+	void setY(int arrNum, float y) { _vMushroom[arrNum].y = y; }
+	void setState(int arrNum, state s) { _vMushroom[arrNum].state = s; }
 
 	vector<tagItem> getVMushroom() { return _vMushroom; }
 	vector<tagItem>::iterator getViMushroom() { return _viMushroom; }

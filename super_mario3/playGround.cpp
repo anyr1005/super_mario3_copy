@@ -23,6 +23,7 @@ HRESULT playGround::init()
 
 	_player->setMapManagerMemeoryAddressLink(_mManager);
 	_player->setBlockManagerMemoryAddressLink(_bManager);
+	_bManager->setMapManagerMemeoryAddressLink(_mManager);
 	return S_OK;
 }
 
@@ -52,8 +53,9 @@ void playGround::render()
 	//==================================================
 
 	map->render(getMemDC(), 0, 0);
-	_bManager->render();
+	
 	_mManager->render();
+	_bManager->render();
 	_player->render();
 	
 	//==================================================

@@ -46,7 +46,7 @@ void playerJump::update(player * player)
 
 void playerJump::enter(player * player)
 {
-	_jumpPower = 9.0f;
+	_jumpPower = 8.0f;
 	player->setJumpPower(_jumpPower);
 	_gravity = 0.2f;
 	if (player->getRunSpeed() == SPEEDMAX)

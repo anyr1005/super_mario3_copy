@@ -3,6 +3,16 @@
 
 //block들의 부모 클래스
 
+enum item
+{
+	COIN,
+	MUSHROOM,
+	LEAF,
+	LIFE,
+	SWITCH,
+	PARTICLE
+};
+
 class block : public gameNode
 {
 protected:
@@ -17,6 +27,10 @@ protected:
 	bool _isChange;
 
 	bool _isCrashed;
+	
+	bool _isFire;
+
+	item _item;
 
 public:
 	virtual HRESULT init();
@@ -33,6 +47,14 @@ public:
 
 	void setIsChange(bool b) { _isChange = b; }
 
+	void setIsFire(bool b) { _isFire = b; }
+
+	void setItem(item i) { _item = i; }
+
 	bool getIsCrashed() { return _isCrashed; }
+
+	bool getIsFire() { return _isFire; }
+
+	item getItem() { return _item; }
 };
 

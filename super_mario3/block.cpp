@@ -13,7 +13,7 @@ HRESULT block::init(const char * imageName, POINT position)
 
 	_isChange = false;
 	_isCrashed = false;
-
+	_isFire = false;
 	_imageName = IMAGEMANAGER->findImage(imageName);
 
 	_rc = RectMakeCenter(position.x, position.y,

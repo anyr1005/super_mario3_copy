@@ -41,8 +41,10 @@ void player::update()
 	collisonObject();
 	collisonPipe();
 	collisonQBlock();
+	collisonGBlock();
 	handleInput();
 	_state->update(this);
+	
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 }
 
@@ -53,10 +55,8 @@ void player::render()
 		Rectangle(getMemDC(), _rc);
 
 		char str[128];
-		sprintf_s(str, "%d", _img->getFrameWidth());
-		TextOut(getMemDC(), _x, _y, str, strlen(str));
-		sprintf_s(str, "%d", _isOnGround);
-		TextOut(getMemDC(), _x, _y+20, str, strlen(str));
+		sprintf_s(str, "땅에 있나? %d x좌표 : %f y좌표 : %f", _isOnGround, _x, _y);
+		TextOut(getMemDC(), _rc.left - 100, _rc.top - 20, str, strlen(str));
 	}
 	_img->frameRender(getMemDC(), _rc.left, _rc.top);
 }
@@ -91,7 +91,7 @@ void player::collisonGround()
 			if (width > height)
 			{
 				//위에서 아래로 충돌
-				if ((_rc.top + _rc.bottom) / 2 < (ground.top + ground.bottom) / 2)
+				if (_y < (ground.top + ground.bottom) / 2)
 				{
 					_y -= height;
 					_isOnGround = true;
@@ -102,7 +102,7 @@ void player::collisonGround()
 			{
 				_isLRCollison = true;
 				//왼쪽에서 충돌
-				if ((_rc.left + _rc.right) / 2 < (ground.left + ground.right) / 2)
+				if (_x < (ground.left + ground.right) / 2)
 				{
 					_x -= width;
 				}
@@ -234,7 +234,7 @@ void player::collisonQBlock()
 			if (width > height)
 			{
 				//위에서 아래로 충돌
-				if ((_rc.top + _rc.bottom) / 2 < (qBlock.top + qBlock.bottom) / 2)
+				if (_y < (qBlock.top + qBlock.bottom) / 2)
 				{
 					_y -= height;
 					_isOnGround = true;
@@ -243,11 +243,15 @@ void player::collisonQBlock()
 				//아래에서 위로 충돌
 				else
 				{
+					RECT rc = _bManager->getQBlock()[i]->getRect();
 					if (!_bManager->getQBlock()[i]->getIsCrashed())
 					{
 						_bManager->getQBlock()[i]->setIsChange(true);
-						RECT rc = _bManager->getQBlock()[i]->getRect();
-						_bManager->getCoin()->fire((rc.right + rc.left)/2, (rc.bottom + rc.top)/2);
+						//코인
+						if (_bManager->getQBlock()[i]->getItem() == COIN)
+						{
+							_bManager->getCoin()->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2);
+						}
 					}
 					_y += height;
 					_state = new playerFall;
@@ -260,7 +264,7 @@ void player::collisonQBlock()
 			{
 				_isLRCollison = true;
 				//왼쪽에서 충돌
-				if ((_rc.left + _rc.right) / 2 < (qBlock.left + qBlock.right) / 2)
+				if (_x < (qBlock.left + qBlock.right) / 2)
 				{
 					_x -= width;
 					break;
@@ -273,6 +277,68 @@ void player::collisonQBlock()
 				}
 			}
 			
+		}
+	}
+}
+
+//수정필요
+void player::collisonGBlock()
+{
+	for (int i = 0; i < _bManager->getGBlock().size(); i++)
+	{
+		RECT temp;
+		RECT gBlock = _bManager->getGBlock()[i]->getRect();
+		if (_rc.bottom == gBlock.top && _rc.right > gBlock.left && _rc.left < gBlock.right)
+		{
+			_isOnGround = true;
+			break;
+		}
+		if (IntersectRect(&temp, &gBlock, &_rc))
+		{
+			float width = temp.right - temp.left;
+			float height = temp.bottom - temp.top;
+			//상하 충돌
+			if (width > height)
+			{
+				//위에서 아래로 충돌
+				if ((_rc.top + _rc.bottom) / 2 < (gBlock.top + gBlock.bottom) / 2)
+				{
+					_y -= height;
+					_isOnGround = true;
+				}
+				//아래에서 위로 충돌
+				else
+				{
+					/*
+					RECT rc = _bManager->getGBlock()[i]->getRect();
+					if (!_bManager->getGBlock()[i]->getIsCrashed())
+					{
+						_bManager->getGBlock()[i]->setIsChange(true);
+						//코인
+						_bManager->getCoin()->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2);
+					}
+					*/
+					_y+= height;
+					_state = new playerFall;
+					_state->enter(this);
+				}
+			}
+			//좌우 충돌
+			else
+			{
+				_isLRCollison = true;
+				//왼쪽에서 충돌
+				if ((_rc.left + _rc.right) / 2 < (gBlock.left + gBlock.right) / 2)
+				{
+					_x -= width;
+				}
+				//오른쪽에서 충돌
+				else
+				{
+					_x += width;
+				}
+			}
+
 		}
 	}
 }

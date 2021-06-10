@@ -34,6 +34,12 @@ void playerSkid::update(player * player)
 		player->setX(player->getX() + player->getRunSpeed());
 		player->getImage()->setFrameY(0);
 	}
+	if (!player->getIsOnGround())
+	{
+		player->setY(player->getY() - _jumpPower);
+		_jumpPower -= _gravity;
+		player->setJumpPower(_jumpPower);
+	}
 }
 
 void playerSkid::enter(player * player)

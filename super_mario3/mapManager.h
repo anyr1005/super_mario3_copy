@@ -13,8 +13,6 @@ struct tagPipe
 	RECT head;
 };
 
-class player;
-
 class mapManager : public gameNode
 {
 private:
@@ -29,9 +27,6 @@ private:
 	vector<RECT> _ground;
 
 	vector<tagPipe> _pipe;
-
-	//collison처리를 위해 player 가져옴
-	player* _player;
 	
 public:
 	virtual HRESULT init();

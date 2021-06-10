@@ -4,7 +4,11 @@
 #include "coin_block.h"
 #include "gameNode.h"
 #include "items.h"
+#include "mapManager.h"
 #include <vector>
+
+class mapManager;
+
 class blockManager : public gameNode
 {
 private:
@@ -27,22 +31,32 @@ private:
 	coin* _coin;
 	mushroom* _mushroom;
 
+	//item과 땅 충돌을 위해 mapManager 참조
+	mapManager* _mManager;
+
 public :
 	virtual HRESULT init();
 	virtual void release();
 	virtual void update();
 	virtual void render();
 
-	void setQuestionBlock();
-	void setGoldenBlock();
-	void setCoinBlock();
-
 	void removeQuestionBlock(int arrNum);
 	void removeGoldenBlock(int arrNum);
 	void removeCoinBlock(int arrNum);
 
-	vector<block*> getQBlock() { return _vQBlock; }
+	void mushroomCollision();
 
+	void setQuestionBlock();
+	void setGoldenBlock();
+	void setCoinBlock();
+
+	void setMapManagerMemeoryAddressLink(mapManager* mManager) { _mManager = mManager; }
+
+	vector<block*> getQBlock() { return _vQBlock; }
+	vector<block*> getGBlock() { return _vGBlock; }
 	coin* getCoin() { return _coin; }
+	mushroom* getMushroom() { return _mushroom; }
+
+
 };
 
