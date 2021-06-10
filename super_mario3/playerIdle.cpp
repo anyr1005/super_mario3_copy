@@ -45,7 +45,20 @@ void playerIdle::update(player* player)
 
 void playerIdle::enter(player* player)
 {
-	player->setImage("mario_idle");
+	switch (player->getPlayerShape())
+	{
+	case BASIC:
+		player->setImage("mario_idle");
+	break;
+	case SUPER:
+		player->setImage("super_walk");
+	break;
+	case TAIL:
+		player->setImage("tail_walk");
+	break;
+	default:
+	break;
+	}
 	_count = 0;
 	_jumpPower = -4.0f;
 }

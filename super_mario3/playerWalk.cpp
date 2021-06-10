@@ -63,11 +63,37 @@ void playerWalk::update(player * player)
 
 	if (player->getRunSpeed() >= SPEEDMAX)
 	{
-		player->setImage("mario_run");
+		switch (player->getPlayerShape())
+		{
+		case BASIC:
+			player->setImage("mario_run");
+			break;
+		case SUPER:
+			player->setImage("super_run");
+			break;
+		case TAIL:
+			player->setImage("tail_run");
+			break;
+		default:
+			break;
+		}
 	}
 	else
 	{
-		player->setImage("mario_walk");
+		switch (player->getPlayerShape())
+		{
+		case BASIC:
+			player->setImage("mario_walk");
+			break;
+		case SUPER:
+			player->setImage("super_walk");
+			break;
+		case TAIL:
+			player->setImage("tail_walk");
+			break;
+		default:
+			break;
+		}
 	}
 	if (!player->getIsOnGround())
 	{
@@ -95,7 +121,20 @@ void playerWalk::update(player * player)
 
 void playerWalk::enter(player * player)
 {
-	player->setImage("mario_walk");
+	switch (player->getPlayerShape())
+	{
+	case BASIC:
+		player->setImage("mario_walk");
+		break;
+	case SUPER:
+		player->setImage("super_walk");
+		break;
+	case TAIL:
+		player->setImage("tail_walk");
+		break;
+	default:
+		break;
+	}
 	_count = _index = 0;
 	_jumpPower = -4.0f;
 }

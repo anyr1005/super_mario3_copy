@@ -4,6 +4,10 @@
 
 HRESULT enemyManager::init()
 {
+	//±À¹Ù ÀÌ¹ÌÁö
+	IMAGEMANAGER->addFrameImage("goomba_walk", "img/goomba/goomba_walk.bmp", 96, 48, 2, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("goomba_wing", "img/goomba/goomba_wing.bmp", 240, 72, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("goomba_crush", "img/goomba/goomba_crush.bmp", 48, 27, true, RGB(255, 0, 255));
 	setGoomba();
 	return S_OK;
 }
@@ -32,7 +36,7 @@ void enemyManager::setGoomba()
 {
 	goomba* g;
 	g = new goomba;
-	g->init(PointMake(700, 1226));
+	g->init(LEFT_WALK , PointMake(700, 1226));
 	_vGoomba.push_back(g);
 }
 

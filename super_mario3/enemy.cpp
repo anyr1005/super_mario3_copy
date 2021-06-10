@@ -6,11 +6,11 @@ HRESULT enemy::init()
 	return S_OK;
 }
 
-HRESULT enemy::init(POINT position)
+HRESULT enemy::init(EnemyState es, POINT position)
 {
 	_currentFrameX = _currentFrameY = 0;
 	_count = 0;
-
+	_state = es;
 	_x = _spawnX = position.x;
 	_y = _spawnY = position.y;
 

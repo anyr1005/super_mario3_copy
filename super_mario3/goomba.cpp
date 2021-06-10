@@ -1,13 +1,18 @@
 #include "stdafx.h"
 #include "goomba.h"
 
-HRESULT goomba::init(POINT position)
+HRESULT goomba::init(EnemyState es, POINT position)
 {
-	enemy::init(position);
+	enemy::init(es,position);
 
-	_image = new image;
-	_image->init("img/goomba/goomba_walk.bmp", 96, 48, 2, 1, true, RGB(255, 0, 255));
-	_state = LEFT_WALK;
+	if (_state == LEFT_WALK || _state == RIGHT_WALK)
+	{
+		_image = IMAGEMANAGER->findImage("goomba_walk");
+	}
+	else if (_state == LEFT_JUMP || _state == RIGHT_JUMP)
+	{
+		_image = IMAGEMANAGER->findImage("goomba_wing");
+	}
 
 	_rc = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
 

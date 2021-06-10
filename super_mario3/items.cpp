@@ -86,7 +86,7 @@ void coin::fire(float x, float y)
 	item.itemImage->init("img/block/coin.bmp", 168, 48, 4, 1, true, RGB(255, 0, 255));
 	item.effectImage = new image;
 	item.effectImage->init("img/block/coin_effect.bmp", 144, 48, 3, 1, true, RGB(0, 0, 0));
-	item.jumpPower = 6.0f;
+	item.jumpPower = 8.0f;
 	item.x = item.fireX = x;
 	item.y = item.fireY = y;
 

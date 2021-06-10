@@ -36,7 +36,7 @@ protected:
 
 public:
 	virtual HRESULT init();
-	virtual HRESULT init(POINT position);
+	virtual HRESULT init(EnemyState es ,POINT position);
 	virtual void release();
 	virtual void update();
 	virtual void render();

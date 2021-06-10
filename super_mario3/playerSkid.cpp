@@ -45,5 +45,18 @@ void playerSkid::update(player * player)
 void playerSkid::enter(player * player)
 {
 	_jumpPower = -4.0f;
-	player->setImage("mario_skid");
+	switch (player->getPlayerShape())
+	{
+	case BASIC:
+		player->setImage("mario_skid");
+		break;
+	case SUPER:
+		player->setImage("super_skid");
+		break;
+	case TAIL:
+		player->setImage("tail_skid");
+		break;
+	default:
+		break;
+	}
 }

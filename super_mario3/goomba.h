@@ -4,7 +4,7 @@
 class goomba : public enemy
 {
 public:
-	virtual HRESULT init(POINT position);
+	virtual HRESULT init(EnemyState es, POINT position);
 	virtual void move();
 	virtual void draw();
 };

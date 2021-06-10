@@ -50,10 +50,36 @@ void playerJump::enter(player * player)
 	player->setJumpPower(_jumpPower);
 	if (player->getRunSpeed() == SPEEDMAX)
 	{
-		player->setImage("mario_run_jump");
+		switch (player->getPlayerShape())
+		{
+		case BASIC:
+			player->setImage("mario_run_jump");
+			break;
+		case SUPER:
+			player->setImage("super_run_jump");
+			break;
+		case TAIL:
+			player->setImage("tail_run_jump");
+			break;
+		default:
+			break;
+		}
 	}
 	else
 	{
-		player->setImage("mario_jump");
+		switch (player->getPlayerShape())
+		{
+		case BASIC:
+			player->setImage("mario_jump");
+			break;
+		case SUPER:
+			player->setImage("super_jump");
+			break;
+		case TAIL:
+			player->setImage("tail_jump");
+			break;
+		default:
+			break;
+		}
 	}
 }

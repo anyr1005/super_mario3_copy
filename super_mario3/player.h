@@ -53,6 +53,8 @@ public:
 	void collisonQBlock();
 	void collisonGBlock();
 
+	void collisonMushroom();
+
 	//============================================
 	//			## ¼³Á¤ÀÚ ##
 
