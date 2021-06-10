@@ -141,6 +141,9 @@
     <ClInclude Include="koopa_troopa.h">
       <Filter>playGround\enemy</Filter>
     </ClInclude>
+    <ClInclude Include="playerChange.h">
+      <Filter>playGround\playerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -226,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="piranha_plant.cpp">
       <Filter>playGround\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="playerChange.cpp">
+      <Filter>playGround\playerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

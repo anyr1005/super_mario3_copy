@@ -16,6 +16,8 @@ HRESULT player::init()
 	_state = new playerIdle;
 	_state->enter(this);
 
+	_shape = BASIC;
+
 	_x = 100;
 	_y = BACKGROUNDY - 72;
 

@@ -8,6 +8,13 @@ class playerState;
 class mapManager;
 class blockManager;
 
+enum PlayerShape
+{
+	BASIC,
+	SUPER,
+	TAIL
+};
+
 class player : public gameNode
 {
 private:
@@ -20,6 +27,8 @@ private:
 	bool _isRight; //오른쪽 왼쪽 방향 구분
 
 	playerState* _state; //상태
+
+	PlayerShape _shape;
 
 	mapManager* _mManager;
 
@@ -65,6 +74,8 @@ public:
 
 	void setJumpPower(float jumpPower) { _jumpPower = jumpPower; }
 
+	void setPlayerShape(PlayerShape p) { _shape = p; }
+
 	//============================================
 	//			## 접근자 ##
 
@@ -82,6 +93,8 @@ public:
 	bool getIsLRCollison() { return _isLRCollison; }
 
 	bool getIsOnGround() { return _isOnGround; }
+
+	PlayerShape getPlayerShape() { return _shape; }
 	//============================================
 };
 
