@@ -37,12 +37,13 @@ void playerSkid::update(player * player)
 	if (!player->getIsOnGround())
 	{
 		player->setY(player->getY() - _jumpPower);
-		_jumpPower -= _gravity;
+		_jumpPower -= GRAVITY;
 		player->setJumpPower(_jumpPower);
 	}
 }
 
 void playerSkid::enter(player * player)
 {
+	_jumpPower = -4.0f;
 	player->setImage("mario_skid");
 }

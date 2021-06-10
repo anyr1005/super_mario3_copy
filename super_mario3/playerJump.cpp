@@ -14,7 +14,7 @@ playerState * playerJump::handleInput(player * player)
 void playerJump::update(player * player)
 {
 	player->setY(player->getY() - _jumpPower);
-	_jumpPower -= _gravity;
+	_jumpPower -= GRAVITY;
 	player->setJumpPower(_jumpPower);
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
@@ -48,7 +48,6 @@ void playerJump::enter(player * player)
 {
 	_jumpPower = 8.0f;
 	player->setJumpPower(_jumpPower);
-	_gravity = 0.2f;
 	if (player->getRunSpeed() == SPEEDMAX)
 	{
 		player->setImage("mario_run_jump");

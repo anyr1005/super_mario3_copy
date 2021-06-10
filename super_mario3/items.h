@@ -2,10 +2,10 @@
 #include "gameNode.h"
 #include <vector>
 
-#define ITEMSPEED 5
-#define GRAVITY 0.1f
+#define ITEMSPEED 3
+//#define GRAVITY 0.1f
 
-enum state
+enum ItemState
 {
 	UP,
 	LEFT,
@@ -32,7 +32,7 @@ struct tagItem
 	float fireX, fireY; //처음 좌표
 	bool isOnGround; //땅 위에 있는지 확인
 	float fallPower;
-	state state;
+	ItemState state;
 };
 
 class coin : public gameNode
@@ -78,7 +78,7 @@ public:
 
 	void setX(int arrNum, float x) { _vMushroom[arrNum].x = x; }
 	void setY(int arrNum, float y) { _vMushroom[arrNum].y = y; }
-	void setState(int arrNum, state s) { _vMushroom[arrNum].state = s; }
+	void setState(int arrNum, ItemState s) { _vMushroom[arrNum].state = s; }
 
 	vector<tagItem> getVMushroom() { return _vMushroom; }
 	vector<tagItem>::iterator getViMushroom() { return _viMushroom; }

@@ -9,6 +9,14 @@ HRESULT coin::init()
 
 void coin::release()
 {
+	for (_viCoin = _vCoin.begin(); _viCoin != _vCoin.end(); ++_viCoin)
+	{
+		SAFE_RELEASE(_viCoin->itemImage);
+		SAFE_DELETE(_viCoin->itemImage);
+		SAFE_RELEASE(_viCoin->effectImage);
+		SAFE_DELETE(_viCoin->effectImage);
+	}
+	_vCoin.clear();
 }
 
 void coin::update()
@@ -131,6 +139,12 @@ HRESULT mushroom::init()
 
 void mushroom::release()
 {
+	for (_viMushroom = _vMushroom.begin(); _viMushroom != _vMushroom.end(); ++_viMushroom)
+	{
+		SAFE_RELEASE(_viMushroom->itemImage);
+		SAFE_DELETE(_viMushroom->itemImage);
+	}
+	_vMushroom.clear();
 }
 
 void mushroom::update()

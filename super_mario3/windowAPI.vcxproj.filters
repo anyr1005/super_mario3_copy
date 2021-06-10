@@ -132,8 +132,14 @@
     <ClInclude Include="goomba.h">
       <Filter>playGround\enemy</Filter>
     </ClInclude>
+    <ClInclude Include="enemyManager.h">
+      <Filter>playGround\enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="piranha_plant.h">
+      <Filter>playGround\enemy</Filter>
+    </ClInclude>
     <ClInclude Include="koopa_troopa.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>playGround\enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -212,8 +218,14 @@
     <ClCompile Include="goomba.cpp">
       <Filter>playGround\enemy</Filter>
     </ClCompile>
+    <ClCompile Include="enemyManager.cpp">
+      <Filter>playGround\enemy</Filter>
+    </ClCompile>
     <ClCompile Include="koopa_troopa.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>playGround\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="piranha_plant.cpp">
+      <Filter>playGround\enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

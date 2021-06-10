@@ -38,7 +38,7 @@ void playerIdle::update(player* player)
 	if (!player->getIsOnGround())
 	{
 		player->setY(player->getY() - _jumpPower);
-		_jumpPower -= _gravity;
+		_jumpPower -= GRAVITY;
 		player->setJumpPower(_jumpPower);
 	}
 }
@@ -48,5 +48,4 @@ void playerIdle::enter(player* player)
 	player->setImage("mario_idle");
 	_count = 0;
 	_jumpPower = -4.0f;
-	_gravity = 0.2f;
 }

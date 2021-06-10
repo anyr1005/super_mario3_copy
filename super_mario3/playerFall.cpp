@@ -14,7 +14,7 @@ playerState * playerFall::handleInput(player * player)
 void playerFall::update(player * player)
 {
 	player->setY(player->getY() - _jumpPower);
-	_jumpPower -= _gravity;
+	_jumpPower -= GRAVITY;
 	player->setJumpPower(_jumpPower);
 
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
@@ -34,5 +34,4 @@ void playerFall::enter(player * player)
 {
 	_jumpPower = -4.0f;
 	player->setJumpPower(_jumpPower);
-	_gravity = 0.2f;
 }

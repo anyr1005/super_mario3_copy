@@ -2,6 +2,7 @@
 #include "gameNode.h"
 #include "mapManager.h"
 #include "blockManager.h"
+#include "enemyManager.h"
 #include "player.h"
 
 class playGround : public gameNode
@@ -9,11 +10,12 @@ class playGround : public gameNode
 private:
 	image* map;
 	player* _player;
+
 	mapManager* _mManager;
+
 	blockManager* _bManager;
 
-	//¶¥
-	RECT _ground[6];
+	enemyManager* _eManager;
 
 public:
 	virtual HRESULT init();

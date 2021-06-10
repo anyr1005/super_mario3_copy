@@ -153,11 +153,13 @@
     <ClInclude Include="coin_block.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="enemy.h" />
+    <ClInclude Include="enemyManager.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="golden_block.h" />
     <ClInclude Include="goomba.h" />
     <ClInclude Include="items.h" />
     <ClInclude Include="koopa_troopa.h" />
+    <ClInclude Include="piranha_plant.h" />
     <ClInclude Include="playerFall.h" />
     <ClInclude Include="playerIdle.h" />
     <ClInclude Include="image.h" />
@@ -183,11 +185,13 @@
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="coin_block.cpp" />
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="enemyManager.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="golden_block.cpp" />
     <ClCompile Include="goomba.cpp" />
     <ClCompile Include="items.cpp" />
     <ClCompile Include="koopa_troopa.cpp" />
+    <ClCompile Include="piranha_plant.cpp" />
     <ClCompile Include="playerFall.cpp" />
     <ClCompile Include="playerIdle.cpp" />
     <ClCompile Include="image.cpp" />

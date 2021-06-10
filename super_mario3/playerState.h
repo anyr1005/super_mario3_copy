@@ -11,7 +11,7 @@ class playerState
 {
 protected:
 	int _count, _index;
-	float _jumpPower, _gravity;
+	float _jumpPower;
 public:
 	virtual playerState* handleInput(player * player) { return nullptr; }
 	virtual void update(player * player) {}

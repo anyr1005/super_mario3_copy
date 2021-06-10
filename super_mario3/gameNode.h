@@ -1,6 +1,8 @@
 #pragma once
 #include "image.h"
 
+#define GRAVITY 0.2f
+
 static image* _backBuffer = IMAGEMANAGER->addImage("backBuffer", BACKGROUNDX, BACKGROUNDY);
 
 class gameNode
