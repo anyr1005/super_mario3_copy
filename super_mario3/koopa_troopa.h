@@ -2,7 +2,10 @@
 #include "enemy.h"
 class koopa_troopa : public enemy
 {
-	virtual HRESULT init(const char* imageName, POINT position);
+private : 
+	bool _isShell;
+public:
+	virtual HRESULT init(EnemyState es, POINT position);
 	virtual void move();
 	virtual void draw();
 };
