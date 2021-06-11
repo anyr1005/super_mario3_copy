@@ -2,7 +2,8 @@
 #include "player.h"
 #include "playerIdle.h"
 #include "playerFall.h"
-#include "playerChange.h"
+#include "playerGrow.h"
+#include "playerDie.h"
 
 HRESULT player::init()
 {
@@ -32,6 +33,9 @@ HRESULT player::init()
 	IMAGEMANAGER->addFrameImage("mario_grow", "img/mario/mario_grow_frame.bmp", 546, 162, 13, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("mario_change", "img/mario/change_effect.bmp", 288, 48, 6, 1, true, RGB(0, 0, 0));
 
+	//Á×À½
+	IMAGEMANAGER->addFrameImage("mario_die", "img/mario/mario_die.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
+
 	_isRight = true;
 
 	_state = new playerIdle;
@@ -60,16 +64,27 @@ void player::update()
 {
 	_isOnGround = false;
 	_isLRCollison = false;
-	collisonGround();
-	collisonObject();
-	collisonPipe();
-	collisonQBlock();
-	collisonGBlock();
-	collisonMushroom();
+
+	if (_state->getStateName() != PLAYER_DIE)
+	{
+		collisonGround();
+		collisonObject();
+		collisonPipe();
+		collisonQBlock();
+		collisonGBlock();
+		collisonMushroom();
+	}
+	
 	handleInput();
 	_state->update(this);
 	
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
+
+	if (KEYMANAGER->isOnceKeyDown('A'))
+	{
+		_state = new playerDie;
+		_state->enter(this);
+	}
 }
 
 void player::render()
@@ -376,7 +391,7 @@ void player::collisonMushroom()
 		RECT mushroom = _bManager->getMushroom()->getVMushroom()[i].rc;
 		if (IntersectRect(&temp, &_rc, &mushroom))
 		{
-			_state = new playerChange;
+			_state = new playerGrow;
 			_state->enter(this);
 			_bManager->getMushroom()->removeMushroom(i);
 			break;

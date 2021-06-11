@@ -52,6 +52,9 @@
     <Filter Include="2DGameFramework\Utils">
       <UniqueIdentifier>{2d7b70f0-b750-4a54-9a34-e5808020c80a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\collison">
+      <UniqueIdentifier>{2f0f4ba4-599f-42d6-8285-c1c76bc9a264}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -147,14 +150,20 @@
     <ClInclude Include="koopa_troopa.h">
       <Filter>playGround\enemy</Filter>
     </ClInclude>
-    <ClInclude Include="playerChange.h">
-      <Filter>playGround\playerState</Filter>
-    </ClInclude>
     <ClInclude Include="bullet.h">
       <Filter>playGround\bullet</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>2DGameFramework\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="collisonManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="playerDie.h">
+      <Filter>playGround\playerState</Filter>
+    </ClInclude>
+    <ClInclude Include="playerGrow.h">
+      <Filter>playGround\playerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -242,14 +251,20 @@
     <ClCompile Include="piranha_plant.cpp">
       <Filter>playGround\enemy</Filter>
     </ClCompile>
-    <ClCompile Include="playerChange.cpp">
-      <Filter>playGround\playerState</Filter>
-    </ClCompile>
     <ClCompile Include="bullet.cpp">
       <Filter>playGround\bullet</Filter>
     </ClCompile>
     <ClCompile Include="utils.cpp">
       <Filter>2DGameFramework\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="collisonManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="playerDie.cpp">
+      <Filter>playGround\playerState</Filter>
+    </ClCompile>
+    <ClCompile Include="playerGrow.cpp">
+      <Filter>playGround\playerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

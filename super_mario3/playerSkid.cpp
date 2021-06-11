@@ -59,4 +59,5 @@ void playerSkid::enter(player * player)
 	default:
 		break;
 	}
+	_stateName = PLAYER_SKID;
 }

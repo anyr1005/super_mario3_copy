@@ -9,8 +9,6 @@ private:
 
 	int _deadCount;
 
-	bool _isVisible;
-
 	EnemyState _firstState; //초기 상태
 
 public:

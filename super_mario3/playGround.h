@@ -17,6 +17,7 @@ private:
 
 	enemyManager* _eManager;
 
+	int _resetCount;
 public:
 	virtual HRESULT init();
 	virtual void release();

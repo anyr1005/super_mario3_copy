@@ -34,9 +34,9 @@ private:
 
 	blockManager* _bManager;
 
-	bool _isLRCollison;
+	bool _isLRCollison; //오른쪽이나 왼쪽으로 부딪혔는지
 
-	bool _isOnGround;
+	bool _isOnGround; //땅에 있는지
 
 public:
 	virtual HRESULT init();
@@ -99,6 +99,7 @@ public:
 	PlayerShape getPlayerShape() { return _shape; }
 
 	playerState* getPlayerState() { return _state; }
+
 	void setPlayerState(playerState* state) { _state = state; }
 	//============================================
 };

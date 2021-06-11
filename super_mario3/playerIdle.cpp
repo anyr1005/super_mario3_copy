@@ -61,4 +61,5 @@ void playerIdle::enter(player* player)
 	}
 	_count = 0;
 	_jumpPower = -4.0f;
+	_stateName = PLAYER_IDLE;
 }

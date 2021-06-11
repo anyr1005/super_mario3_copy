@@ -9,12 +9,12 @@ HRESULT koopa_troopa::init(EnemyState es, POINT position)
 
 	switch (_state)
 	{
-	case LEFT_WALK:
-	case RIGHT_WALK:
+	case ENEMY_LEFT_WALK:
+	case ENEMY_RIGHT_WALK:
 		_image = IMAGEMANAGER->findImage("green_walk");
 		break;
-	case LEFT_JUMP:
-	case RIGHT_JUMP:
+	case ENEMY_LEFT_JUMP:
+	case ENEMY_RIGHT_JUMP:
 		_image = IMAGEMANAGER->findImage("green_wing");
 		break;
 	}
@@ -31,12 +31,12 @@ void koopa_troopa::move()
 		//이미지 설정
 		switch (_state)
 		{
-		case LEFT_WALK:
-		case RIGHT_WALK:
+		case ENEMY_LEFT_WALK:
+		case ENEMY_RIGHT_WALK:
 			_image = IMAGEMANAGER->findImage("green_walk");
 			break;
-		case LEFT_JUMP:
-		case RIGHT_JUMP:
+		case ENEMY_LEFT_JUMP:
+		case ENEMY_RIGHT_JUMP:
 			_image = IMAGEMANAGER->findImage("green_wing");
 			break;
 		}
@@ -50,25 +50,25 @@ void koopa_troopa::move()
 	//움직임 설정
 	switch (_state)
 	{
-	case LEFT_WALK:
+	case ENEMY_LEFT_WALK:
 		if (_isShell)
 			_x -= 7;
 		else
 			_x -= ENEMYSPEED;
 		
 		break;
-	case RIGHT_WALK:
+	case ENEMY_RIGHT_WALK:
 		if (_isShell)
 			_x += 7;
 		else
 			_x += ENEMYSPEED;
 		break;
-	case LEFT_JUMP:
+	case ENEMY_LEFT_JUMP:
 		_y -= _jumpPower;
 		_jumpPower -= GRAVITY;
 		_x -= ENEMYSPEED;
 		break;
-	case RIGHT_JUMP:
+	case ENEMY_RIGHT_JUMP:
 		_y -= _jumpPower;
 		_jumpPower -= GRAVITY;
 		_x += ENEMYSPEED;
@@ -84,13 +84,13 @@ void koopa_troopa::move()
 	if (_rc.left < 0)
 	{
 		_x = _image->getFrameWidth() / 2;
-		if (_state == LEFT_JUMP)
+		if (_state == ENEMY_LEFT_JUMP)
 		{
-			_state = RIGHT_JUMP;
+			_state = ENEMY_RIGHT_JUMP;
 		}
 		else
 		{
-			_state = RIGHT_WALK;
+			_state = ENEMY_RIGHT_WALK;
 		}
 
 	}
@@ -98,13 +98,13 @@ void koopa_troopa::move()
 	if (_x >= _spawnX)
 	{
 		_x = _spawnX;
-		if (_state == RIGHT_JUMP)
+		if (_state == ENEMY_RIGHT_JUMP)
 		{
-			_state = LEFT_JUMP;
+			_state = ENEMY_LEFT_JUMP;
 		}
 		else
 		{
-			_state = LEFT_WALK;
+			_state = ENEMY_LEFT_WALK;
 		}
 	}
 
@@ -119,13 +119,13 @@ void koopa_troopa::move()
 	//프레임 및 충돌 렉트 설정
 	switch (_state)
 	{
-	case LEFT_WALK:
-	case LEFT_JUMP:
+	case ENEMY_LEFT_WALK:
+	case ENEMY_LEFT_JUMP:
 		_collisonRange = RectMakeCenter(_rc.right - 13.5f, _rc.bottom - 35, 27, 35);
 		_currentFrameY = 0;
 		break;
-	case RIGHT_WALK:
-	case RIGHT_JUMP:
+	case ENEMY_RIGHT_WALK:
+	case ENEMY_RIGHT_JUMP:
 		_collisonRange = RectMakeCenter(_rc.left + 13.5f, _rc.bottom - 35, 27, 35);
 		if (_isShell)
 		{
@@ -136,13 +136,13 @@ void koopa_troopa::move()
 			_currentFrameY = 1;
 		}
 		break;
-	case IDLE:
+	case ENEMY_IDLE:
 		_collisonRange = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
 		_currentFrameY = 0;
 		break;
 	}
 
-	if (_isShell && _state==IDLE) 
+	if (_isShell && _state== ENEMY_IDLE)
 	{
 		_currentFrameX = 0;
 	}

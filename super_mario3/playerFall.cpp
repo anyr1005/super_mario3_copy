@@ -34,4 +34,5 @@ void playerFall::enter(player * player)
 {
 	_jumpPower = -4.0f;
 	player->setJumpPower(_jumpPower);
+	_stateName = PLAYER_FALL;
 }

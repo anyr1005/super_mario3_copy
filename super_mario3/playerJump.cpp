@@ -82,4 +82,5 @@ void playerJump::enter(player * player)
 			break;
 		}
 	}
+	_stateName = PLAYER_JUMP;
 }

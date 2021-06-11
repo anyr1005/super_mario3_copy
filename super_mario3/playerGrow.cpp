@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "playerChange.h"
+#include "playerGrow.h"
 #include "playerIdle.h"
 
-playerState * playerChange::handleInput(player * player)
+playerState * playerGrow::handleInput(player * player)
 {
 	if (_index >= player->getImage()->getMaxFrameX())
 	{
@@ -24,7 +24,7 @@ playerState * playerChange::handleInput(player * player)
 	return nullptr;
 }
 
-void playerChange::update(player * player)
+void playerGrow::update(player * player)
 {
 	_count++;
 	if (_count % 5 == 0)
@@ -50,7 +50,7 @@ void playerChange::update(player * player)
 	}
 }
 
-void playerChange::enter(player * player)
+void playerGrow::enter(player * player)
 {
 	switch (player->getPlayerShape())
 	{
@@ -64,4 +64,5 @@ void playerChange::enter(player * player)
 		break;
 	}
 	_count = _index = 0;
+	_stateName = PLAYER_GROW;
 }

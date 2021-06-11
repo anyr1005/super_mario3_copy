@@ -6,12 +6,12 @@
 //enemy는 jump인지 walk인지에 따라 이미지만 다르게 주면 됨
 enum EnemyState
 {
-	LEFT_WALK, //UP WALK로도 쓰임(뻐끔 플라워)
-	RIGHT_WALK, //DOWN WALK로도 쓰임(뻐끔 플라워)
-	LEFT_JUMP,
-	RIGHT_JUMP,
-	IDLE,
-	DIE
+	ENEMY_LEFT_WALK, //UP WALK로도 쓰임(뻐끔 플라워)
+	ENEMY_RIGHT_WALK, //DOWN WALK로도 쓰임(뻐끔 플라워)
+	ENEMY_LEFT_JUMP,
+	ENEMY_RIGHT_JUMP,
+	ENEMY_IDLE,
+	ENEMY_DIE
 };
 
 class enemy : public gameNode

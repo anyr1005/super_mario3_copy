@@ -13,6 +13,7 @@ HRESULT enemy::init(EnemyState es, POINT position)
 	_state = es;
 	_x = _spawnX = position.x;
 	_y = _spawnY = position.y;
+
 	_isVisible = true;
 
 	return S_OK;

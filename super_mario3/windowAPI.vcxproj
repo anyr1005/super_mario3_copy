@@ -152,6 +152,7 @@
     <ClInclude Include="bullet.h" />
     <ClInclude Include="cameraManager.h" />
     <ClInclude Include="coin_block.h" />
+    <ClInclude Include="collisonManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyManager.h" />
@@ -161,7 +162,8 @@
     <ClInclude Include="items.h" />
     <ClInclude Include="koopa_troopa.h" />
     <ClInclude Include="piranha_plant.h" />
-    <ClInclude Include="playerChange.h" />
+    <ClInclude Include="playerGrow.h" />
+    <ClInclude Include="playerDie.h" />
     <ClInclude Include="playerFall.h" />
     <ClInclude Include="playerIdle.h" />
     <ClInclude Include="image.h" />
@@ -188,6 +190,7 @@
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="coin_block.cpp" />
+    <ClCompile Include="collisonManager.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyManager.cpp" />
     <ClCompile Include="gameNode.cpp" />
@@ -196,7 +199,8 @@
     <ClCompile Include="items.cpp" />
     <ClCompile Include="koopa_troopa.cpp" />
     <ClCompile Include="piranha_plant.cpp" />
-    <ClCompile Include="playerChange.cpp" />
+    <ClCompile Include="playerGrow.cpp" />
+    <ClCompile Include="playerDie.cpp" />
     <ClCompile Include="playerFall.cpp" />
     <ClCompile Include="playerIdle.cpp" />
     <ClCompile Include="image.cpp" />

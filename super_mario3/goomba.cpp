@@ -10,11 +10,11 @@ HRESULT goomba::init(EnemyState es, POINT position)
 
 	_firstState = es;
 
-	if (_state == LEFT_WALK || _state == RIGHT_WALK)
+	if (_state == ENEMY_LEFT_WALK || _state == ENEMY_RIGHT_WALK)
 	{
 		_image = IMAGEMANAGER->findImage("goomba_walk");
 	}
-	else if (_state == LEFT_JUMP || _state == RIGHT_JUMP)
+	else if (_state == ENEMY_LEFT_JUMP || _state == ENEMY_RIGHT_JUMP)
 	{
 		_image = IMAGEMANAGER->findImage("goomba_wing");
 	}
@@ -28,33 +28,33 @@ HRESULT goomba::init(EnemyState es, POINT position)
 
 void goomba::move()
 {
-	if (_state == LEFT_WALK || _state == RIGHT_WALK)
+	if (_state == ENEMY_LEFT_WALK || _state == ENEMY_RIGHT_WALK)
 	{
 		_image = IMAGEMANAGER->findImage("goomba_walk");
 	}
-	else if (_state == LEFT_JUMP || _state == RIGHT_JUMP)
+	else if (_state == ENEMY_LEFT_JUMP || _state == ENEMY_RIGHT_JUMP)
 	{
 		_image = IMAGEMANAGER->findImage("goomba_wing");
 	}
-	else if (_state == DIE)
+	else if (_state == ENEMY_DIE)
 	{
 		_image = IMAGEMANAGER->findImage("goomba_crush");
 	}
 
 	switch (_state)
 	{
-	case LEFT_WALK:
+	case ENEMY_LEFT_WALK:
 		_x -= ENEMYSPEED;
 		break;
-	case RIGHT_WALK:
+	case ENEMY_RIGHT_WALK:
 		_x += ENEMYSPEED;
 		break;
-	case LEFT_JUMP:
+	case ENEMY_LEFT_JUMP:
 		_y -= _jumpPower;
 		_jumpPower -= GRAVITY;
 		_x -= 2;
 		break;
-	case RIGHT_JUMP:
+	case ENEMY_RIGHT_JUMP:
 		_y -= _jumpPower;
 		_jumpPower -= GRAVITY;
 		_x += 2;
@@ -73,7 +73,7 @@ void goomba::move()
 		_count = 0;
 	}
 
-	if (_state == DIE)
+	if (_state == ENEMY_DIE)
 	{
 		if (!_isVisible && CAMERAMANAGER->getCameraLEFT() > _spawnX + _image->getFrameWidth() / 2)
 		{
@@ -99,13 +99,13 @@ void goomba::move()
 	if (_rc.left < 0)
 	{
 		_x = _image->getFrameWidth() / 2;
-		if (_state == LEFT_JUMP)
+		if (_state == ENEMY_LEFT_JUMP)
 		{
-			_state = RIGHT_JUMP;
+			_state = ENEMY_RIGHT_JUMP;
 		}
 		else
 		{
-			_state = RIGHT_WALK;
+			_state = ENEMY_RIGHT_WALK;
 		}
 	
 	}
@@ -113,17 +113,17 @@ void goomba::move()
 	if (_x > _spawnX)
 	{
 		_x = _spawnX;
-		if (_state == RIGHT_JUMP)
+		if (_state == ENEMY_RIGHT_JUMP)
 		{
-			_state = LEFT_JUMP;
+			_state = ENEMY_LEFT_JUMP;
 		}
 		else
 		{
-			_state = LEFT_WALK;
+			_state = ENEMY_LEFT_WALK;
 		}
 	}
 
-	if (_y >= _spawnY && _state != DIE)
+	if (_y >= _spawnY && _state != ENEMY_DIE)
 	{
 		_jumpCount++;
 		_y = _spawnY;

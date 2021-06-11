@@ -2,8 +2,9 @@
 #include "enemyManager.h"
 #include "goomba.h"
 #include "koopa_troopa.h"
-#include "playerJump.h"
 #include "piranha_plant.h"
+#include "playerJump.h"
+#include "playerDie.h"
 
 HRESULT enemyManager::init()
 {
@@ -58,11 +59,13 @@ void enemyManager::update()
 	{
 		(*_viFlower)->update();
 	}
-	goombaCollison();
-	troopaCollison();
 	flowerCollison();
 	flowerBulletFire();
 	flowerMoveHead();
+
+	goombaCollison();
+	troopaCollison();
+	
 	_bullet->update();
 }
 
@@ -87,11 +90,11 @@ void enemyManager::setGoomba()
 {
 	goomba* g;
 	g = new goomba;
-	g->init(LEFT_JUMP, PointMake(700, 1226));
+	g->init(ENEMY_LEFT_JUMP, PointMake(700, 1226));
 	_vGoomba.push_back(g);
 
 	g = new goomba;
-	g->init(RIGHT_WALK, PointMake(700, 1226));
+	g->init(ENEMY_RIGHT_WALK, PointMake(700, 1226));
 	_vGoomba.push_back(g);
 }
 
@@ -99,11 +102,11 @@ void enemyManager::setKTroopa()
 {
 	koopa_troopa* k;
 	k = new koopa_troopa;
-	k->init(LEFT_JUMP, PointMake(700, 1226));
+	k->init(ENEMY_LEFT_JUMP, PointMake(700, 1226));
 	_vKTroopa.push_back(k);
 
 	k = new koopa_troopa;
-	k->init(RIGHT_WALK, PointMake(500, 1226));
+	k->init(ENEMY_RIGHT_WALK, PointMake(500, 1226));
 	_vKTroopa.push_back(k);
 }
 
@@ -111,7 +114,7 @@ void enemyManager::setFlower()
 {
 	piranha_plant* p;
 	p = new piranha_plant;
-	p->init(IDLE, PointMake(1104, BACKGROUNDY - 168));
+	p->init(ENEMY_IDLE, PointMake(1104, BACKGROUNDY - 168));
 	_vFlower.push_back(p);
 
 }
@@ -131,9 +134,11 @@ void enemyManager::removeFlower(int arrNum)
 
 void enemyManager::goombaCollison()
 {
+	//플레이어와 충돌
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
-		if ((*_viGoomba)->getState() == DIE) continue;
+		if (_player->getPlayerState()->getStateName() == PLAYER_DIE) break;
+		if ((*_viGoomba)->getState() == ENEMY_DIE) continue;
 
 		RECT temp;
 		RECT goomba = (*_viGoomba)->getCollisonRange();
@@ -147,17 +152,17 @@ void enemyManager::goombaCollison()
 				if (_player->getY() < (*_viGoomba)->getY())
 				{
 					EnemyState es = (*_viGoomba)->getState();
-					if (es == LEFT_JUMP)
+					if (es == ENEMY_LEFT_JUMP)
 					{
-						es = LEFT_WALK;
+						es = ENEMY_LEFT_WALK;
 					}
-					else if (es == RIGHT_JUMP)
+					else if (es == ENEMY_RIGHT_JUMP)
 					{
-						es = RIGHT_WALK;
+						es = ENEMY_RIGHT_WALK;
 					}
-					else if (es == LEFT_WALK || es == RIGHT_WALK)
+					else if (es == ENEMY_LEFT_WALK || es == ENEMY_RIGHT_WALK)
 					{
-						es = DIE;
+						es = ENEMY_DIE;
 					}
 					(*_viGoomba)->setState(es);
 					(*_viGoomba)->setY((*_viGoomba)->getY() + 10.5f);
@@ -167,15 +172,24 @@ void enemyManager::goombaCollison()
 					break;
 				}
 			}
-
+			else //좌우충돌
+			{
+				if (_player->getPlayerShape() == BASIC)
+				{
+					_player->setPlayerState(new playerDie);
+					_player->getPlayerState()->enter(_player);
+				}
+			}
 		}
 	}
 }
 
 void enemyManager::troopaCollison()
 {
+	//플레이어와 충돌
 	for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
 	{
+		if (_player->getPlayerState()->getStateName() == PLAYER_DIE) break;
 		RECT temp;
 		RECT troopa = (*_viKTroopa)->getCollisonRange();
 		if (IntersectRect(&temp, &troopa, &_player->getRect()))
@@ -191,19 +205,19 @@ void enemyManager::troopaCollison()
 					//등껍질 상태가 아니면
 					if (!(*_viKTroopa)->getIsShell())
 					{
-						if (es == LEFT_JUMP)
+						if (es == ENEMY_LEFT_JUMP)
 						{
-							es = LEFT_WALK;
+							es = ENEMY_LEFT_WALK;
 							_player->setY(_player->getY() - height);
 						}
-						else if (es == RIGHT_JUMP)
+						else if (es == ENEMY_RIGHT_JUMP)
 						{
-							es = RIGHT_WALK;
+							es = ENEMY_RIGHT_WALK;
 							_player->setY(_player->getY() - height);
 						}
-						else if (es == LEFT_WALK || es == RIGHT_WALK)
+						else if (es == ENEMY_LEFT_WALK || es == ENEMY_RIGHT_WALK)
 						{
-							es = IDLE;
+							es = ENEMY_IDLE;
 							(*_viKTroopa)->setIsShell(true);
 							//등껍질이 됨에 따라 충돌 렉트가 커지므로 충돌이 다시 되지 않게 27을 더 빼줌
 							_player->setY(_player->getY() - height - 27);
@@ -212,20 +226,20 @@ void enemyManager::troopaCollison()
 					//등껍질 상태이면
 					else
 					{
-						if ((*_viKTroopa)->getState() == IDLE)
+						if ((*_viKTroopa)->getState() == ENEMY_IDLE)
 						{
 							if (_player->getX() < (*_viKTroopa)->getX())
 							{
-								es = RIGHT_WALK;
+								es = ENEMY_RIGHT_WALK;
 							}
 							else
 							{
-								es = LEFT_WALK;
+								es = ENEMY_LEFT_WALK;
 							}
 						}
 						else
 						{
-							es = IDLE;
+							es = ENEMY_IDLE;
 						}
 					}
 					_player->setY(_player->getY() - height);
@@ -235,41 +249,75 @@ void enemyManager::troopaCollison()
 					break;
 				}
 				//아래에서 충돌
+				else
+				{
+					if (_player->getPlayerShape() == BASIC)
+					{
+						_player->setPlayerState(new playerDie);
+						_player->getPlayerState()->enter(_player);
+					}
+				}
 			}
 			else
 			{
 				//왼쪽에서 충돌
 				if (_player->getX() < (*_viKTroopa)->getX())
 				{
+					//등껍질 상태이면
 					if ((*_viKTroopa)->getIsShell())
 					{
 						//멈춰있으면 등껍질 움직이게함
-						if ((*_viKTroopa)->getState() == IDLE)
+						if ((*_viKTroopa)->getState() == ENEMY_IDLE)
 						{
-							es = RIGHT_WALK;
+							es = ENEMY_RIGHT_WALK;
 							_player->setX(_player->getX() - width);
 						}
 						else //움직이는 중에 부딪혔다면 player 죽음
 						{
-
+							if (_player->getPlayerShape() == BASIC)
+							{
+								_player->setPlayerState(new playerDie);
+								_player->getPlayerState()->enter(_player);
+							}
+						}
+					}
+					else
+					{
+						if (_player->getPlayerShape() == BASIC)
+						{
+							_player->setPlayerState(new playerDie);
+							_player->getPlayerState()->enter(_player);
 						}
 					}
 					(*_viKTroopa)->setState(es);
 					break;
 				}
-				else
+				else //오른쪽에서 충돌
 				{
+					//등껍질 상태이면
 					if ((*_viKTroopa)->getIsShell())
 					{
 						//멈춰있으면 등껍질 움직이게함
-						if ((*_viKTroopa)->getState() == IDLE)
+						if ((*_viKTroopa)->getState() == ENEMY_IDLE)
 						{
-							es = LEFT_WALK;
+							es = ENEMY_LEFT_WALK;
 							_player->setX(_player->getX() + width);
 						}
 						else //움직이는 중에 부딪혔다면 player 죽음
 						{
-
+							if (_player->getPlayerShape() == BASIC)
+							{
+								_player->setPlayerState(new playerDie);
+								_player->getPlayerState()->enter(_player);
+							}
+						}
+					}
+					else
+					{
+						if (_player->getPlayerShape() == BASIC)
+						{
+							_player->setPlayerState(new playerDie);
+							_player->getPlayerState()->enter(_player);
 						}
 					}
 					(*_viKTroopa)->setState(es);
@@ -307,6 +355,8 @@ void enemyManager::flowerBulletFire()
 {
 	for (_viFlower = _vFlower.begin(); _viFlower != _vFlower.end(); ++_viFlower)
 	{
+		if (_player->getPlayerState()->getStateName() == PLAYER_DIE) break;
+
 		if ((*_viFlower)->bulletCountFire())
 		{
 			if ((*_viFlower)->getIsVisible())
@@ -314,7 +364,7 @@ void enemyManager::flowerBulletFire()
 				float angle = getAngle((*_viFlower)->getX(), (*_viFlower)->getY(), _player->getX(), _player->getY());
 				_bullet->fire((*_viFlower)->getX(), (*_viFlower)->getY(), angle, 4.0f);
 			}
-			(*_viFlower)->setState(RIGHT_WALK);
+			(*_viFlower)->setState(ENEMY_RIGHT_WALK);
 		}
 	}
 }

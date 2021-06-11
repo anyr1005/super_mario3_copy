@@ -68,4 +68,5 @@ void playerSlip::enter(player * player)
 	}
 	_count = _index = 0;
 	_jumpPower = -4.0f;
+	_stateName = PLAYER_SLIP;
 }

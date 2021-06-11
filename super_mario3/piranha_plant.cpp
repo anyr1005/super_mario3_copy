@@ -22,22 +22,22 @@ void piranha_plant::move()
 		if (_spawnY - _y >= _image->getHeight() + _bodyImage->getHeight())
 		{
 			_y = _spawnY - (_image->getHeight() + _bodyImage->getHeight());
-			if (_state != RIGHT_WALK)
+			if (_state != ENEMY_RIGHT_WALK)
 			{
-				_state = IDLE;
+				_state = ENEMY_IDLE;
 			}
 			_fireCount++;
 		}
 		else if(_spawnY <= _y)
 		{
 			_y = _spawnY;
-			_state = IDLE;
+			_state = ENEMY_IDLE;
 			_outCount++;
 			if (_outCount % 70 == 0)
 			{
 				if (_isVisible)
 				{
-					_state = LEFT_WALK;
+					_state = ENEMY_LEFT_WALK;
 				}
 				_outCount = 0;
 			}
@@ -48,16 +48,16 @@ void piranha_plant::move()
 	{
 		_x = _spawnX;
 		_y = _spawnY;
-		_state = IDLE;
+		_state = ENEMY_IDLE;
 		_fireCount = 0;
 	}
 
 	switch (_state)
 	{
-	case LEFT_WALK:
+	case ENEMY_LEFT_WALK:
 		_y -= 2;
 		break;
-	case RIGHT_WALK:
+	case ENEMY_RIGHT_WALK:
 		_y += 2;
 		break;
 	}
@@ -82,7 +82,7 @@ void piranha_plant::draw()
 
 bool piranha_plant::bulletCountFire()
 {
-	if (_fireCount % 50 == 0 && _state == IDLE && _spawnY != _y)
+	if (_fireCount % 50 == 0 && _state == ENEMY_IDLE && _spawnY != _y)
 	{
 		_fireCount = 0;
 		return true;
