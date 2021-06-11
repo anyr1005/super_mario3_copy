@@ -4,6 +4,10 @@
 void question_block::change()
 {
 	_imageName = IMAGEMANAGER->findImage("q_change");
+
+	_currentFrameX = 0;
+	_currentFrameY = 0;
+
 	_changeCount++;
 	if (_changeCount % 2 == 0)
 	{

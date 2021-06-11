@@ -12,6 +12,7 @@ HRESULT enemyManager::init()
 	IMAGEMANAGER->addFrameImage("goomba_walk", "img/goomba/goomba_walk.bmp", 96, 48, 2, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("goomba_wing", "img/goomba/goomba_wing.bmp", 240, 72, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("goomba_crush", "img/goomba/goomba_crush.bmp", 48, 27, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("goomba_attacked", "img/goomba/goomba_attacked.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
 
 	//엉금엉금 이미지
 	//초록색
@@ -132,7 +133,7 @@ void enemyManager::goombaCollison()
 		//플레이어가 죽은 상태면 충돌 확인 안함
 		if (_player->getPlayerState()->getStateName() == PLAYER_DIE) break;
 		//굼바가 죽은 상태면 충돌 확인 안함
-		if ((*_viGoomba)->getState() == ENEMY_DIE) continue;
+		if ((*_viGoomba)->getState() == ENEMY_DIE || (*_viGoomba)->getState() == ENEMY_ATTACKED) continue;
 
 		RECT temp;
 		RECT goombaRect = (*_viGoomba)->getCollisonRange();
@@ -183,7 +184,7 @@ void enemyManager::goombaCollison()
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
 		//굼바가 죽은 상태면 충돌 확인 안함
-		if ((*_viGoomba)->getState() == ENEMY_DIE) continue;
+		if ((*_viGoomba)->getState() == ENEMY_DIE || (*_viGoomba)->getState() == ENEMY_ATTACKED) continue;
 
 		for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
 		{
@@ -196,7 +197,8 @@ void enemyManager::goombaCollison()
 				{
 					if ((*_viGoomba)->getState() == ENEMY_LEFT_WALK || (*_viGoomba)->getState() == ENEMY_RIGHT_WALK)
 					{
-						(*_viGoomba)->setState(ENEMY_DIE);
+						(*_viGoomba)->setJumpPower(7.0f);
+						(*_viGoomba)->setState(ENEMY_ATTACKED);
 					}
 					else if ((*_viGoomba)->getState() == ENEMY_LEFT_JUMP)
 					{
@@ -214,6 +216,8 @@ void enemyManager::goombaCollison()
 	//땅과 충돌
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
+		if ((*_viGoomba)->getState() == ENEMY_ATTACKED) continue;
+
 		RECT goombaRect = (*_viGoomba)->getRect();
 		(*_viGoomba)->setIsOnGround(false);
 		for (int i = 0; i < _mManager->getGround().size(); i++)
@@ -272,6 +276,8 @@ void enemyManager::goombaCollison()
 	//object 와 충돌
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
+		if ((*_viGoomba)->getState() == ENEMY_ATTACKED) continue;
+
 		RECT goombaRect = (*_viGoomba)->getRect();
 		for (int i = 0; i < _mManager->getObject().size(); i++)
 		{
@@ -304,6 +310,8 @@ void enemyManager::goombaCollison()
 	//pipe와 충돌
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
+		if ((*_viGoomba)->getState() == ENEMY_ATTACKED) continue;
+
 		RECT goombaRect = (*_viGoomba)->getRect();
 		for (int i = 0; i < _mManager->getPipe().size(); i++)
 		{
@@ -406,6 +414,8 @@ void enemyManager::goombaCollison()
 	//question_block과 충돌
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
+		if ((*_viGoomba)->getState() == ENEMY_ATTACKED) continue;
+
 		RECT goombaRect = (*_viGoomba)->getRect();
 		for (int i = 0; i < _bManager->getQBlock().size(); i++)
 		{

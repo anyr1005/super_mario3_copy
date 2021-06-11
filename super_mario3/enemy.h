@@ -11,7 +11,8 @@ enum EnemyState
 	ENEMY_LEFT_JUMP,
 	ENEMY_RIGHT_JUMP,
 	ENEMY_IDLE,
-	ENEMY_DIE
+	ENEMY_DIE, //점프 공격으로 죽었을 때
+	ENEMY_ATTACKED //꼬리나 등껍질로 죽었을 때
 };
 
 class enemy : public gameNode
@@ -42,8 +43,6 @@ protected:
 	EnemyState _state;
 
 	EnemyState _firstState; //초기 상태
-
-	bool _isAttacked; //점프로 내려찍은 것이 아닌 등껍질이나 꼬리로 공격했는지
 
 public:
 	virtual HRESULT init();
@@ -79,7 +78,6 @@ public:
 
 	void setIsOnGround(bool b) { _isOnGround = b; }
 
-	void setIsAttacked(bool b) { _isAttacked = b; }
-	bool getIsAttacked() { return _isAttacked; }
+	void setJumpPower(float f) { _jumpPower = f; }
 };
 

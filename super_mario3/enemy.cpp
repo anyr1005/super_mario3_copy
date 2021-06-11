@@ -17,7 +17,6 @@ HRESULT enemy::init(EnemyState es, POINT position)
 
 	_isVisible = true;
 	_isOnGround = false;
-	_isAttacked = false;
 
 	return S_OK;
 }

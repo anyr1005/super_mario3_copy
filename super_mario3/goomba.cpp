@@ -36,8 +36,11 @@ void goomba::move()
 	}
 	else if (_state == ENEMY_DIE)
 	{
-		
 		_image = IMAGEMANAGER->findImage("goomba_crush");
+	}
+	else if (_state == ENEMY_ATTACKED)
+	{
+		_image = IMAGEMANAGER->findImage("goomba_attacked");
 	}
 
 	switch (_state)
@@ -57,6 +60,10 @@ void goomba::move()
 		_y -= _jumpPower;
 		_jumpPower -= GRAVITY;
 		_x += 2;
+		break;
+	case ENEMY_ATTACKED:
+		_y -= _jumpPower;
+		_jumpPower -= GRAVITY;
 		break;
 	default:
 		break;
