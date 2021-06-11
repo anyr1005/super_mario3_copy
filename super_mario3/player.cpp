@@ -43,8 +43,11 @@ HRESULT player::init()
 
 	_shape = BASIC;
 
-	_x = 900;
-	_y = BACKGROUNDY - 72;
+	//_x = 100;
+	//_y = BACKGROUNDY - 72;
+
+	_x = 1649;
+	_y = 890;
 
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 
@@ -282,14 +285,13 @@ void player::collisonQBlock()
 				//아래에서 위로 충돌
 				else
 				{
-					RECT rc = _bManager->getQBlock()[i]->getRect();
 					if (!_bManager->getQBlock()[i]->getIsCrashed())
 					{
 						_bManager->getQBlock()[i]->setIsChange(true);
 						//코인
 						if (_bManager->getQBlock()[i]->getItem() == COIN)
 						{
-							_bManager->getCoin()->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2);
+							_bManager->getCoin()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2);
 						}
 					}
 					_y += height;

@@ -31,7 +31,7 @@ HRESULT enemyManager::init()
 	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255));
 
 	setGoomba();
-	//setKTroopa();
+	setKTroopa();
 	setFlower();
 
 	_bullet = new bullet;
@@ -91,11 +91,15 @@ void enemyManager::setGoomba()
 {
 	goomba* g;
 	g = new goomba;
-	g->init(ENEMY_LEFT_JUMP, PointMake(950, 980));
+	g->init(ENEMY_LEFT_JUMP, PointMake(900, 600));
 	_vGoomba.push_back(g);
 
 	g = new goomba;
-	g->init(ENEMY_RIGHT_WALK, PointMake(700, 1226));
+	g->init(ENEMY_RIGHT_WALK, PointMake(700, 1224));
+	_vGoomba.push_back(g);
+
+	g = new goomba;
+	g->init(ENEMY_LEFT_WALK, PointMake(1500, 600));
 	_vGoomba.push_back(g);
 }
 
@@ -107,7 +111,7 @@ void enemyManager::setKTroopa()
 	_vKTroopa.push_back(k);
 
 	k = new koopa_troopa;
-	k->init(ENEMY_RIGHT_WALK, PointMake(500, 1226));
+	k->init(ENEMY_RIGHT_WALK, PointMake(1500, 1112));
 	_vKTroopa.push_back(k);
 }
 
@@ -125,12 +129,15 @@ void enemyManager::goombaCollison()
 	//플레이어와 충돌
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
+		//플레이어가 죽은 상태면 충돌 확인 안함
 		if (_player->getPlayerState()->getStateName() == PLAYER_DIE) break;
+		//굼바가 죽은 상태면 충돌 확인 안함
 		if ((*_viGoomba)->getState() == ENEMY_DIE) continue;
 
 		RECT temp;
-		RECT goomba = (*_viGoomba)->getCollisonRange();
-		if (IntersectRect(&temp, &goomba, &_player->getRect()))
+		RECT goombaRect = (*_viGoomba)->getCollisonRange();
+		
+		if (IntersectRect(&temp, &goombaRect, &_player->getRect()))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -169,23 +176,55 @@ void enemyManager::goombaCollison()
 				}
 			}
 		}
+
+	}
+
+	//거북이 등껍질과 충돌
+	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
+	{
+		//굼바가 죽은 상태면 충돌 확인 안함
+		if ((*_viGoomba)->getState() == ENEMY_DIE) continue;
+
+		for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
+		{
+			if (!(*_viKTroopa)->getIsShell()) continue;
+
+			RECT temp;
+			if (IntersectRect(&temp, &(*_viKTroopa)->getCollisonRange(), &(*_viGoomba)->getCollisonRange()))
+			{
+				if ((*_viKTroopa)->getState() == ENEMY_LEFT_WALK || (*_viKTroopa)->getState() == ENEMY_RIGHT_WALK)
+				{
+					if ((*_viGoomba)->getState() == ENEMY_LEFT_WALK || (*_viGoomba)->getState() == ENEMY_RIGHT_WALK)
+					{
+						(*_viGoomba)->setState(ENEMY_DIE);
+					}
+					else if ((*_viGoomba)->getState() == ENEMY_LEFT_JUMP)
+					{
+						(*_viGoomba)->setState(ENEMY_LEFT_WALK);
+					}
+					else if ((*_viGoomba)->getState() == ENEMY_RIGHT_JUMP)
+					{
+						(*_viGoomba)->setState(ENEMY_RIGHT_WALK);
+					}
+				}
+			}
+		}
 	}
 
 	//땅과 충돌
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
+		RECT goombaRect = (*_viGoomba)->getRect();
 		(*_viGoomba)->setIsOnGround(false);
 		for (int i = 0; i < _mManager->getGround().size(); i++)
 		{
-			RECT goomba = (*_viGoomba)->getRect();
 			RECT ground = _mManager->getGround()[i];
 			RECT temp;
-			if (goomba.bottom == ground.top && goomba.right > ground.left && ground.left < ground.right)
+			if (goombaRect.bottom == ground.top && goombaRect.right > ground.left && goombaRect.left < ground.right)
 			{
 				(*_viGoomba)->setIsOnGround(true);
-				break;
 			}
-			if (IntersectRect(&temp, &goomba, &ground))
+			if (IntersectRect(&temp, &goombaRect, &ground))
 			{
 				float width = temp.right - temp.left;
 				float height = temp.bottom - temp.top;
@@ -204,12 +243,26 @@ void enemyManager::goombaCollison()
 					if ((*_viGoomba)->getX() < (ground.left + ground.right) / 2)
 					{
 						(*_viGoomba)->setX((*_viGoomba)->getX() - width);
-						(*_viGoomba)->setState(ENEMY_LEFT_WALK);
+						if ((*_viGoomba)->getState() == ENEMY_RIGHT_WALK)
+						{
+							(*_viGoomba)->setState(ENEMY_LEFT_WALK);
+						}
+						else
+						{
+							(*_viGoomba)->setState(ENEMY_LEFT_JUMP);
+						}
 					}
 					else
 					{
 						(*_viGoomba)->setX((*_viGoomba)->getX() + width);
-						(*_viGoomba)->setState(ENEMY_RIGHT_WALK);
+						if ((*_viGoomba)->getState() == ENEMY_LEFT_WALK)
+						{
+							(*_viGoomba)->setState(ENEMY_RIGHT_WALK);
+						}
+						else
+						{
+							(*_viGoomba)->setState(ENEMY_RIGHT_JUMP);
+						}
 					}
 				}
 			}
@@ -219,17 +272,17 @@ void enemyManager::goombaCollison()
 	//object 와 충돌
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
+		RECT goombaRect = (*_viGoomba)->getRect();
 		for (int i = 0; i < _mManager->getObject().size(); i++)
 		{
-			RECT goomba = (*_viGoomba)->getRect();
 			RECT object = _mManager->getObject()[i];
 			RECT temp;
-			if (goomba.bottom == object.top && goomba.right > object.left && object.left < object.right)
+			if (goombaRect.bottom == object.top && goombaRect.right > object.left && goombaRect.left < object.right)
 			{
 				(*_viGoomba)->setIsOnGround(true);
 				break;
 			}
-			if (IntersectRect(&temp, &goomba, &object))
+			if (IntersectRect(&temp, &goombaRect, &object))
 			{
 				float width = temp.right - temp.left;
 				float height = temp.bottom - temp.top;
@@ -240,12 +293,184 @@ void enemyManager::goombaCollison()
 					{
 						(*_viGoomba)->setY((*_viGoomba)->getY() - height);
 						(*_viGoomba)->setIsOnGround(true);
+						break;
 					}
 					//object와는 아래에서 충돌 없음
 				}
 			}
 		}
 	}
+
+	//pipe와 충돌
+	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
+	{
+		RECT goombaRect = (*_viGoomba)->getRect();
+		for (int i = 0; i < _mManager->getPipe().size(); i++)
+		{
+			RECT pipe_head = _mManager->getPipe()[i].head;
+			RECT pipe_body = _mManager->getPipe()[i].body;
+			RECT temp;
+			if (goombaRect.bottom == pipe_head.top && goombaRect.right > pipe_head.left && goombaRect.left < pipe_head.right)
+			{
+				(*_viGoomba)->setIsOnGround(true);
+				break;
+			}
+			if (IntersectRect(&temp, &goombaRect, &pipe_head))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				if (width > height)
+				{
+					//위에서 충돌
+					if ((*_viGoomba)->getY() < (pipe_head.bottom + pipe_head.top) / 2)
+					{
+						(*_viGoomba)->setY((*_viGoomba)->getY() - height);
+						(*_viGoomba)->setIsOnGround(true);
+						break;
+					}
+					//아래에서 충돌
+					else
+					{
+						(*_viGoomba)->setY((*_viGoomba)->getY() + height);
+						break;
+					}
+				}
+				//좌우 충돌
+				else
+				{
+					//왼쪽에서 충돌
+					if ((*_viGoomba)->getX() < (pipe_head.left + pipe_head.right) / 2)
+					{
+						(*_viGoomba)->setX((*_viGoomba)->getX() - width);
+						if ((*_viGoomba)->getState() == ENEMY_RIGHT_WALK)
+						{
+							(*_viGoomba)->setState(ENEMY_LEFT_WALK);
+						}
+						else
+						{
+							(*_viGoomba)->setState(ENEMY_LEFT_JUMP);
+						}
+					}
+					//오른쪽에서 충돌
+					else
+					{
+						(*_viGoomba)->setX((*_viGoomba)->getX() + width);
+						if ((*_viGoomba)->getState() == ENEMY_LEFT_WALK)
+						{
+							(*_viGoomba)->setState(ENEMY_RIGHT_WALK);
+						}
+						else
+						{
+							(*_viGoomba)->setState(ENEMY_RIGHT_JUMP);
+						}
+					}
+				}
+			}
+
+			if (IntersectRect(&temp, &goombaRect, &pipe_body))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//파이프 body는 위아래 충돌 없음
+				if (width < height)
+				{
+					if ((*_viGoomba)->getX() < (pipe_body.left + pipe_body.right) / 2)
+					{
+						(*_viGoomba)->setX((*_viGoomba)->getX() - width);
+						if ((*_viGoomba)->getState() == ENEMY_RIGHT_WALK)
+						{
+							(*_viGoomba)->setState(ENEMY_LEFT_WALK);
+						}
+						else
+						{
+							(*_viGoomba)->setState(ENEMY_LEFT_JUMP);
+						}
+					}
+					else
+					{
+						(*_viGoomba)->setX((*_viGoomba)->getX() + width);
+						if ((*_viGoomba)->getState() == ENEMY_LEFT_WALK)
+						{
+							(*_viGoomba)->setState(ENEMY_RIGHT_WALK);
+						}
+						else
+						{
+							(*_viGoomba)->setState(ENEMY_RIGHT_JUMP);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//question_block과 충돌
+	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
+	{
+		RECT goombaRect = (*_viGoomba)->getRect();
+		for (int i = 0; i < _bManager->getQBlock().size(); i++)
+		{
+			RECT qBlock = _bManager->getQBlock()[i]->getRect();
+			RECT temp;
+			if (goombaRect.bottom == qBlock.top && goombaRect.right > qBlock.left && goombaRect.left < qBlock.right)
+			{
+				(*_viGoomba)->setIsOnGround(true);
+				break;
+			}
+			if (IntersectRect(&temp, &goombaRect, &qBlock))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				if (width > height)
+				{
+					//위에서 충돌
+					if ((*_viGoomba)->getY() < (qBlock.bottom + qBlock.top) / 2)
+					{
+						(*_viGoomba)->setY((*_viGoomba)->getY() - height);
+						(*_viGoomba)->setIsOnGround(true);
+						break;
+					}
+					//아래에서 충돌
+					else
+					{
+						(*_viGoomba)->setY((*_viGoomba)->getY() + height);
+						break;
+					}
+				}
+				//좌우 충돌
+				else
+				{
+					//왼쪽에서 충돌
+					if ((*_viGoomba)->getX() < (qBlock.left + qBlock.right) / 2)
+					{
+						(*_viGoomba)->setX((*_viGoomba)->getX() - width);
+						if ((*_viGoomba)->getState() == ENEMY_RIGHT_WALK)
+						{
+							(*_viGoomba)->setState(ENEMY_LEFT_WALK);
+						}
+						else
+						{
+							(*_viGoomba)->setState(ENEMY_LEFT_JUMP);
+						}
+					}
+					//오른쪽에서 충돌
+					else
+					{
+						(*_viGoomba)->setX((*_viGoomba)->getX() + width);
+						if ((*_viGoomba)->getState() == ENEMY_LEFT_WALK)
+						{
+							(*_viGoomba)->setState(ENEMY_RIGHT_WALK);
+						}
+						else
+						{
+							(*_viGoomba)->setState(ENEMY_RIGHT_JUMP);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	
 }
 
 void enemyManager::troopaCollison()
@@ -391,6 +616,274 @@ void enemyManager::troopaCollison()
 			}
 		}
 	}
+
+	//땅과 충돌
+	for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
+	{
+		RECT troopaRect = (*_viKTroopa)->getRect();
+		(*_viKTroopa)->setIsOnGround(false);
+		for (int i = 0; i < _mManager->getGround().size(); i++)
+		{
+			RECT ground = _mManager->getGround()[i];
+			RECT temp;
+			if (troopaRect.bottom == ground.top && troopaRect.right > ground.left && troopaRect.left < ground.right)
+			{
+				(*_viKTroopa)->setIsOnGround(true);
+			}
+			if (IntersectRect(&temp, &troopaRect, &ground))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				if (width > height)
+				{
+					//위에서 충돌
+					if ((*_viKTroopa)->getY() < (ground.bottom + ground.top) / 2)
+					{
+						(*_viKTroopa)->setY((*_viKTroopa)->getY() - height);
+						(*_viKTroopa)->setIsOnGround(true);
+					}
+					//땅과는 아래에서 충돌 없음
+				}
+				else
+				{
+					if ((*_viKTroopa)->getX() < (ground.left + ground.right) / 2)
+					{
+						(*_viKTroopa)->setX((*_viKTroopa)->getX() - width);
+						if ((*_viKTroopa)->getState() == ENEMY_RIGHT_WALK)
+						{
+							(*_viKTroopa)->setState(ENEMY_LEFT_WALK);
+						}
+						else
+						{
+							(*_viKTroopa)->setState(ENEMY_LEFT_JUMP);
+						}
+					}
+					else
+					{
+						(*_viKTroopa)->setX((*_viKTroopa)->getX() + width);
+						if ((*_viKTroopa)->getState() == ENEMY_LEFT_WALK)
+						{
+							(*_viKTroopa)->setState(ENEMY_RIGHT_WALK);
+						}
+						else
+						{
+							(*_viKTroopa)->setState(ENEMY_RIGHT_JUMP);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//object 와 충돌
+	for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
+	{
+		RECT troopaRect = (*_viKTroopa)->getRect();
+		for (int i = 0; i < _mManager->getObject().size(); i++)
+		{
+			RECT object = _mManager->getObject()[i];
+			RECT temp;
+			if (troopaRect.bottom == object.top && troopaRect.right > object.left && troopaRect.left < object.right)
+			{
+				(*_viKTroopa)->setIsOnGround(true);
+				break;
+			}
+			if (IntersectRect(&temp, &troopaRect, &object))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				if (width > height)
+				{
+					//위에서 충돌
+					if ((*_viKTroopa)->getY() < (object.bottom + object.top) / 2)
+					{
+						(*_viKTroopa)->setY((*_viKTroopa)->getY() - height);
+						(*_viKTroopa)->setIsOnGround(true);
+						break;
+					}
+					//object와는 아래에서 충돌 없음
+				}
+			}
+		}
+	}
+
+	//pipe와 충돌
+	for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
+	{
+		RECT troopaRect = (*_viKTroopa)->getRect();
+		for (int i = 0; i < _mManager->getPipe().size(); i++)
+		{
+			RECT pipe_head = _mManager->getPipe()[i].head;
+			RECT pipe_body = _mManager->getPipe()[i].body;
+			RECT temp;
+			if (troopaRect.bottom == pipe_head.top && troopaRect.right > pipe_head.left && troopaRect.left < pipe_head.right)
+			{
+				(*_viKTroopa)->setIsOnGround(true);
+				break;
+			}
+			if (IntersectRect(&temp, &troopaRect, &pipe_head))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				if (width > height)
+				{
+					//위에서 충돌
+					if ((*_viKTroopa)->getY() < (pipe_head.bottom + pipe_head.top) / 2)
+					{
+						(*_viKTroopa)->setY((*_viKTroopa)->getY() - height);
+						(*_viKTroopa)->setIsOnGround(true);
+						break;
+					}
+					//아래에서 충돌
+					else
+					{
+						(*_viKTroopa)->setY((*_viKTroopa)->getY() + height);
+						break;
+					}
+				}
+				//좌우 충돌
+				else
+				{
+					//왼쪽에서 충돌
+					if ((*_viKTroopa)->getX() < (pipe_head.left + pipe_head.right) / 2)
+					{
+						(*_viKTroopa)->setX((*_viKTroopa)->getX() - width);
+						if ((*_viKTroopa)->getState() == ENEMY_RIGHT_WALK)
+						{
+							(*_viKTroopa)->setState(ENEMY_LEFT_WALK);
+						}
+						else
+						{
+							(*_viKTroopa)->setState(ENEMY_LEFT_JUMP);
+						}
+					}
+					//오른쪽에서 충돌
+					else
+					{
+						(*_viKTroopa)->setX((*_viKTroopa)->getX() + width);
+						if ((*_viKTroopa)->getState() == ENEMY_LEFT_WALK)
+						{
+							(*_viKTroopa)->setState(ENEMY_RIGHT_WALK);
+						}
+						else
+						{
+							(*_viKTroopa)->setState(ENEMY_RIGHT_JUMP);
+						}
+					}
+				}
+			}
+
+			if (IntersectRect(&temp, &troopaRect, &pipe_body))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//파이프 body는 위아래 충돌 없음
+				if (width < height)
+				{
+					if ((*_viKTroopa)->getX() < (pipe_body.left + pipe_body.right) / 2)
+					{
+						(*_viKTroopa)->setX((*_viKTroopa)->getX() - width);
+						if ((*_viKTroopa)->getState() == ENEMY_RIGHT_WALK)
+						{
+							(*_viKTroopa)->setState(ENEMY_LEFT_WALK);
+						}
+						else
+						{
+							(*_viKTroopa)->setState(ENEMY_LEFT_JUMP);
+						}
+					}
+					else
+					{
+						(*_viKTroopa)->setX((*_viKTroopa)->getX() + width);
+						if ((*_viKTroopa)->getState() == ENEMY_LEFT_WALK)
+						{
+							(*_viKTroopa)->setState(ENEMY_RIGHT_WALK);
+						}
+						else
+						{
+							(*_viKTroopa)->setState(ENEMY_RIGHT_JUMP);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//question_block과 충돌
+	for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
+	{
+		RECT troopaRect = (*_viKTroopa)->getRect();
+		for (int i = 0; i < _bManager->getQBlock().size(); i++)
+		{
+			RECT qBlock = _bManager->getQBlock()[i]->getRect();
+			RECT temp;
+			if (troopaRect.bottom == qBlock.top && troopaRect.right > qBlock.left && troopaRect.left < qBlock.right)
+			{
+				(*_viKTroopa)->setIsOnGround(true);
+				break;
+			}
+			if (IntersectRect(&temp, &troopaRect, &qBlock))
+			{
+				if (!_bManager->getQBlock()[i]->getIsCrashed() && (*_viKTroopa)->getIsShell())
+				{
+					_bManager->getQBlock()[i]->setIsChange(true);
+					//코인
+					if (_bManager->getQBlock()[i]->getItem() == COIN)
+					{
+						_bManager->getCoin()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2);
+					}
+				}
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				if (width > height)
+				{
+					//위에서 충돌
+					if ((*_viKTroopa)->getY() < (qBlock.bottom + qBlock.top) / 2)
+					{
+						(*_viKTroopa)->setY((*_viKTroopa)->getY() - height);
+						(*_viKTroopa)->setIsOnGround(true);
+						break;
+					}
+					//아래에서 충돌
+					else
+					{
+						(*_viKTroopa)->setY((*_viKTroopa)->getY() + height);
+						break;
+					}
+				}
+				//좌우 충돌
+				else
+				{
+					//왼쪽에서 충돌
+					if ((*_viKTroopa)->getX() < (qBlock.left + qBlock.right) / 2)
+					{
+						(*_viKTroopa)->setX((*_viKTroopa)->getX() - width);
+						if ((*_viKTroopa)->getState() == ENEMY_RIGHT_WALK)
+						{
+							(*_viKTroopa)->setState(ENEMY_LEFT_WALK);
+						}
+						else
+						{
+							(*_viKTroopa)->setState(ENEMY_LEFT_JUMP);
+						}
+					}
+					//오른쪽에서 충돌
+					else
+					{
+						(*_viKTroopa)->setX((*_viKTroopa)->getX() + width);
+						if ((*_viKTroopa)->getState() == ENEMY_LEFT_WALK)
+						{
+							(*_viKTroopa)->setState(ENEMY_RIGHT_WALK);
+						}
+						else
+						{
+							(*_viKTroopa)->setState(ENEMY_RIGHT_JUMP);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 void enemyManager::flowerCollison()
@@ -417,8 +910,11 @@ void enemyManager::flowerCollison()
 		RECT temp;
 		if (IntersectRect(&temp, &flowerRect, &playerRect))
 		{
-			_player->setPlayerState(new playerDie);
-			_player->getPlayerState()->enter(_player);
+			if (_player->getPlayerShape() == BASIC)
+			{
+				_player->setPlayerState(new playerDie);
+				_player->getPlayerState()->enter(_player);
+			}
 		}
 	}
 

@@ -26,7 +26,8 @@ protected:
 	int _currentFrameX;
 	int _currentFrameY;
 
-	int _count;
+	int _count; //프레임용 카운트
+	int _deadCount; //죽었을 때 다시 나오기까지 카운트
 
 	float _jumpPower;
 
@@ -39,6 +40,10 @@ protected:
 	bool _isVisible; //죽은 상태여서 보이지 않게 할건지
 
 	EnemyState _state;
+
+	EnemyState _firstState; //초기 상태
+
+	bool _isAttacked; //점프로 내려찍은 것이 아닌 등껍질이나 꼬리로 공격했는지
 
 public:
 	virtual HRESULT init();
@@ -73,5 +78,8 @@ public:
 	bool getIsVisible() { return _isVisible; }
 
 	void setIsOnGround(bool b) { _isOnGround = b; }
+
+	void setIsAttacked(bool b) { _isAttacked = b; }
+	bool getIsAttacked() { return _isAttacked; }
 };
 

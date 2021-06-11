@@ -4,7 +4,7 @@
 HRESULT koopa_troopa::init(EnemyState es, POINT position)
 {
 	enemy::init(es, position);
-	_jumpPower = 6.0f;
+	
 	_isShell = false;
 
 	switch (_state)
@@ -12,10 +12,12 @@ HRESULT koopa_troopa::init(EnemyState es, POINT position)
 	case ENEMY_LEFT_WALK:
 	case ENEMY_RIGHT_WALK:
 		_image = IMAGEMANAGER->findImage("green_walk");
+		_jumpPower = -4.0f;
 		break;
 	case ENEMY_LEFT_JUMP:
 	case ENEMY_RIGHT_JUMP:
 		_image = IMAGEMANAGER->findImage("green_wing");
+		_jumpPower = 6.0f;
 		break;
 	}
 
@@ -77,46 +79,15 @@ void koopa_troopa::move()
 		break;
 	}
 
-	/*
-		=====================================
-		나중에 지워주기(충돌처리 후)
-	*/
-	if (_rc.left < 0)
+	//jump이면 땅에 닿았을 때 점프파워초기화
+	if ((_state == ENEMY_LEFT_JUMP || _state == ENEMY_RIGHT_JUMP) && _isOnGround)
 	{
-		_x = _image->getFrameWidth() / 2;
-		if (_state == ENEMY_LEFT_JUMP)
-		{
-			_state = ENEMY_RIGHT_JUMP;
-		}
-		else
-		{
-			_state = ENEMY_RIGHT_WALK;
-		}
-
-	}
-
-	if (_x >= _spawnX)
-	{
-		_x = _spawnX;
-		if (_state == ENEMY_RIGHT_JUMP)
-		{
-			_state = ENEMY_LEFT_JUMP;
-		}
-		else
-		{
-			_state = ENEMY_LEFT_WALK;
-		}
-	}
-
-	if (_y >= _spawnY)
-	{
-		_y = _spawnY;
 		_jumpPower = 6.0f;
 	}
-	//=====================================
+	
 	_rc = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
 	
-	//프레임 및 충돌 렉트 설정
+	//프레임(y) 및 충돌 렉트 설정
 	switch (_state)
 	{
 	case ENEMY_LEFT_WALK:
@@ -137,11 +108,16 @@ void koopa_troopa::move()
 		}
 		break;
 	case ENEMY_IDLE:
-		_collisonRange = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
 		_currentFrameY = 0;
 		break;
 	}
 
+	if (_isShell)
+	{
+		_collisonRange = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
+	}
+
+	//shell일 경우와 아닐 경우 프레임(x) 설정
 	if (_isShell && _state== ENEMY_IDLE)
 	{
 		_currentFrameX = 0;
@@ -163,10 +139,4 @@ void koopa_troopa::move()
 void koopa_troopa::draw()
 {
 	_image->frameRender(getMemDC(), _rc.left, _rc.top, _currentFrameX, _currentFrameY);
-	/*
-	if (KEYMANAGER->isToggleKey(VK_TAB))
-	{
-		Rectangle(getMemDC(), _collisonRange);
-	}
-	*/
 }
