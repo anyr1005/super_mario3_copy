@@ -9,6 +9,8 @@ HRESULT piranha_plant::init(EnemyState es, POINT position)
 	_bodyImage = IMAGEMANAGER->findImage("long_leaf_green");
 	_rc = RectMakeCenter(_x, _y, _image->getWidth(), _image->getHeight());
 	_body = RectMakeCenter(_x, _y + _image->getHeight(), _bodyImage->getWidth(), _bodyImage->getHeight());
+
+	_collisonRange = RectMake(_x - 100, _rc.top - _image->getHeight() , 200, 200);
 	return S_OK;
 }
 
@@ -20,12 +22,26 @@ void piranha_plant::move()
 		if (_spawnY - _y >= _image->getHeight() + _bodyImage->getHeight())
 		{
 			_y = _spawnY - (_image->getHeight() + _bodyImage->getHeight());
-			_state = IDLE;
+			if (_state != RIGHT_WALK)
+			{
+				_state = IDLE;
+			}
 			_fireCount++;
 		}
-		else
+		else if(_spawnY <= _y)
 		{
-			_state = LEFT_WALK;
+			_y = _spawnY;
+			_state = IDLE;
+			_outCount++;
+			if (_outCount % 70 == 0)
+			{
+				if (_isVisible)
+				{
+					_state = LEFT_WALK;
+				}
+				_outCount = 0;
+			}
+			
 		}
 	}
 	else
@@ -55,14 +71,18 @@ void piranha_plant::draw()
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		Rectangle(getMemDC(), _body);
+		Rectangle(getMemDC(), _collisonRange);
 	}
 	_image->render(getMemDC(), _rc.left, _rc.top);
-	_bodyImage->render(getMemDC(), _body.left, _body.top);
+	if (_y <= _spawnY - _image->getHeight())
+	{
+		_bodyImage->render(getMemDC(), _body.left, _body.top);
+	}
 }
 
 bool piranha_plant::bulletCountFire()
 {
-	if (_fireCount % 150 == 0 && _state == IDLE && _spawnY != _y)
+	if (_fireCount % 50 == 0 && _state == IDLE && _spawnY != _y)
 	{
 		_fireCount = 0;
 		return true;

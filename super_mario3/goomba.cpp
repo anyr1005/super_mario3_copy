@@ -8,8 +8,6 @@ HRESULT goomba::init(EnemyState es, POINT position)
 	_jumpCount = 1;
 	_jumpPower = 2.0f;
 
-	_isVisible = true;
-
 	_firstState = es;
 
 	if (_state == LEFT_WALK || _state == RIGHT_WALK)

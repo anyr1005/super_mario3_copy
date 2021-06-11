@@ -3,6 +3,8 @@
 
 HRESULT mapManager::init()
 {
+	IMAGEMANAGER->addImage("pipe_head", "img/pipe_head.bmp", 96, 48, true, RGB(255, 0, 255));
+
 	setObject();
 	setWoodBlock();
 	setGround();
@@ -21,7 +23,10 @@ void mapManager::update()
 
 void mapManager::render()
 {
-
+	for (int i = 0; i < _pipe.size(); i++)
+	{
+		IMAGEMANAGER->findImage("pipe_head")->render(getMemDC(), _pipe[i].head.left, _pipe[i].head.top);
+	}
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		for (int i = 0; i < _object.size(); i++)
@@ -72,7 +77,7 @@ void mapManager::setObject()
 
 	//하늘에 있는 부유물
 	_object.push_back(RectMake(BACKGROUNDX / 2 - 240, 432, 192, 10));
-
+	
 	//구름
 	_object.push_back(RectMake(BACKGROUNDX / 2 + 48, 576, 192, 48));
 	_object.push_back(RectMake(BACKGROUNDX / 2 + 288, 528, 624, 48));
@@ -115,8 +120,6 @@ void mapManager::setPipe()
 
 	for (int i = 0; i < 2; i++)
 	{
-
-		tagPipe pipe;
 		pipe.head = RectMake(BACKGROUNDX / 2 + 1104 + 192 * i, BACKGROUNDY - 144 - 48 * i, 96, 48);
 		pipe.body = RectMake(BACKGROUNDX / 2 + 1107 + 192 * i, BACKGROUNDY - 96 - 48 * i, 90, 48 + 48 * i);
 		_pipe.push_back(pipe);

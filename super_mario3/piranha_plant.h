@@ -6,6 +6,7 @@ private:
 	RECT _body;
 	image* _bodyImage;
 	int _fireCount;
+	int _outCount;
 
 public:
 	virtual HRESULT init(EnemyState es, POINT position);

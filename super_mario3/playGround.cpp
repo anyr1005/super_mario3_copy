@@ -64,12 +64,11 @@ void playGround::render()
 
 	IMAGEMANAGER->findImage("map")->render(getMemDC(), 0, 0);
 	//map->render(getMemDC(), 0, 0);
-	
-	_mManager->render();
-	_player->render();
+
 	_eManager->render();
 	_bManager->render();
-
+	_mManager->render();
+	_player->render();
 	//==================================================
 	CAMERAMANAGER->render(this->getBackBuffer(), getHDC());
 }

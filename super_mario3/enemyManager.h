@@ -44,6 +44,7 @@ public:
 	void flowerCollison();
 
 	void flowerBulletFire();
+	void flowerMoveHead();
 
 	void setPlayerMemeoryAddressLink(player* p) { _player = p; }
 };

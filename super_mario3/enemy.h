@@ -68,5 +68,8 @@ public:
 
 	void setIsShell(bool b) { _isShell = b; }
 	bool getIsShell() { return _isShell; }
+
+	void setIsVisible(bool b) { _isVisible = b; }
+	bool getIsVisible() { return _isVisible; }
 };
 

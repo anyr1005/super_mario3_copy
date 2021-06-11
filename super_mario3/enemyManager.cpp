@@ -60,7 +60,9 @@ void enemyManager::update()
 	}
 	goombaCollison();
 	troopaCollison();
+	flowerCollison();
 	flowerBulletFire();
+	flowerMoveHead();
 	_bullet->update();
 }
 
@@ -281,6 +283,24 @@ void enemyManager::troopaCollison()
 
 void enemyManager::flowerCollison()
 {
+	for (_viFlower = _vFlower.begin(); _viFlower != _vFlower.end(); ++_viFlower)
+	{
+		RECT flowerRangeRect = (*_viFlower)->getCollisonRange();
+		RECT playerRect = _player->getRect();
+
+		if (playerRect.left >= flowerRangeRect.left && playerRect.right <= flowerRangeRect.right
+			&&playerRect.top >= flowerRangeRect.top && playerRect.bottom <= flowerRangeRect.bottom)
+		{
+			(*_viFlower)->setIsVisible(false);
+
+		}
+		else
+		{
+			(*_viFlower)->setIsVisible(true);
+		}
+	}
+
+	
 }
 
 void enemyManager::flowerBulletFire()
@@ -289,9 +309,22 @@ void enemyManager::flowerBulletFire()
 	{
 		if ((*_viFlower)->bulletCountFire())
 		{
-			float angle = getAngle((*_viFlower)->getX(), (*_viFlower)->getY(), _player->getX(), _player->getY());
-			_bullet->fire((*_viFlower)->getX(), (*_viFlower)->getY(), angle, 4.0f);
+			if ((*_viFlower)->getIsVisible())
+			{
+				float angle = getAngle((*_viFlower)->getX(), (*_viFlower)->getY(), _player->getX(), _player->getY());
+				_bullet->fire((*_viFlower)->getX(), (*_viFlower)->getY(), angle, 4.0f);
+			}
+			(*_viFlower)->setState(RIGHT_WALK);
 		}
+	}
+}
+
+void enemyManager::flowerMoveHead()
+{
+
+	//플레이어 따라가는 머리 움직임 처리
+	for (_viFlower = _vFlower.begin(); _viFlower != _vFlower.end(); ++_viFlower)
+	{
 		if (_player->getX() < (*_viFlower)->getX())
 		{
 			if (_player->getY() < (*_viFlower)->getY())
