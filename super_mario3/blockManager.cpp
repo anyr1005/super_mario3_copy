@@ -8,11 +8,17 @@ HRESULT blockManager::init()
 	IMAGEMANAGER->addFrameImage("coin", "img/block/coin.bmp", 168, 48, 4, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("q_change", "img/block/question_box_change.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("q_change_complete", "img/block/question_box_change_complete.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("mushroom", "img/item/mushroom.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("leaf", "img/item/leaf.bmp", 48, 42, true, RGB(255, 0, 255));
+
 	_coin = new coin;
 	_coin->init();
 
 	_mushroom = new mushroom;
 	_mushroom->init();
+
+	_leaf = new leaf;
+	_leaf->init();
 
 	setQuestionBlock();
 	setGoldenBlock();
@@ -26,7 +32,7 @@ void blockManager::release()
 
 void blockManager::update()
 {
-	
+
 	for (_viQBlock = _vQBlock.begin(); _viQBlock != _vQBlock.end(); ++_viQBlock)
 	{
 		if (!(*_viQBlock)->getIsFire() && (*_viQBlock)->getIsCrashed())
@@ -35,7 +41,7 @@ void blockManager::update()
 			if ((*_viQBlock)->getItem() == MUSHROOM)
 			{
 				//½´ÆÛ¹ö¼¸
-				_mushroom->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, false);
+				_mushroom->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, _isRight);
 				(*_viQBlock)->setIsFire(true);
 			}
 		}
@@ -49,16 +55,25 @@ void blockManager::update()
 	{
 		(*_viCoinBlock)->update();
 	}
-	
+
 	_coin->update();
 	_mushroom->update();
+	_leaf->update();
+
 	mushroomCollision();
+
+	if (KEYMANAGER->isOnceKeyDown('A'))
+	{
+		_leaf->fire(600, BACKGROUNDY - 216);
+	}
 }
 
 void blockManager::render()
 {
 	_coin->render();
 	_mushroom->render();
+	_leaf->render();
+
 	for (_viQBlock = _vQBlock.begin(); _viQBlock != _vQBlock.end(); ++_viQBlock)
 	{
 		(*_viQBlock)->render();

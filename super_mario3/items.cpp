@@ -107,7 +107,7 @@ void coin::move()
 
 		}
 		_viCoin->rc = RectMakeCenter(_viCoin->x, _viCoin->y, _viCoin->itemImage->getFrameWidth(), _viCoin->itemImage->getFrameHeight());
-	
+
 		//코인이 점프하다 어느정도 위치까지 내려오면 멈춤
 		if (_viCoin->fireY - _viCoin->y < 100 && _viCoin->jumpPower < 0)
 		{
@@ -115,7 +115,7 @@ void coin::move()
 			_viCoin->jumpPower = 0;
 			_viCoin->isStop = true;
 		}
-	
+
 		//이펙트가 한번 실행되고 나면 삭제
 		if (_viCoin->effectImage->getFrameX() >= _viCoin->effectImage->getMaxFrameX())
 		{
@@ -139,12 +139,7 @@ HRESULT mushroom::init()
 
 void mushroom::release()
 {
-	for (_viMushroom = _vMushroom.begin(); _viMushroom != _vMushroom.end(); ++_viMushroom)
-	{
-		SAFE_RELEASE(_viMushroom->itemImage);
-		SAFE_DELETE(_viMushroom->itemImage);
-	}
-	_vMushroom.clear();
+
 }
 
 void mushroom::update()
@@ -172,13 +167,13 @@ void mushroom::fire(float x, float y, bool isRight)
 	//버섯 생성 및 vector에 담음
 	tagItem item;
 	ZeroMemory(&item, sizeof(tagItem));
-	item.itemImage = new image;
-	item.itemImage->init("img/item/mushroom.bmp", 48, 48, true, RGB(255, 0, 255));
+	item.itemImage = IMAGEMANAGER->findImage("mushroom");
 	item.x = item.fireX = x;
 	item.y = item.fireY = y;
 	item.isOnGround = false;
 	item.state = ITEM_UP;
-	item.fallPower = 4.0f;
+	item.fallSpeed = 4.0f;
+	item.isRight = isRight;
 	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getWidth(), item.itemImage->getHeight());
 
 	_vMushroom.push_back(item);
@@ -207,21 +202,28 @@ void mushroom::move()
 		if (_viMushroom->fireY - _viMushroom->y > _viMushroom->itemImage->getHeight() && _viMushroom->state == ITEM_UP)
 		{
 			_viMushroom->y = _viMushroom->fireY - _viMushroom->itemImage->getHeight();
-			_viMushroom->state = ITEM_RIGHT;
+			if (_viMushroom->isRight)
+			{
+				_viMushroom->state = ITEM_RIGHT;
+			}
+			else
+			{
+				_viMushroom->state = ITEM_LEFT;
+			}
 		}
 		if (!_viMushroom->isOnGround && _viMushroom->state != ITEM_UP) //공중이라면
 		{
-			_viMushroom->y += _viMushroom->fallPower;
-			_viMushroom->fallPower += GRAVITY;
+			_viMushroom->y += _viMushroom->fallSpeed;
+			_viMushroom->fallSpeed += GRAVITY;
 		}
-		else if(_viMushroom->isOnGround)
+		else if (_viMushroom->isOnGround)
 		{
-			_viMushroom->fallPower = 4.0f;
+			_viMushroom->fallSpeed = 4.0f;
 		}
-		
+
 		_viMushroom->rc = RectMakeCenter(_viMushroom->x, _viMushroom->y, _viMushroom->itemImage->getWidth(), _viMushroom->itemImage->getHeight());
 
-		
+
 		//맵 밖으로 나가면 삭제
 		if (_viMushroom->y > BACKGROUNDY || _viMushroom->x <0 || _viMushroom->x>BACKGROUNDX)
 		{
@@ -231,7 +233,7 @@ void mushroom::move()
 			_viMushroom = _vMushroom.erase(_viMushroom);
 		}
 		else ++_viMushroom;
-		
+
 		//나온지 몇초 지나면 삭제되게도 구현필요
 	}
 }
@@ -239,9 +241,113 @@ void mushroom::move()
 void mushroom::removeMushroom(int arrNum)
 {
 	//삭제
-	SAFE_RELEASE(_vMushroom[arrNum].itemImage);
-	SAFE_DELETE(_vMushroom[arrNum].itemImage);
-	_vMushroom.erase(_vMushroom.begin() + arrNum );
+	_vMushroom.erase(_vMushroom.begin() + arrNum);
 }
 
 //===============================================
+
+HRESULT leaf::init()
+{
+	return S_OK;
+}
+
+void leaf::release()
+{
+
+}
+
+void leaf::update()
+{
+	move();
+}
+
+void leaf::render()
+{
+	for (_viLeaf = _vLeaf.begin(); _viLeaf != _vLeaf.end(); ++_viLeaf)
+	{
+		if (KEYMANAGER->isToggleKey(VK_TAB))
+		{
+			char str[128];
+			sprintf_s(str, "땅? %d 상태? %d", _viLeaf->isOnGround, _viLeaf->state);
+			TextOut(getMemDC(), _viLeaf->rc.left, _viLeaf->rc.top - 20, str, strlen(str));
+			Rectangle(getMemDC(), _viLeaf->rc);
+		}
+		_viLeaf->itemImage->render(getMemDC(), _viLeaf->rc.left, _viLeaf->rc.top);
+	}
+}
+
+void leaf::fire(float x, float y)
+{
+	//나뭇잎 생성 및 vector에 담음
+	tagItem item;
+	ZeroMemory(&item, sizeof(tagItem));
+	item.itemImage = IMAGEMANAGER->findImage("leaf");
+	item.x = item.fireX = x;
+	item.y = item.fireY = y;
+	item.isOnGround = false;
+	item.state = ITEM_UP;
+	item.fallSpeed = 4.0f;
+	item.isStart = true;
+	item.angle = PI/2;
+	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getWidth(), item.itemImage->getHeight());
+
+	_vLeaf.push_back(item);
+}
+
+void leaf::move()
+{
+	for (_viLeaf = _vLeaf.begin(); _viLeaf != _vLeaf.end(); ++_viLeaf)
+	{
+		switch (_viLeaf->state)
+		{
+		case ITEM_UP:
+			_viLeaf->y -= 5;
+			break;
+		case ITEM_LEFT:
+			_viLeaf->angle += 0.1f;
+			_viLeaf->x += cosf(_viLeaf->angle)*_viLeaf->fallSpeed;
+			_viLeaf->y -= -sinf(_viLeaf->angle) * _viLeaf->fallSpeed;
+			
+			break;
+		case ITEM_RIGHT:
+			_viLeaf->angle -= 0.1f;
+			_viLeaf->x += cosf(_viLeaf->angle)*_viLeaf->fallSpeed;
+			_viLeaf->y -= -sinf(_viLeaf->angle) * _viLeaf->fallSpeed;
+		
+			break;
+		}
+		if (_viLeaf->y < _viLeaf->fireY - (_viLeaf->itemImage->getHeight() * 2.5f))
+		{
+			_viLeaf->state = ITEM_RIGHT;
+		}
+
+		if (_viLeaf->x < _viLeaf->fireX + 50 && _viLeaf->state!=ITEM_UP && !_viLeaf->isStart)
+		{
+			_viLeaf->x = _viLeaf->fireX + 50;
+			_viLeaf->state = ITEM_RIGHT;
+		}
+		else if (_viLeaf->x > _viLeaf->fireX + 50 + _viLeaf->itemImage->getWidth() * 1.5f && !_viLeaf->isStart)
+		{
+			_viLeaf->x = _viLeaf->fireX + 50 + _viLeaf->itemImage->getWidth() * 1.5f;
+			_viLeaf->state = ITEM_LEFT;
+			
+		}
+
+		if (_viLeaf->isStart)
+		{
+			if (_viLeaf->x > _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.5f)
+			{
+				_viLeaf->x = _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.5f;
+				_viLeaf->isStart = false;
+				_viLeaf->state = ITEM_LEFT;
+			}
+		}
+
+		_viLeaf->rc = RectMakeCenter(_viLeaf->x, _viLeaf->y, _viLeaf->itemImage->getWidth(), _viLeaf->itemImage->getHeight());
+	}
+}
+
+void leaf::removeLeaf(int arrNum)
+{
+	_vLeaf.erase(_vLeaf.begin() + arrNum);
+}

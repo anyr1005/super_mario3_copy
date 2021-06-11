@@ -30,9 +30,12 @@ private:
 
 	coin* _coin;
 	mushroom* _mushroom;
+	leaf* _leaf;
 
 	//item과 땅 충돌을 위해 mapManager 참조
 	mapManager* _mManager;
+
+	bool _isRight; //오른쪽 충돌인지 왼쪽 충돌인지(버섯과 나뭇잎 움직이는 방향 위해서)
 
 public :
 	virtual HRESULT init();
@@ -57,6 +60,6 @@ public :
 	coin* getCoin() { return _coin; }
 	mushroom* getMushroom() { return _mushroom; }
 
-
+	void setIsRight(bool b) { _isRight = b; }
 };
 

@@ -43,11 +43,11 @@ HRESULT player::init()
 
 	_shape = BASIC;
 
-	//_x = 100;
-	//_y = BACKGROUNDY - 72;
+	_x = 100;
+	_y = BACKGROUNDY - 72;
 
-	_x = 1649;
-	_y = 890;
+	//_x = 1649;
+	//_y = 890;
 
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 
@@ -82,12 +82,6 @@ void player::update()
 	_state->update(this);
 	
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
-
-	if (KEYMANAGER->isOnceKeyDown('A'))
-	{
-		_state = new playerDie;
-		_state->enter(this);
-	}
 }
 
 void player::render()
@@ -287,6 +281,14 @@ void player::collisonQBlock()
 				{
 					if (!_bManager->getQBlock()[i]->getIsCrashed())
 					{
+						if (_x < (qBlock.right + qBlock.left)/2)
+						{
+							_bManager->setIsRight(true);
+						}
+						else
+						{
+							_bManager->setIsRight(false);
+						}
 						_bManager->getQBlock()[i]->setIsChange(true);
 						//ÄÚÀÎ
 						if (_bManager->getQBlock()[i]->getItem() == COIN)

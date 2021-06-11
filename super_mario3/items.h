@@ -30,8 +30,12 @@ struct tagItem
 	RECT rc;
 	float x, y; // 중점 좌표
 	float fireX, fireY; //처음 좌표
+	float fallSpeed;
+	float angle; //각도
+	bool isRight;
 	bool isOnGround; //땅 위에 있는지 확인
-	float fallPower;
+	bool isStart; //처음 발사되고의 상태인지
+
 	ItemState state;
 };
 
@@ -60,8 +64,6 @@ class mushroom : public gameNode
 private:
 	vector<tagItem> _vMushroom;
 	vector<tagItem>::iterator _viMushroom;
-
-	const char* _imageName;
 
 public:
 	HRESULT init();
@@ -93,7 +95,7 @@ private:
 	const char* _imageName;
 
 public:
-	HRESULT init(const char* imageName);
+	HRESULT init();
 	virtual void release();
 	virtual void update();
 	virtual void render();

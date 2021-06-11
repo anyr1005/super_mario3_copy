@@ -31,9 +31,9 @@ HRESULT enemyManager::init()
 	IMAGEMANAGER->addImage("fire_red_right_down", "img/piranha_plant/fire_red_right_down.bmp", 48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255));
 
-	setGoomba();
-	setKTroopa();
-	setFlower();
+	//setGoomba();
+	//setKTroopa();
+	//setFlower();
 
 	_bullet = new bullet;
 	_bullet->init();
