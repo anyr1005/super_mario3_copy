@@ -123,10 +123,9 @@ void goomba::move()
 		}
 	}
 
-	if (_y >= _spawnY && _state != ENEMY_DIE)
+	if ((_state == ENEMY_LEFT_JUMP || _state == ENEMY_RIGHT_JUMP) && _isOnGround)
 	{
 		_jumpCount++;
-		_y = _spawnY;
 		if (_jumpCount % 3 == 0)
 		{
 			_jumpPower = 5.0f;

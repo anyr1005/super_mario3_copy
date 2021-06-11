@@ -15,6 +15,7 @@ HRESULT enemy::init(EnemyState es, POINT position)
 	_y = _spawnY = position.y;
 
 	_isVisible = true;
+	_isOnGround = false;
 
 	return S_OK;
 }
@@ -26,6 +27,20 @@ void enemy::release()
 
 void enemy::update()
 {
+	if (_state == ENEMY_LEFT_WALK || _state == ENEMY_RIGHT_WALK)
+	{
+		if (!_isOnGround)
+		{
+			_y -= _jumpPower;
+			_jumpPower -= GRAVITY;
+		}
+		/*
+		else
+		{
+			_jumpPower = -4.0f;
+		}
+		*/
+	}
 	move();
 }
 

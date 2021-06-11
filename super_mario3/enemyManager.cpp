@@ -31,7 +31,7 @@ HRESULT enemyManager::init()
 	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255));
 
 	setGoomba();
-	setKTroopa();
+	//setKTroopa();
 	setFlower();
 
 	_bullet = new bullet;
@@ -59,6 +59,7 @@ void enemyManager::update()
 	{
 		(*_viFlower)->update();
 	}
+	
 	flowerCollison();
 	flowerBulletFire();
 	flowerMoveHead();
@@ -90,7 +91,7 @@ void enemyManager::setGoomba()
 {
 	goomba* g;
 	g = new goomba;
-	g->init(ENEMY_LEFT_JUMP, PointMake(700, 1226));
+	g->init(ENEMY_LEFT_JUMP, PointMake(950, 980));
 	_vGoomba.push_back(g);
 
 	g = new goomba;
@@ -117,19 +118,6 @@ void enemyManager::setFlower()
 	p->init(ENEMY_IDLE, PointMake(1104, BACKGROUNDY - 168));
 	_vFlower.push_back(p);
 
-}
-
-void enemyManager::removeGoomba(int arrNum)
-{
-
-}
-
-void enemyManager::removeKTroopa(int arrNum)
-{
-}
-
-void enemyManager::removeFlower(int arrNum)
-{
 }
 
 void enemyManager::goombaCollison()
@@ -178,6 +166,82 @@ void enemyManager::goombaCollison()
 				{
 					_player->setPlayerState(new playerDie);
 					_player->getPlayerState()->enter(_player);
+				}
+			}
+		}
+	}
+
+	//땅과 충돌
+	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
+	{
+		(*_viGoomba)->setIsOnGround(false);
+		for (int i = 0; i < _mManager->getGround().size(); i++)
+		{
+			RECT goomba = (*_viGoomba)->getRect();
+			RECT ground = _mManager->getGround()[i];
+			RECT temp;
+			if (goomba.bottom == ground.top && goomba.right > ground.left && ground.left < ground.right)
+			{
+				(*_viGoomba)->setIsOnGround(true);
+				break;
+			}
+			if (IntersectRect(&temp, &goomba, &ground))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				if (width > height)
+				{
+					//위에서 충돌
+					if ((*_viGoomba)->getY() < (ground.bottom + ground.top) / 2)
+					{
+						(*_viGoomba)->setY((*_viGoomba)->getY() - height);
+						(*_viGoomba)->setIsOnGround(true);
+					}
+					//땅과는 아래에서 충돌 없음
+				}
+				else
+				{
+					if ((*_viGoomba)->getX() < (ground.left + ground.right) / 2)
+					{
+						(*_viGoomba)->setX((*_viGoomba)->getX() - width);
+						(*_viGoomba)->setState(ENEMY_LEFT_WALK);
+					}
+					else
+					{
+						(*_viGoomba)->setX((*_viGoomba)->getX() + width);
+						(*_viGoomba)->setState(ENEMY_RIGHT_WALK);
+					}
+				}
+			}
+		}
+	}
+
+	//object 와 충돌
+	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
+	{
+		for (int i = 0; i < _mManager->getObject().size(); i++)
+		{
+			RECT goomba = (*_viGoomba)->getRect();
+			RECT object = _mManager->getObject()[i];
+			RECT temp;
+			if (goomba.bottom == object.top && goomba.right > object.left && object.left < object.right)
+			{
+				(*_viGoomba)->setIsOnGround(true);
+				break;
+			}
+			if (IntersectRect(&temp, &goomba, &object))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				if (width > height)
+				{
+					//위에서 충돌
+					if ((*_viGoomba)->getY() < (object.bottom + object.top) / 2)
+					{
+						(*_viGoomba)->setY((*_viGoomba)->getY() - height);
+						(*_viGoomba)->setIsOnGround(true);
+					}
+					//object와는 아래에서 충돌 없음
 				}
 			}
 		}

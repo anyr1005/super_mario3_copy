@@ -5,6 +5,8 @@ HRESULT piranha_plant::init(EnemyState es, POINT position)
 {
 	enemy::init(es, position);
 
+	_isOnGround = true;
+
 	_image = IMAGEMANAGER->findImage("fire_red_left_down");
 	_bodyImage = IMAGEMANAGER->findImage("long_leaf_green");
 	_rc = RectMakeCenter(_x, _y, _image->getWidth(), _image->getHeight());

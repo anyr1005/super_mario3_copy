@@ -4,9 +4,13 @@
 #include "goomba.h"
 #include "bullet.h"
 #include <vector>
+
 #include "player.h"
+#include "mapManager.h"
+#include "blockManager.h"
 
 class player;
+class mapManager;
 
 class enemyManager : public gameNode
 {
@@ -15,16 +19,24 @@ private:
 	typedef vector<enemy*>::iterator	viEnemy;
 
 private:
+	//±À¹Ù
 	vEnemy _vGoomba;
 	viEnemy _viGoomba;
+	
+	//¾û±Ý¾û±Ý
 	vEnemy _vKTroopa;
 	viEnemy _viKTroopa;
+	
+	//»µ²ûÇÃ¶ó¿ö
 	vEnemy _vFlower;
 	viEnemy _viFlower;
 
 	bullet* _bullet;
 
+	//Ãæµ¹ À§ÇÑ ÂüÁ¶
 	player* _player;
+	mapManager* _mManager;
+	blockManager* _bManager;
 
 public:
 	virtual HRESULT init();
@@ -36,10 +48,6 @@ public:
 	void setKTroopa();
 	void setFlower();
 
-	void removeGoomba(int arrNum);
-	void removeKTroopa(int arrNum);
-	void removeFlower(int arrNum);
-
 	void goombaCollison();
 	void troopaCollison();
 	void flowerCollison();
@@ -48,5 +56,7 @@ public:
 	void flowerMoveHead();
 
 	void setPlayerMemeoryAddressLink(player* p) { _player = p; }
+	void setMapManagerMemoryAddressLink(mapManager* m) { _mManager = m; }
+	void setBlockManagerMemoryAddressLink(blockManager* b) { _bManager = b; }
 };
 

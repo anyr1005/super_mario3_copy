@@ -43,7 +43,7 @@ HRESULT player::init()
 
 	_shape = BASIC;
 
-	_x = 100;
+	_x = 900;
 	_y = BACKGROUNDY - 72;
 
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());

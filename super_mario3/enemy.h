@@ -30,7 +30,7 @@ protected:
 
 	float _jumpPower;
 
-	bool _isOnGround;
+	bool _isOnGround; //땅 위에 있는지 확인
 
 	RECT _collisonRange; //충돌 범위 렉트
 
@@ -71,5 +71,7 @@ public:
 
 	void setIsVisible(bool b) { _isVisible = b; }
 	bool getIsVisible() { return _isVisible; }
+
+	void setIsOnGround(bool b) { _isOnGround = b; }
 };
 
