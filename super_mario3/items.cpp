@@ -177,7 +177,7 @@ void mushroom::fire(float x, float y, bool isRight)
 	item.x = item.fireX = x;
 	item.y = item.fireY = y;
 	item.isOnGround = false;
-	item.state = UP;
+	item.state = ITEM_UP;
 	item.fallPower = 4.0f;
 	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getWidth(), item.itemImage->getHeight());
 
@@ -191,25 +191,25 @@ void mushroom::move()
 
 		switch (_viMushroom->state)
 		{
-		case UP:
+		case ITEM_UP:
 			_viMushroom->y -= 2;
 			break;
-		case LEFT:
+		case ITEM_LEFT:
 			_viMushroom->x -= ITEMSPEED;
 			break;
-		case RIGHT:
+		case ITEM_RIGHT:
 			_viMushroom->x += ITEMSPEED;
 			break;
 		default:
 			break;
 		}
 
-		if (_viMushroom->fireY - _viMushroom->y > _viMushroom->itemImage->getHeight() && _viMushroom->state == UP)
+		if (_viMushroom->fireY - _viMushroom->y > _viMushroom->itemImage->getHeight() && _viMushroom->state == ITEM_UP)
 		{
 			_viMushroom->y = _viMushroom->fireY - _viMushroom->itemImage->getHeight();
-			_viMushroom->state = RIGHT;
+			_viMushroom->state = ITEM_RIGHT;
 		}
-		if (!_viMushroom->isOnGround && _viMushroom->state != UP) //공중이라면
+		if (!_viMushroom->isOnGround && _viMushroom->state != ITEM_UP) //공중이라면
 		{
 			_viMushroom->y += _viMushroom->fallPower;
 			_viMushroom->fallPower += GRAVITY;

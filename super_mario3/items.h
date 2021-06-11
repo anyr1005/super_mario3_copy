@@ -7,9 +7,9 @@
 
 enum ItemState
 {
-	UP,
-	LEFT,
-	RIGHT
+	ITEM_UP,
+	ITEM_LEFT,
+	ITEM_RIGHT
 };
 
 struct tagCoin

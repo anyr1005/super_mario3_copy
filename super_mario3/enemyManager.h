@@ -25,6 +25,7 @@ private:
 	bullet* _bullet;
 
 	player* _player;
+
 public:
 	virtual HRESULT init();
 	virtual void release();

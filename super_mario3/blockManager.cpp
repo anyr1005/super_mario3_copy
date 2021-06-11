@@ -266,7 +266,7 @@ void blockManager::mushroomCollision()
 {
 	for (int i = 0; i < _mushroom->getVMushroom().size(); i++)
 	{
-		if (_mushroom->getVMushroom()[i].state == UP) continue;
+		if (_mushroom->getVMushroom()[i].state == ITEM_UP) continue;
 
 		RECT temp;
 		RECT mushroomRect = _mushroom->getVMushroom()[i].rc;
@@ -301,12 +301,12 @@ void blockManager::mushroomCollision()
 					if (_mushroom->getVMushroom()[i].x < (qBlock.left + qBlock.right) / 2)
 					{
 						_mushroom->setX(i, _mushroom->getVMushroom()[i].x - width);
-						_mushroom->setState(i, LEFT);
+						_mushroom->setState(i, ITEM_LEFT);
 					}
 					else //오른쪽 충돌
 					{
 						_mushroom->setX(i, _mushroom->getVMushroom()[i].x + width);
-						_mushroom->setState(i, RIGHT);
+						_mushroom->setState(i, ITEM_RIGHT);
 					}
 				}
 			}
@@ -340,12 +340,12 @@ void blockManager::mushroomCollision()
 					if (_mushroom->getVMushroom()[i].x < (ground.left + ground.right) / 2)
 					{
 						_mushroom->setX(i, _mushroom->getVMushroom()[i].x - width);
-						_mushroom->setState(i, LEFT);
+						_mushroom->setState(i, ITEM_LEFT);
 					}
 					else //오른쪽 충돌
 					{
 						_mushroom->setX(i, _mushroom->getVMushroom()[i].x + width);
-						_mushroom->setState(i, RIGHT);
+						_mushroom->setState(i, ITEM_RIGHT);
 					}
 				}
 			}
@@ -407,13 +407,13 @@ void blockManager::mushroomCollision()
 					if (_mushroom->getVMushroom()[i].x < (head.left + head.right) / 2)
 					{
 						_mushroom->setX(i, _mushroom->getVMushroom()[i].x - width);
-						_mushroom->setState(i, LEFT);
+						_mushroom->setState(i, ITEM_LEFT);
 						break;
 					}
 					else //오른쪽 충돌
 					{
 						_mushroom->setX(i, _mushroom->getVMushroom()[i].x + width);
-						_mushroom->setState(i, RIGHT);
+						_mushroom->setState(i, ITEM_RIGHT);
 						break;
 					}
 				}
@@ -440,13 +440,13 @@ void blockManager::mushroomCollision()
 					if (_mushroom->getVMushroom()[i].y < (body.top + body.bottom) / 2)
 					{
 						_mushroom->setX(i, _mushroom->getVMushroom()[i].x - width);
-						_mushroom->setState(i, LEFT);
+						_mushroom->setState(i, ITEM_LEFT);
 						break;
 					}
 					else //오른쪽 충돌
 					{
 						_mushroom->setX(i, _mushroom->getVMushroom()[i].x + width);
-						_mushroom->setState(i, RIGHT);
+						_mushroom->setState(i, ITEM_RIGHT);
 						break;
 					}
 				}

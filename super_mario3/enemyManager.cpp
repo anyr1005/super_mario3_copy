@@ -333,22 +333,31 @@ void enemyManager::flowerCollison()
 {
 	for (_viFlower = _vFlower.begin(); _viFlower != _vFlower.end(); ++_viFlower)
 	{
+		if (_player->getPlayerState()->getStateName() == PLAYER_DIE) break;
 		RECT flowerRangeRect = (*_viFlower)->getCollisonRange();
+		RECT flowerRect = (*_viFlower)->getRect();
 		RECT playerRect = _player->getRect();
 
+		//꽃 나오지 않는 범위 확인용
 		if (playerRect.left >= flowerRangeRect.left && playerRect.right <= flowerRangeRect.right
 			&&playerRect.top >= flowerRangeRect.top && playerRect.bottom <= flowerRangeRect.bottom)
 		{
 			(*_viFlower)->setIsVisible(false);
-
 		}
 		else
 		{
 			(*_viFlower)->setIsVisible(true);
 		}
+
+		//플레이어 꽃과 충돌
+		RECT temp;
+		if (IntersectRect(&temp, &flowerRect, &playerRect))
+		{
+			_player->setPlayerState(new playerDie);
+			_player->getPlayerState()->enter(_player);
+		}
 	}
 
-	
 }
 
 void enemyManager::flowerBulletFire()
