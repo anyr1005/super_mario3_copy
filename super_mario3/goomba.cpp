@@ -8,6 +8,10 @@ HRESULT goomba::init(EnemyState es, POINT position)
 	_jumpCount = 1;
 	_jumpPower = 2.0f;
 
+	_isVisible = true;
+
+	_firstState = es;
+
 	if (_state == LEFT_WALK || _state == RIGHT_WALK)
 	{
 		_image = IMAGEMANAGER->findImage("goomba_walk");
@@ -33,6 +37,10 @@ void goomba::move()
 	else if (_state == LEFT_JUMP || _state == RIGHT_JUMP)
 	{
 		_image = IMAGEMANAGER->findImage("goomba_wing");
+	}
+	else if (_state == DIE)
+	{
+		_image = IMAGEMANAGER->findImage("goomba_crush");
 	}
 
 	switch (_state)
@@ -67,6 +75,25 @@ void goomba::move()
 		_count = 0;
 	}
 
+	if (_state == DIE)
+	{
+		if (!_isVisible && CAMERAMANAGER->getCameraLEFT() > _spawnX + _image->getFrameWidth() / 2)
+		{
+			_x = _spawnX;
+			_y = _spawnY;
+			_state = _firstState;
+			_isVisible = true;
+		}
+		else
+		{
+			_deadCount++;
+			if (_deadCount % 20 == 0)
+			{
+				_isVisible = false;
+			}
+		}
+	}
+
 	/*
 		=====================================
 		나중에 지워주기(충돌처리 후)
@@ -98,7 +125,7 @@ void goomba::move()
 		}
 	}
 
-	if (_y >= _spawnY)
+	if (_y >= _spawnY && _state != DIE)
 	{
 		_jumpCount++;
 		_y = _spawnY;
@@ -113,13 +140,18 @@ void goomba::move()
 		}
 	}
 	//=====================================
+
 	_rc = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
 	_collisonRange = RectMakeCenter(_x, _rc.bottom - 24, 48, 48);
 }
 
 void goomba::draw()
 {
-	_image->frameRender(getMemDC(), _rc.left, _rc.top, _currentFrameX, _currentFrameY);
+	if (_isVisible)
+	{
+		_image->frameRender(getMemDC(), _rc.left, _rc.top, _currentFrameX, _currentFrameY);
+	}
+
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		Rectangle(getMemDC(), _collisonRange);

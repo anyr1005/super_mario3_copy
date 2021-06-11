@@ -97,6 +97,9 @@ public:
 	bool getIsOnGround() { return _isOnGround; }
 
 	PlayerShape getPlayerShape() { return _shape; }
+
+	playerState* getPlayerState() { return _state; }
+	void setPlayerState(playerState* state) { _state = state; }
 	//============================================
 };
 

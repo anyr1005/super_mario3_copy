@@ -2,6 +2,7 @@
 #include "singletonBase.h"
 #include "image.h"
 
+
 class cameraManager : public singletonBase<cameraManager>
 {
 private:
@@ -48,10 +49,12 @@ public:
 	/*
 	void setCameraX(float x) { _cameraBuffer->setX(x); }
 	void setCameraY(float y) { _cameraBuffer->setY(y); }
-
-	float getCameraX() { return _cameraBuffer->getX(); }
-	float getCameraY() { return _cameraBuffer->getY(); }
 	*/
+	float getCameraLEFT() { return _cameraBuffer->getX(); }
+	float getCameraTOP() { return _cameraBuffer->getY(); }
+	
+	float getCameraRIGHT();
+	float getCameraBOTTOM();
 
 	float getCameraCenterX() { return _cameraBuffer->getCenterX(); }
 	float getCameraCenterY() { return _cameraBuffer->getCenterY(); }

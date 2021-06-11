@@ -1,13 +1,13 @@
 #pragma once
 #include "gameNode.h"
 
-#define ENEMYSPEED 3
+#define ENEMYSPEED 4
 
 //enemy는 jump인지 walk인지에 따라 이미지만 다르게 주면 됨
 enum EnemyState
 {
-	LEFT_WALK,
-	RIGHT_WALK,
+	LEFT_WALK, //UP WALK로도 쓰임(뻐끔 플라워)
+	RIGHT_WALK, //DOWN WALK로도 쓰임(뻐끔 플라워)
 	LEFT_JUMP,
 	RIGHT_JUMP,
 	IDLE,
@@ -32,6 +32,12 @@ protected:
 
 	bool _isOnGround;
 
+	RECT _collisonRange; //충돌 범위 렉트
+
+	bool _isShell; //엉금엉금 상태가 등껍질인지
+
+	bool _isVisible; //죽은 상태여서 보이지 않게 할건지
+
 	EnemyState _state;
 
 public:
@@ -43,8 +49,24 @@ public:
 
 	inline RECT getRect() { return _rc; }
 
-	virtual void move() {};
+	virtual void move() {}; //에너미 움직임
 	virtual void draw() {};
 
+	virtual bool bulletCountFire() { return false;  };
+
+	RECT getCollisonRange() { return _collisonRange; }
+
+	float getX() { return _x; }
+	float getY() { return _y; }
+	void setX(float x) { _x = x; }
+	void setY(float y) { _y = y; }
+
+	EnemyState getState() { return _state; }
+
+	void setState(EnemyState es) { _state = es; } //에너미 상태 set
+	void setImage(string s) { _image = IMAGEMANAGER->findImage(s); }
+
+	void setIsShell(bool b) { _isShell = b; }
+	bool getIsShell() { return _isShell; }
 };
 

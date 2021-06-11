@@ -7,38 +7,61 @@ HRESULT koopa_troopa::init(EnemyState es, POINT position)
 	_jumpPower = 6.0f;
 	_isShell = false;
 
-	if (_state == LEFT_WALK || _state == RIGHT_WALK)
+	switch (_state)
 	{
+	case LEFT_WALK:
+	case RIGHT_WALK:
 		_image = IMAGEMANAGER->findImage("green_walk");
-	}
-	else if (_state == LEFT_JUMP || _state == RIGHT_JUMP)
-	{
+		break;
+	case LEFT_JUMP:
+	case RIGHT_JUMP:
 		_image = IMAGEMANAGER->findImage("green_wing");
+		break;
 	}
 
 	_rc = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
-
+	_collisonRange = RectMakeCenter(_rc.right - 13.5f, _rc.bottom - 36, 27, 36);
 	return E_NOTIMPL;
 }
 
 void koopa_troopa::move()
 {
-	if (_state == LEFT_WALK || _state == RIGHT_WALK)
+	if (!_isShell)
 	{
-		_image = IMAGEMANAGER->findImage("green_walk");
+		//이미지 설정
+		switch (_state)
+		{
+		case LEFT_WALK:
+		case RIGHT_WALK:
+			_image = IMAGEMANAGER->findImage("green_walk");
+			break;
+		case LEFT_JUMP:
+		case RIGHT_JUMP:
+			_image = IMAGEMANAGER->findImage("green_wing");
+			break;
+		}
 	}
-	else if (_state == LEFT_JUMP || _state == RIGHT_JUMP)
+	else
 	{
-		_image = IMAGEMANAGER->findImage("green_wing");
+		_image = IMAGEMANAGER->findImage("green_shell");
 	}
+	
 
+	//움직임 설정
 	switch (_state)
 	{
 	case LEFT_WALK:
-		_x -= ENEMYSPEED;
+		if (_isShell)
+			_x -= 7;
+		else
+			_x -= ENEMYSPEED;
+		
 		break;
 	case RIGHT_WALK:
-		_x += ENEMYSPEED;
+		if (_isShell)
+			_x += 7;
+		else
+			_x += ENEMYSPEED;
 		break;
 	case LEFT_JUMP:
 		_y -= _jumpPower;
@@ -92,28 +115,58 @@ void koopa_troopa::move()
 	}
 	//=====================================
 	_rc = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
-
-	if (_state == LEFT_JUMP || _state == LEFT_WALK)
+	
+	//프레임 및 충돌 렉트 설정
+	switch (_state)
 	{
+	case LEFT_WALK:
+	case LEFT_JUMP:
+		_collisonRange = RectMakeCenter(_rc.right - 13.5f, _rc.bottom - 35, 27, 35);
 		_currentFrameY = 0;
+		break;
+	case RIGHT_WALK:
+	case RIGHT_JUMP:
+		_collisonRange = RectMakeCenter(_rc.left + 13.5f, _rc.bottom - 35, 27, 35);
+		if (_isShell)
+		{
+			_currentFrameY = 0;
+		}
+		else
+		{
+			_currentFrameY = 1;
+		}
+		break;
+	case IDLE:
+		_collisonRange = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
+		_currentFrameY = 0;
+		break;
+	}
+
+	if (_isShell && _state==IDLE) 
+	{
+		_currentFrameX = 0;
 	}
 	else
 	{
-		_currentFrameY = 1;
-	}
+		_count++;
+		if (_count % 10 == 0)
+		{
+			if (_currentFrameX >= _image->getMaxFrameX()) _currentFrameX = 0;
+			else _currentFrameX++;
+			_image->setFrameX(_currentFrameX);
 
-	_count++;
-	if (_count % 10 == 0)
-	{
-		if (_currentFrameX >= _image->getMaxFrameX()) _currentFrameX = 0;
-		else _currentFrameX++;
-		_image->setFrameX(_currentFrameX);
-
-		_count = 0;
+			_count = 0;
+		}
 	}
 }
 
 void koopa_troopa::draw()
 {
 	_image->frameRender(getMemDC(), _rc.left, _rc.top, _currentFrameX, _currentFrameY);
+	/*
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		Rectangle(getMemDC(), _collisonRange);
+	}
+	*/
 }

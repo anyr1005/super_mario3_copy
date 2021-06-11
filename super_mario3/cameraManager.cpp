@@ -4,15 +4,15 @@
 void cameraManager::cameraRange()
 {
 	if (_cameraBuffer->getX() < 0) _cameraBuffer->setX(0);
-	else if (_cameraBuffer->getX() + WINSIZEX > BACKGROUNDX)_cameraBuffer->setX(BACKGROUNDX - WINSIZEX);
+	else if (_cameraBuffer->getX() + CAMERAX > BACKGROUNDX)_cameraBuffer->setX(BACKGROUNDX - CAMERAX);
 	if (_cameraBuffer->getY() < 0)_cameraBuffer->setY(0);
-	else if (_cameraBuffer->getY() + WINSIZEY > BACKGROUNDY) _cameraBuffer->setY(BACKGROUNDY - WINSIZEY);
+	else if (_cameraBuffer->getY() + CAMERAY > BACKGROUNDY) _cameraBuffer->setY(BACKGROUNDY - CAMERAY);
 }
 
 HRESULT cameraManager::init()
 {
 	_cameraBuffer = new image;
-	_cameraBuffer->init(WINSIZEX, WINSIZEY);
+	_cameraBuffer->init(CAMERAX, CAMERAY);
 	for (int i = 0; i < 2; i++)
 	{
 		x[i] = 0;
@@ -38,16 +38,16 @@ void cameraManager::render(image* backBuffer, HDC frontDC)
 		{
 			if (x[i] != 0)
 			{
-				LineMake(backDC, x[i], _cameraBuffer->getY(), x[i], _cameraBuffer->getY() + WINSIZEY);
+				LineMake(backDC, x[i], _cameraBuffer->getY(), x[i], _cameraBuffer->getY() + CAMERAY);
 			}
 			if (y[i] != 0)
 			{
-				LineMake(backDC, _cameraBuffer->getX(), y[i], _cameraBuffer->getX() + WINSIZEX, y[i]);
+				LineMake(backDC, _cameraBuffer->getX(), y[i], _cameraBuffer->getX() + CAMERAX, y[i]);
 			}
 		}
 	}
 
-	backBuffer->render(cameraDC, 0, 0, _cameraBuffer->getX(), _cameraBuffer->getY(), WINSIZEX, WINSIZEY);
+	backBuffer->render(cameraDC, 0, 0, _cameraBuffer->getX(), _cameraBuffer->getY(), CAMERAX, CAMERAY);
 	_cameraBuffer->render(frontDC, 0, 0);
 }
 
@@ -68,7 +68,7 @@ void cameraManager::updateCamera(float x, float y, float ratioX, float ratioY)
 		}
 		else
 		{
-			cX = x - ratioX * WINSIZEX;
+			cX = x - ratioX * CAMERAX;
 		}
 
 		if (y == 0.5f)
@@ -77,7 +77,7 @@ void cameraManager::updateCamera(float x, float y, float ratioX, float ratioY)
 		}
 		else
 		{
-			cY = y - ratioY * WINSIZEY;
+			cY = y - ratioY * CAMERAY;
 		}
 		setCamera(cX, cY);
 	}
@@ -93,21 +93,21 @@ void cameraManager::updateCamera(RECT& player, float ratioX, float ratioY)
 	{
 		if (ratioX < 0.5f)
 		{
-			if (player.left <= _cameraBuffer->getX() + ratioX * WINSIZEX)
+			if (player.left <= _cameraBuffer->getX() + ratioX * CAMERAX)
 			{
-				_cameraBuffer->setX(player.left - ratioX * WINSIZEX);
+				_cameraBuffer->setX(player.left - ratioX * CAMERAX);
 			}
-			if (player.right >= _cameraBuffer->getX() + WINSIZEX)
+			if (player.right >= _cameraBuffer->getX() + CAMERAX)
 			{
-				player.right = _cameraBuffer->getX() + WINSIZEX;
+				player.right = _cameraBuffer->getX() + CAMERAX;
 				player.left = player.right - width;
 			}
 		}
 		else
 		{
-			if (player.right >= _cameraBuffer->getX() + ratioX * WINSIZEX)
+			if (player.right >= _cameraBuffer->getX() + ratioX * CAMERAX)
 			{
-				_cameraBuffer->setX(player.right - ratioX * WINSIZEX);
+				_cameraBuffer->setX(player.right - ratioX * CAMERAX);
 			}
 			if (player.left <= _cameraBuffer->getX())
 			{
@@ -115,7 +115,7 @@ void cameraManager::updateCamera(RECT& player, float ratioX, float ratioY)
 				player.right = player.left + width;
 			}
 		}
-		x[0] = _cameraBuffer->getX() + ratioX * WINSIZEX;
+		x[0] = _cameraBuffer->getX() + ratioX * CAMERAX;
 		x[1] = 0;
 	}
 
@@ -123,21 +123,21 @@ void cameraManager::updateCamera(RECT& player, float ratioX, float ratioY)
 	{
 		if (ratioY < 0.5f)
 		{
-			if (player.top <= _cameraBuffer->getY() + ratioY * WINSIZEY)
+			if (player.top <= _cameraBuffer->getY() + ratioY * CAMERAY)
 			{
-				_cameraBuffer->setY(player.top - ratioY * WINSIZEY);
+				_cameraBuffer->setY(player.top - ratioY * CAMERAY);
 			}
-			if (player.bottom >= _cameraBuffer->getY() + WINSIZEY)
+			if (player.bottom >= _cameraBuffer->getY() + CAMERAY)
 			{
-				player.bottom = _cameraBuffer->getY() + WINSIZEY;
+				player.bottom = _cameraBuffer->getY() + CAMERAY;
 				player.top = player.bottom - height;
 			}
 		}
 		else
 		{
-			if (player.bottom >= _cameraBuffer->getY() + ratioY * WINSIZEY)
+			if (player.bottom >= _cameraBuffer->getY() + ratioY * CAMERAY)
 			{
-				_cameraBuffer->setY(player.bottom - ratioY * WINSIZEY);
+				_cameraBuffer->setY(player.bottom - ratioY * CAMERAY);
 			}
 			if (player.top <= _cameraBuffer->getY())
 			{
@@ -145,7 +145,7 @@ void cameraManager::updateCamera(RECT& player, float ratioX, float ratioY)
 				player.bottom = player.top + height;
 			}
 		}
-		y[0] = _cameraBuffer->getY() + ratioY * WINSIZEY;
+		y[0] = _cameraBuffer->getY() + ratioY * CAMERAY;
 		y[1] = 0;
 	}
 
@@ -156,52 +156,62 @@ void cameraManager::updateCamera(RECT& player, float ratioX1, float ratioX2, flo
 {
 	if (ratioX1 > 0 && ratioX1 < 0.5f)
 	{
-		if (player.left < _cameraBuffer->getX() + ratioX1 * WINSIZEX)
+		if (player.left < _cameraBuffer->getX() + ratioX1 * CAMERAX)
 		{
-			_cameraBuffer->setX(player.left - ratioX1 * WINSIZEX);
+			_cameraBuffer->setX(player.left - ratioX1 * CAMERAX);
 		}
 	}
 
 	if (ratioX2 > 0.5f && ratioX2 < 1.0f)
 	{
-		if (player.right > _cameraBuffer->getX() + ratioX2 * WINSIZEX)
+		if (player.right > _cameraBuffer->getX() + ratioX2 * CAMERAX)
 		{
-			_cameraBuffer->setX(player.right - ratioX2 * WINSIZEX);
+			_cameraBuffer->setX(player.right - ratioX2 * CAMERAX);
 		}
 	}
 
 	if (ratioY1 > 0 && ratioY1 < 0.5f)
 	{
-		if (player.top < _cameraBuffer->getY() + ratioY1 * WINSIZEY)
+		if (player.top < _cameraBuffer->getY() + ratioY1 * CAMERAY)
 		{
-			_cameraBuffer->setY(player.top - ratioY1 * WINSIZEY);
+			_cameraBuffer->setY(player.top - ratioY1 * CAMERAY);
 		}
 	}
 
 	if (ratioY2 > 0.5f && ratioY2 < 1.0f)
 	{
-		if (player.bottom > _cameraBuffer->getY() + ratioY2 * WINSIZEY)
+		if (player.bottom > _cameraBuffer->getY() + ratioY2 * CAMERAY)
 		{
-			_cameraBuffer->setY(player.bottom - ratioY2 * WINSIZEY);
+			_cameraBuffer->setY(player.bottom - ratioY2 * CAMERAY);
 		}
 	}
 	cameraRange();
 
 	if (ratioX1 != 0)
 	{
-		x[0] = _cameraBuffer->getX() + ratioX1 * WINSIZEX;
+		x[0] = _cameraBuffer->getX() + ratioX1 * CAMERAX;
 	}
 	if (ratioX2 != 0)
 	{
-		x[1] = _cameraBuffer->getX() + ratioX2 * WINSIZEX;
+		x[1] = _cameraBuffer->getX() + ratioX2 * CAMERAX;
 	}
 	if (ratioY1 != 0)
 	{
-		y[0] = _cameraBuffer->getY() + ratioY1 * WINSIZEY;
+		y[0] = _cameraBuffer->getY() + ratioY1 * CAMERAY;
 	}
 	if (ratioY2 != 0)
 	{
-		y[1] = _cameraBuffer->getY() + ratioY2 * WINSIZEY;
+		y[1] = _cameraBuffer->getY() + ratioY2 * CAMERAY;
 	}
+}
+
+float cameraManager::getCameraRIGHT()
+{
+	return (_cameraBuffer->getX() + CAMERAX);
+}
+
+float cameraManager::getCameraBOTTOM()
+{
+	return (_cameraBuffer->getY() + CAMERAY);
 }
 

@@ -7,12 +7,17 @@ private:
 	int _jumpCount;
 	bool _isBigJump;
 
-	RECT _collisonRange;
+	int _deadCount;
+
+	bool _isVisible;
+
+	EnemyState _firstState; //초기 상태
+
 public:
 	virtual HRESULT init(EnemyState es, POINT position);
 	virtual void move();
 	virtual void draw();
 	
-	RECT getCollisonRange() { return _collisonRange; }
+	
 };
 

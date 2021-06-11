@@ -2,6 +2,7 @@
 #include "gameNode.h"
 #include "koopa_troopa.h"
 #include "goomba.h"
+#include "bullet.h"
 #include <vector>
 #include "player.h"
 
@@ -20,6 +21,8 @@ private:
 	viEnemy _viKTroopa;
 	vEnemy _vFlower;
 	viEnemy _viFlower;
+
+	bullet* _bullet;
 
 	player* _player;
 public:
@@ -40,7 +43,8 @@ public:
 	void troopaCollison();
 	void flowerCollison();
 
-	void setPlayerMemeoryAddressLink(player* p) { _player = p; }
+	void flowerBulletFire();
 
+	void setPlayerMemeoryAddressLink(player* p) { _player = p; }
 };
 

@@ -46,6 +46,12 @@
     <Filter Include="playGround\enemy">
       <UniqueIdentifier>{f43d6c15-f807-44ba-b82d-961dc283dd86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="playGround\bullet">
+      <UniqueIdentifier>{e2624bb7-5cb6-4fe1-b3dc-28365af44022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2DGameFramework\Utils">
+      <UniqueIdentifier>{2d7b70f0-b750-4a54-9a34-e5808020c80a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -144,6 +150,12 @@
     <ClInclude Include="playerChange.h">
       <Filter>playGround\playerState</Filter>
     </ClInclude>
+    <ClInclude Include="bullet.h">
+      <Filter>playGround\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>2DGameFramework\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -232,6 +244,12 @@
     </ClCompile>
     <ClCompile Include="playerChange.cpp">
       <Filter>playGround\playerState</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet.cpp">
+      <Filter>playGround\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>2DGameFramework\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
