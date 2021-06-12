@@ -28,6 +28,7 @@ HRESULT player::init()
 	IMAGEMANAGER->addFrameImage("tail_jump", "img/mario/tail_mario_jump.bmp", 69, 162, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("tail_skid", "img/mario/tail_mario_skid.bmp", 48, 180, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("tail_run_jump", "img/mario/tail_mario_run_jump.bmp", 72, 168, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("tail_fly", "img/mario/tail_mario_fly.bmp", 216, 168, 3, 2, true, RGB(255, 0, 255));
 
 	//변신
 	IMAGEMANAGER->addFrameImage("mario_grow", "img/mario/mario_grow_frame.bmp", 546, 162, 13, 2, true, RGB(255, 0, 255));
@@ -43,11 +44,11 @@ HRESULT player::init()
 
 	_shape = BASIC;
 
-	_x = 100;
-	_y = BACKGROUNDY - 72;
+	//_x = 100;
+	//_y = BACKGROUNDY - 72;
 
-	//_x = 1649;
-	//_y = 890;
+	_x = 1649;
+	_y = 890;
 
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 
@@ -80,6 +81,15 @@ void player::update()
 		collisonLeaf();
 	}
 	
+	if (_shape == SUPER)
+	{
+		_bManager->setIsLeaf(true);
+	}
+	else
+	{
+		_bManager->setIsLeaf(false);
+	}
+
 	handleInput();
 	_state->update(this);
 	
@@ -257,7 +267,43 @@ void player::collisonWoodBlock()
 {
 	for (int i = 0; i < _mManager->getWoodBlock().size(); i++)
 	{
-
+		RECT temp;
+		RECT block = _mManager->getWoodBlock()[i];
+		if (_rc.bottom == block.top && _rc.right > block.left && _rc.left < block.right)
+		{
+			_isOnGround = true;
+		}
+		if (IntersectRect(&temp, &block, &_rc))
+		{
+			float width = temp.right - temp.left;
+			float height = temp.bottom - temp.top;
+			if (width > height)
+			{
+				//위에서 아래로 충돌
+				if (_y < (block.top + block.bottom) / 2)
+				{
+					_y -= height;
+					_isOnGround = true;
+				}
+				else
+				{
+					_y += height;
+					_state = new playerFall;
+					_state->enter(this);
+				}
+			}
+			else
+			{
+				if (_x < (block.right + block.left) / 2)
+				{
+					_x -= width;
+				}
+				else
+				{
+					_x += width;
+				}
+			}
+		}
 	}
 }
 
@@ -305,15 +351,6 @@ void player::collisonQBlock()
 						{
 							_bManager->getCoin()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2);
 						}
-					}
-
-					if (_shape == SUPER)
-					{
-						_bManager->setIsLeaf(true);
-					}
-					else
-					{
-						_bManager->setIsLeaf(false);
 					}
 
 					_y += height;

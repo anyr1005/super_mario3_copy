@@ -162,6 +162,7 @@
     <ClInclude Include="items.h" />
     <ClInclude Include="koopa_troopa.h" />
     <ClInclude Include="piranha_plant.h" />
+    <ClInclude Include="playerFly.h" />
     <ClInclude Include="playerGrow.h" />
     <ClInclude Include="playerDie.h" />
     <ClInclude Include="playerFall.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="items.cpp" />
     <ClCompile Include="koopa_troopa.cpp" />
     <ClCompile Include="piranha_plant.cpp" />
+    <ClCompile Include="playerFly.cpp" />
     <ClCompile Include="playerGrow.cpp" />
     <ClCompile Include="playerDie.cpp" />
     <ClCompile Include="playerFall.cpp" />

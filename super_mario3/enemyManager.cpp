@@ -32,7 +32,7 @@ HRESULT enemyManager::init()
 	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255));
 
 	//setGoomba();
-	//setKTroopa();
+	setKTroopa();
 	//setFlower();
 
 	_bullet = new bullet;
@@ -852,13 +852,11 @@ void enemyManager::troopaCollison()
 					{
 						(*_viKTroopa)->setY((*_viKTroopa)->getY() - height);
 						(*_viKTroopa)->setIsOnGround(true);
-						break;
 					}
 					//아래에서 충돌
 					else
 					{
 						(*_viKTroopa)->setY((*_viKTroopa)->getY() + height);
-						break;
 					}
 				}
 				//좌우 충돌
@@ -876,6 +874,7 @@ void enemyManager::troopaCollison()
 						{
 							(*_viKTroopa)->setState(ENEMY_LEFT_JUMP);
 						}
+						_bManager->setIsRight(true);
 					}
 					//오른쪽에서 충돌
 					else
@@ -889,6 +888,7 @@ void enemyManager::troopaCollison()
 						{
 							(*_viKTroopa)->setState(ENEMY_RIGHT_JUMP);
 						}
+						_bManager->setIsRight(false);
 					}
 				}
 			}

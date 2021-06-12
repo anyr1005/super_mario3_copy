@@ -165,6 +165,9 @@
     <ClInclude Include="playerGrow.h">
       <Filter>playGround\playerState</Filter>
     </ClInclude>
+    <ClInclude Include="playerFly.h">
+      <Filter>playGround\playerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -264,6 +267,9 @@
       <Filter>playGround\playerState</Filter>
     </ClCompile>
     <ClCompile Include="playerGrow.cpp">
+      <Filter>playGround\playerState</Filter>
+    </ClCompile>
+    <ClCompile Include="playerFly.cpp">
       <Filter>playGround\playerState</Filter>
     </ClCompile>
   </ItemGroup>
