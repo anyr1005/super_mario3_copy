@@ -36,6 +36,8 @@ private:
 	mapManager* _mManager;
 
 	bool _isRight; //오른쪽 충돌인지 왼쪽 충돌인지(버섯과 나뭇잎 움직이는 방향 위해서)
+	bool _isLeaf;
+
 
 public :
 	virtual HRESULT init();
@@ -48,6 +50,7 @@ public :
 	void removeCoinBlock(int arrNum);
 
 	void mushroomCollision();
+	void leafCollision();
 
 	void setQuestionBlock();
 	void setGoldenBlock();
@@ -57,9 +60,13 @@ public :
 
 	vector<block*> getQBlock() { return _vQBlock; }
 	vector<block*> getGBlock() { return _vGBlock; }
+
 	coin* getCoin() { return _coin; }
 	mushroom* getMushroom() { return _mushroom; }
+	leaf* getLeaf() { return _leaf; }
 
 	void setIsRight(bool b) { _isRight = b; }
+
+	void setIsLeaf(bool b) { _isLeaf = b; }
 };
 

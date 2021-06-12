@@ -75,7 +75,9 @@ void player::update()
 		collisonPipe();
 		collisonQBlock();
 		collisonGBlock();
+		collisonWoodBlock();
 		collisonMushroom();
+		collisonLeaf();
 	}
 	
 	handleInput();
@@ -251,6 +253,14 @@ void player::collisonPipe()
 	
 }
 
+void player::collisonWoodBlock()
+{
+	for (int i = 0; i < _mManager->getWoodBlock().size(); i++)
+	{
+
+	}
+}
+
 void player::collisonQBlock()
 {
 	for (int i = 0; i < _bManager->getQBlock().size(); i++)
@@ -296,6 +306,16 @@ void player::collisonQBlock()
 							_bManager->getCoin()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2);
 						}
 					}
+
+					if (_shape == SUPER)
+					{
+						_bManager->setIsLeaf(true);
+					}
+					else
+					{
+						_bManager->setIsLeaf(false);
+					}
+
 					_y += height;
 					_state = new playerFall;
 					_state->enter(this);
@@ -398,6 +418,22 @@ void player::collisonMushroom()
 			_state = new playerGrow;
 			_state->enter(this);
 			_bManager->getMushroom()->removeMushroom(i);
+			break;
+		}
+	}
+}
+
+void player::collisonLeaf()
+{
+	for (int i = 0; i < _bManager->getLeaf()->getVLeaf().size(); i++)
+	{
+		RECT temp;
+		RECT leaf = _bManager->getLeaf()->getVLeaf()[i].rc;
+		if (IntersectRect(&temp, &_rc, &leaf))
+		{
+			_state = new playerGrow;
+			_state->enter(this);
+			_bManager->getLeaf()->removeLeaf(i);
 			break;
 		}
 	}

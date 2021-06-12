@@ -276,7 +276,7 @@ void leaf::render()
 	}
 }
 
-void leaf::fire(float x, float y)
+void leaf::fire(float x, float y, bool isRight)
 {
 	//나뭇잎 생성 및 vector에 담음
 	tagItem item;
@@ -286,9 +286,10 @@ void leaf::fire(float x, float y)
 	item.y = item.fireY = y;
 	item.isOnGround = false;
 	item.state = ITEM_UP;
-	item.fallSpeed = 4.0f;
+	item.fallSpeed = 5.0f;
 	item.isStart = true;
 	item.angle = PI/2;
+	item.isRight = isRight;
 	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getWidth(), item.itemImage->getHeight());
 
 	_vLeaf.push_back(item);
@@ -307,42 +308,79 @@ void leaf::move()
 			_viLeaf->angle += 0.1f;
 			_viLeaf->x += cosf(_viLeaf->angle)*_viLeaf->fallSpeed;
 			_viLeaf->y -= -sinf(_viLeaf->angle) * _viLeaf->fallSpeed;
-			
 			break;
 		case ITEM_RIGHT:
 			_viLeaf->angle -= 0.1f;
 			_viLeaf->x += cosf(_viLeaf->angle)*_viLeaf->fallSpeed;
 			_viLeaf->y -= -sinf(_viLeaf->angle) * _viLeaf->fallSpeed;
-		
 			break;
 		}
+
 		if (_viLeaf->y < _viLeaf->fireY - (_viLeaf->itemImage->getHeight() * 2.5f))
 		{
-			_viLeaf->state = ITEM_RIGHT;
-		}
-
-		if (_viLeaf->x < _viLeaf->fireX + 50 && _viLeaf->state!=ITEM_UP && !_viLeaf->isStart)
-		{
-			_viLeaf->x = _viLeaf->fireX + 50;
-			_viLeaf->state = ITEM_RIGHT;
-		}
-		else if (_viLeaf->x > _viLeaf->fireX + 50 + _viLeaf->itemImage->getWidth() * 1.5f && !_viLeaf->isStart)
-		{
-			_viLeaf->x = _viLeaf->fireX + 50 + _viLeaf->itemImage->getWidth() * 1.5f;
-			_viLeaf->state = ITEM_LEFT;
-			
-		}
-
-		if (_viLeaf->isStart)
-		{
-			if (_viLeaf->x > _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.5f)
+			if (_viLeaf->isRight)
 			{
-				_viLeaf->x = _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.5f;
-				_viLeaf->isStart = false;
+				_viLeaf->state = ITEM_RIGHT;
+			}
+			else
+			{
 				_viLeaf->state = ITEM_LEFT;
 			}
 		}
 
+		if (_viLeaf->isRight)
+		{
+			if (_viLeaf->isStart)
+			{
+				if (_viLeaf->x > _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.5f)
+				{
+					_viLeaf->x = _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.5f;
+
+					//여기 처리에서 이상한듯
+					_viLeaf->isStart = false;
+					_viLeaf->state = ITEM_LEFT;
+					_viLeaf->fallSpeed = 4.0f;
+				}
+			}
+			else if (_viLeaf->x < _viLeaf->fireX + 50 && _viLeaf->state != ITEM_IDLE)
+			{
+				_viLeaf->x = _viLeaf->fireX + 50;
+				_viLeaf->state = ITEM_RIGHT;
+			}
+			else if (_viLeaf->x > _viLeaf->fireX + 50 + _viLeaf->itemImage->getWidth() * 1.5f && _viLeaf->state != ITEM_IDLE)
+			{
+				_viLeaf->x = _viLeaf->fireX + 50 + _viLeaf->itemImage->getWidth() * 1.5f;
+				_viLeaf->state = ITEM_LEFT;
+
+			}
+		}
+		else
+		{
+			if (_viLeaf->isStart)
+			{
+				if (_viLeaf->x < _viLeaf->fireX - _viLeaf->itemImage->getWidth() * 1.5f)
+				{
+					_viLeaf->x = _viLeaf->fireX - _viLeaf->itemImage->getWidth() * 1.5f;
+
+					//여기 처리에서 이상한듯
+					_viLeaf->isStart = false;
+					_viLeaf->state = ITEM_RIGHT;
+					_viLeaf->fallSpeed = 4.0f;
+				}
+			}
+			else if (_viLeaf->x > _viLeaf->fireX - 50 && _viLeaf->state != ITEM_IDLE)
+			{
+				_viLeaf->x = _viLeaf->fireX - 50;
+				_viLeaf->state = ITEM_LEFT;
+			}
+			else if (_viLeaf->x < _viLeaf->fireX - 50 - _viLeaf->itemImage->getWidth() * 1.5f && _viLeaf->state != ITEM_IDLE)
+			{
+				_viLeaf->x = _viLeaf->fireX - 50 - _viLeaf->itemImage->getWidth() * 1.5f;
+				_viLeaf->state = ITEM_RIGHT;
+
+			}
+		}
+		
 		_viLeaf->rc = RectMakeCenter(_viLeaf->x, _viLeaf->y, _viLeaf->itemImage->getWidth(), _viLeaf->itemImage->getHeight());
 	}
 }

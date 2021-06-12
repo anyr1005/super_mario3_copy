@@ -49,11 +49,13 @@ public:
 	void collisonGround();
 	void collisonObject();
 	void collisonPipe();
-	
+	void collisonWoodBlock();
+
 	void collisonQBlock();
 	void collisonGBlock();
 
 	void collisonMushroom();
+	void collisonLeaf();
 
 	//============================================
 	//			## ¼³Á¤ÀÚ ##

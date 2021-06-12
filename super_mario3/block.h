@@ -7,7 +7,6 @@ enum item
 {
 	COIN,
 	MUSHROOM,
-	LEAF,
 	LIFE,
 	SWITCH,
 	PARTICLE

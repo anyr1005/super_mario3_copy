@@ -40,9 +40,18 @@ void blockManager::update()
 			RECT rc = (*_viQBlock)->getRect();
 			if ((*_viQBlock)->getItem() == MUSHROOM)
 			{
-				//슈퍼버섯
-				_mushroom->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, _isRight);
-				(*_viQBlock)->setIsFire(true);
+				if (_isLeaf)
+				{
+					//나뭇잎
+					_leaf->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, _isRight);
+					(*_viQBlock)->setIsFire(true);
+				}
+				else
+				{
+					//슈퍼버섯
+					_mushroom->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, _isRight);
+					(*_viQBlock)->setIsFire(true);
+				}
 			}
 		}
 		(*_viQBlock)->update();
@@ -61,10 +70,11 @@ void blockManager::update()
 	_leaf->update();
 
 	mushroomCollision();
+	leafCollision();
 
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
-		_leaf->fire(600, BACKGROUNDY - 216);
+		_leaf->fire(1994, BACKGROUNDY - 168, true);
 	}
 }
 
@@ -288,6 +298,7 @@ void blockManager::mushroomCollision()
 		
 		_mushroom->setIsOnGround(i, false);
 		
+		//question block과 충돌
 		for (int j = 0; j < _vQBlock.size(); j++)
 		{
 			RECT qBlock = _vQBlock[j]->getRect();
@@ -327,6 +338,7 @@ void blockManager::mushroomCollision()
 			}
 		}
 		
+		//땅과의 충돌
 		for (int j = 0; j < _mManager->getGround().size(); j++)
 		{
 			RECT ground = _mManager->getGround()[j];
@@ -366,6 +378,7 @@ void blockManager::mushroomCollision()
 			}
 		}
 		
+		//object와 충돌
 		for (int j = 0; j < _mManager->getObject().size(); j++)
 		{
 			RECT object = _mManager->getObject()[j];
@@ -393,6 +406,7 @@ void blockManager::mushroomCollision()
 			}
 		}
 
+		//파이프와 충돌
 		for (int j = 0; j < _mManager->getPipe().size(); j++)
 		{
 			RECT head = _mManager->getPipe()[j].head;
@@ -466,6 +480,193 @@ void blockManager::mushroomCollision()
 					}
 				}
 				
+			}
+		}
+	}
+}
+
+void blockManager::leafCollision()
+{
+	for (int i = 0; i < _leaf->getVLeaf().size(); i++)
+	{
+		if (_leaf->getVLeaf()[i].state == ITEM_UP) continue;
+
+		RECT temp;
+		RECT leafRect = _leaf->getVLeaf()[i].rc;
+
+		_leaf->setIsOnGround(i, false);
+
+		//question block과 충돌
+		for (int j = 0; j < _vQBlock.size(); j++)
+		{
+			RECT qBlock = _vQBlock[j]->getRect();
+			if (leafRect.bottom == qBlock.top && leafRect.right > qBlock.left && leafRect.left < qBlock.right)
+			{
+				_leaf->setState(i, ITEM_IDLE);
+			}
+			if (IntersectRect(&temp, &leafRect, &qBlock))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//상하 충돌
+				if (width > height)
+				{
+					//위에서 충돌
+					if (_leaf->getVLeaf()[i].y < (qBlock.top + qBlock.bottom) / 2)
+					{
+						_leaf->setIsOnGround(i, true);
+						_leaf->setY(i, _leaf->getVLeaf()[i].y - height);
+					}
+					//아래에서 충돌 없음
+				}
+				else //좌우 충돌
+				{
+					//왼쪽에서 충돌
+					if (_leaf->getVLeaf()[i].x < (qBlock.left + qBlock.right) / 2)
+					{
+						_leaf->setX(i, _leaf->getVLeaf()[i].x - width);
+						_leaf->setState(i, ITEM_LEFT);
+					}
+					else //오른쪽 충돌
+					{
+						_leaf->setX(i, _leaf->getVLeaf()[i].x + width);
+						_leaf->setState(i, ITEM_RIGHT);
+					}
+				}
+			}
+		}
+
+		//땅과의 충돌
+		for (int j = 0; j < _mManager->getGround().size(); j++)
+		{
+			RECT ground = _mManager->getGround()[j];
+			if (leafRect.bottom == ground.top && leafRect.right > ground.left && leafRect.left < ground.right)
+			{
+				_leaf->setState(i, ITEM_IDLE);
+			}
+			if (IntersectRect(&temp, &leafRect, &ground))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//상하 충돌
+				if (width > height)
+				{
+					//위에서 충돌
+					if (_leaf->getVLeaf()[i].y < (ground.top + ground.bottom) / 2)
+					{
+						_leaf->setIsOnGround(i, true);
+						_leaf->setY(i, _leaf->getVLeaf()[i].y - height);
+					}
+					//아래에서 충돌 없음
+				}
+				else //좌우 충돌
+				{
+					//왼쪽에서 충돌
+					if (_leaf->getVLeaf()[i].x < (ground.left + ground.right) / 2)
+					{
+						_leaf->setX(i, _leaf->getVLeaf()[i].x - width);
+						_leaf->setState(i, ITEM_LEFT);
+					}
+					else //오른쪽 충돌
+					{
+						_leaf->setX(i, _mushroom->getVMushroom()[i].x + width);
+						_leaf->setState(i, ITEM_RIGHT);
+					}
+				}
+			}
+		}
+
+		//object와 충돌
+		for (int j = 0; j < _mManager->getObject().size(); j++)
+		{
+			RECT object = _mManager->getObject()[j];
+			if (leafRect.bottom == object.top && leafRect.right > object.left && leafRect.left < object.right)
+			{
+				_leaf->setState(i, ITEM_IDLE);
+			}
+			if (IntersectRect(&temp, &leafRect, &object))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//상하 충돌
+				if (width > height)
+				{
+					//위에서 충돌
+					if (_leaf->getVLeaf()[i].y < (object.top + object.bottom) / 2)
+					{
+						_leaf->setIsOnGround(i, true);
+						_leaf->setY(i, _leaf->getVLeaf()[i].y - height);
+						break;
+					}
+					//아래에서 충돌 없음
+				}
+				//좌우 충돌 없음
+			}
+		}
+
+		//파이프와 충돌
+		for (int j = 0; j < _mManager->getPipe().size(); j++)
+		{
+			RECT head = _mManager->getPipe()[j].head;
+			RECT body = _mManager->getPipe()[j].body;
+			if (leafRect.bottom == head.top && leafRect.right > head.left && leafRect.left < head.right)
+			{
+				_leaf->setState(i, ITEM_IDLE);
+			}
+			if (IntersectRect(&temp, &leafRect, &head))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//상하 충돌
+				if (width > height)
+				{
+					//위에서 충돌
+					if (_leaf->getVLeaf()[i].y < (head.top + head.bottom) / 2)
+					{
+						_leaf->setIsOnGround(i, true);
+						_leaf->setY(i, _leaf->getVLeaf()[i].y - height);
+						break;
+					}
+				}
+				else //좌우 충돌
+				{
+					//왼쪽에서 충돌
+					if (_leaf->getVLeaf()[i].x < (head.left + head.right) / 2)
+					{
+						_leaf->setX(i, _leaf->getVLeaf()[i].x - width);
+						_leaf->setState(i, ITEM_LEFT);
+						break;
+					}
+					else //오른쪽 충돌
+					{
+						_leaf->setX(i, _leaf->getVLeaf()[i].x + width);
+						_leaf->setState(i, ITEM_RIGHT);
+						break;
+					}
+				}
+			}
+
+			if (IntersectRect(&temp, &leafRect, &body))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				//좌우 충돌
+				if (width < height)
+				{
+					//왼쪽에서 충돌
+					if (_leaf->getVLeaf()[i].y < (body.top + body.bottom) / 2)
+					{
+						_leaf->setX(i, _leaf->getVLeaf()[i].x - width);
+						_leaf->setState(i, ITEM_LEFT);
+						break;
+					}
+					else //오른쪽 충돌
+					{
+						_leaf->setX(i, _mushroom->getVMushroom()[i].x + width);
+						_leaf->setState(i, ITEM_RIGHT);
+						break;
+					}
+				}
 			}
 		}
 	}

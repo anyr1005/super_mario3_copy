@@ -9,7 +9,8 @@ enum ItemState
 {
 	ITEM_UP,
 	ITEM_LEFT,
-	ITEM_RIGHT
+	ITEM_RIGHT,
+	ITEM_IDLE
 };
 
 struct tagCoin
@@ -100,12 +101,18 @@ public:
 	virtual void update();
 	virtual void render();
 
-	void fire(float x, float y);
+	void fire(float x, float y, bool isRight);
 
 	void move();
 
 	void removeLeaf(int arrNum);
 
-	vector<tagItem> getVMushroom() { return _vLeaf; }
-	vector<tagItem>::iterator getViMushroom() { return _viLeaf; }
+	void setIsOnGround(int arrNum, bool b) { _vLeaf[arrNum].isOnGround = b; }
+
+	void setX(int arrNum, float x) { _vLeaf[arrNum].x = x; }
+	void setY(int arrNum, float y) { _vLeaf[arrNum].y = y; }
+	void setState(int arrNum, ItemState s) { _vLeaf[arrNum].state = s; }
+
+	vector<tagItem> getVLeaf() { return _vLeaf; }
+	vector<tagItem>::iterator getViLeaf() { return _viLeaf; }
 };

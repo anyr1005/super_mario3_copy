@@ -44,5 +44,7 @@ public:
 	vector<RECT> getObject() { return _object; }
 
 	vector<tagPipe> getPipe() { return _pipe; }
+
+	vector<RECT> getWoodBlock() { return _woodBlock; }
 };
 
