@@ -287,7 +287,6 @@ void leaf::fire(float x, float y, bool isRight)
 	item.isOnGround = false;
 	item.state = ITEM_UP;
 	item.fallSpeed = 5.0f;
-	item.isStart = true;
 	item.angle = PI/2;
 	item.isRight = isRight;
 	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getWidth(), item.itemImage->getHeight());
@@ -297,7 +296,7 @@ void leaf::fire(float x, float y, bool isRight)
 
 void leaf::move()
 {
-	for (_viLeaf = _vLeaf.begin(); _viLeaf != _vLeaf.end(); ++_viLeaf)
+	for (_viLeaf = _vLeaf.begin(); _viLeaf != _vLeaf.end();)
 	{
 		switch (_viLeaf->state)
 		{
@@ -316,7 +315,7 @@ void leaf::move()
 			break;
 		}
 
-		if (_viLeaf->y < _viLeaf->fireY - (_viLeaf->itemImage->getHeight() * 2.5f))
+		if (_viLeaf->y < _viLeaf->fireY - (_viLeaf->itemImage->getHeight() * 1.75f))
 		{
 			if (_viLeaf->isRight)
 			{
@@ -330,58 +329,40 @@ void leaf::move()
 
 		if (_viLeaf->isRight)
 		{
-			if (_viLeaf->isStart)
+			if (_viLeaf->x < _viLeaf->fireX)
 			{
-				if (_viLeaf->x > _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.5f)
-				{
-					_viLeaf->x = _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.5f;
-
-					//여기 처리에서 이상한듯
-					_viLeaf->isStart = false;
-					_viLeaf->state = ITEM_LEFT;
-					_viLeaf->fallSpeed = 4.0f;
-				}
-			}
-			else if (_viLeaf->x < _viLeaf->fireX + 50 && _viLeaf->state != ITEM_IDLE)
-			{
-				_viLeaf->x = _viLeaf->fireX + 50;
+				_viLeaf->x = _viLeaf->fireX;
 				_viLeaf->state = ITEM_RIGHT;
 			}
-			else if (_viLeaf->x > _viLeaf->fireX + 50 + _viLeaf->itemImage->getWidth() * 1.5f && _viLeaf->state != ITEM_IDLE)
+			else if (_viLeaf->x > _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.7f)
 			{
-				_viLeaf->x = _viLeaf->fireX + 50 + _viLeaf->itemImage->getWidth() * 1.5f;
+				_viLeaf->x = _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.7f;
 				_viLeaf->state = ITEM_LEFT;
 
 			}
 		}
 		else
 		{
-			if (_viLeaf->isStart)
+			if (_viLeaf->x > _viLeaf->fireX)
 			{
-				if (_viLeaf->x < _viLeaf->fireX - _viLeaf->itemImage->getWidth() * 1.5f)
-				{
-					_viLeaf->x = _viLeaf->fireX - _viLeaf->itemImage->getWidth() * 1.5f;
-
-					//여기 처리에서 이상한듯
-					_viLeaf->isStart = false;
-					_viLeaf->state = ITEM_RIGHT;
-					_viLeaf->fallSpeed = 4.0f;
-				}
-			}
-			else if (_viLeaf->x > _viLeaf->fireX - 50 && _viLeaf->state != ITEM_IDLE)
-			{
-				_viLeaf->x = _viLeaf->fireX - 50;
+				_viLeaf->x = _viLeaf->fireX;
 				_viLeaf->state = ITEM_LEFT;
 			}
-			else if (_viLeaf->x < _viLeaf->fireX - 50 - _viLeaf->itemImage->getWidth() * 1.5f && _viLeaf->state != ITEM_IDLE)
+			else if (_viLeaf->x < _viLeaf->fireX - _viLeaf->itemImage->getWidth() * 1.7f)
 			{
-				_viLeaf->x = _viLeaf->fireX - 50 - _viLeaf->itemImage->getWidth() * 1.5f;
+				_viLeaf->x = _viLeaf->fireX - _viLeaf->itemImage->getWidth() * 1.7f;
 				_viLeaf->state = ITEM_RIGHT;
 
 			}
 		}
-		
+
 		_viLeaf->rc = RectMakeCenter(_viLeaf->x, _viLeaf->y, _viLeaf->itemImage->getWidth(), _viLeaf->itemImage->getHeight());
+
+		if (_viLeaf->rc.top > BACKGROUNDY)
+		{
+			_viLeaf = _vLeaf.erase(_viLeaf);
+		}
+		else ++_viLeaf;
 	}
 }
 

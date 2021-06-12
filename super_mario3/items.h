@@ -35,7 +35,6 @@ struct tagItem
 	float angle; //각도
 	bool isRight;
 	bool isOnGround; //땅 위에 있는지 확인
-	bool isStart; //처음 발사되고의 상태인지
 
 	ItemState state;
 };

@@ -43,7 +43,7 @@ void blockManager::update()
 				if (_isLeaf)
 				{
 					//³ª¹µÀÙ
-					_leaf->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, _isRight);
+					_leaf->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2 - IMAGEMANAGER->findImage("leaf")->getHeight()/2, _isRight);
 					(*_viQBlock)->setIsFire(true);
 				}
 				else
@@ -70,7 +70,7 @@ void blockManager::update()
 	_leaf->update();
 
 	mushroomCollision();
-	leafCollision();
+	//leafCollision();
 
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
@@ -82,8 +82,6 @@ void blockManager::render()
 {
 	_coin->render();
 	_mushroom->render();
-	_leaf->render();
-
 	for (_viQBlock = _vQBlock.begin(); _viQBlock != _vQBlock.end(); ++_viQBlock)
 	{
 		(*_viQBlock)->render();
@@ -98,6 +96,8 @@ void blockManager::render()
 	{
 		(*_viCoinBlock)->render();
 	}
+	
+	_leaf->render();
 }
 
 void blockManager::setQuestionBlock()

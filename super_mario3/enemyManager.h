@@ -55,6 +55,8 @@ public:
 	void flowerBulletFire();
 	void flowerMoveHead();
 
+	void bulletCollison();
+
 	void setPlayerMemeoryAddressLink(player* p) { _player = p; }
 	void setMapManagerMemoryAddressLink(mapManager* m) { _mManager = m; }
 	void setBlockManagerMemoryAddressLink(blockManager* b) { _bManager = b; }

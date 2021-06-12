@@ -1,12 +1,20 @@
 #include "stdafx.h"
 #include "playerJump.h"
 #include "playerIdle.h"
+#include "playerFly.h"
 
 playerState * playerJump::handleInput(player * player)
 {
 	if (player->getIsOnGround())
 	{
 		return new playerIdle;
+	}
+	if (KEYMANAGER->isOnceKeyDown('X'))
+	{
+		if (player->getRunSpeed() == SPEEDMAX && player->getPlayerShape() == TAIL)
+		{
+			return new playerFly;
+		}
 	}
 	return nullptr;
 }

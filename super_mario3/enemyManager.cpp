@@ -32,8 +32,8 @@ HRESULT enemyManager::init()
 	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255));
 
 	//setGoomba();
-	setKTroopa();
-	//setFlower();
+	//setKTroopa();
+	setFlower();
 
 	_bullet = new bullet;
 	_bullet->init();
@@ -67,7 +67,8 @@ void enemyManager::update()
 
 	goombaCollison();
 	troopaCollison();
-	
+	bulletCollison();
+
 	_bullet->update();
 }
 
@@ -131,7 +132,7 @@ void enemyManager::goombaCollison()
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
 		//플레이어가 죽은 상태면 충돌 확인 안함
-		if (_player->getPlayerState()->getStateName() == PLAYER_DIE) break;
+		if (_player->getPlayerState()->getStateName() == PLAYER_DIE || _player->getPlayerState()->getStateName() == PLAYER_GROW) break;
 		//굼바가 죽은 상태면 충돌 확인 안함
 		if ((*_viGoomba)->getState() == ENEMY_DIE || (*_viGoomba)->getState() == ENEMY_ATTACKED) continue;
 
@@ -488,7 +489,7 @@ void enemyManager::troopaCollison()
 	//플레이어와 충돌
 	for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
 	{
-		if (_player->getPlayerState()->getStateName() == PLAYER_DIE) break;
+		if (_player->getPlayerState()->getStateName() == PLAYER_DIE || _player->getPlayerState()->getStateName() == PLAYER_GROW) break;
 		RECT temp;
 		RECT troopa = (*_viKTroopa)->getCollisonRange();
 		if (IntersectRect(&temp, &troopa, &_player->getRect()))
@@ -900,7 +901,7 @@ void enemyManager::flowerCollison()
 {
 	for (_viFlower = _vFlower.begin(); _viFlower != _vFlower.end(); ++_viFlower)
 	{
-		if (_player->getPlayerState()->getStateName() == PLAYER_DIE) break;
+		if (_player->getPlayerState()->getStateName() == PLAYER_DIE || _player->getPlayerState()->getStateName() == PLAYER_GROW) break;
 		RECT flowerRangeRect = (*_viFlower)->getCollisonRange();
 		RECT flowerRect = (*_viFlower)->getRect();
 		RECT playerRect = _player->getRect();
@@ -975,6 +976,23 @@ void enemyManager::flowerMoveHead()
 			{
 				(*_viFlower)->setImage("fire_red_right_down");
 			}
+		}
+	}
+}
+
+void enemyManager::bulletCollison()
+{
+	for (int i = 0; i < _bullet->getVBullet().size(); i++)
+	{
+		RECT temp;
+		if (IntersectRect(&temp, &_bullet->getVBullet()[i].rc, &_player->getRect()))
+		{
+			if (_player->getPlayerShape() == BASIC)
+			{
+				_player->setPlayerState(new playerDie);
+				_player->getPlayerState()->enter(_player);
+			}
+			_bullet->removeBullet(i);
 		}
 	}
 }

@@ -11,7 +11,8 @@ enum playerStateName
 	PLAYER_FALL,
 	PLAYER_DIE,
 	PLAYER_GROW,
-	PLAYER_SHRINK
+	PLAYER_SHRINK,
+	PLAYER_FLY
 };
 
 class player;
