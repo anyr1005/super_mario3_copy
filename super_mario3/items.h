@@ -35,6 +35,7 @@ struct tagItem
 	float angle; //각도
 	bool isRight;
 	bool isOnGround; //땅 위에 있는지 확인
+	bool currentFrameY; //나뭇잎 왼쪽 오른쪽 이미지 구분
 
 	ItemState state;
 };

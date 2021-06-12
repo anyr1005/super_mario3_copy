@@ -3,6 +3,7 @@
 #include "playerSlip.h"
 #include "playerSkid.h"
 #include "playerJump.h"
+#include "playerAttack.h"
 
 playerState * playerWalk::handleInput(player * player)
 {
@@ -30,7 +31,16 @@ playerState * playerWalk::handleInput(player * player)
 	{
 		return new playerJump;
 	}
+
+	if (KEYMANAGER->isOnceKeyDown('Z'))
+	{
+		if (player->getPlayerShape() == TAIL)
+		{
+			return new playerAttack;
+		}
+	}
 	return nullptr;
+	
 }
 
 void playerWalk::update(player * player)

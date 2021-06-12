@@ -272,7 +272,7 @@ void leaf::render()
 			TextOut(getMemDC(), _viLeaf->rc.left, _viLeaf->rc.top - 20, str, strlen(str));
 			Rectangle(getMemDC(), _viLeaf->rc);
 		}
-		_viLeaf->itemImage->render(getMemDC(), _viLeaf->rc.left, _viLeaf->rc.top);
+		_viLeaf->itemImage->frameRender(getMemDC(), _viLeaf->rc.left, _viLeaf->rc.top, 0, _viLeaf->currentFrameY);
 	}
 }
 
@@ -289,6 +289,14 @@ void leaf::fire(float x, float y, bool isRight)
 	item.fallSpeed = 5.0f;
 	item.angle = PI/2;
 	item.isRight = isRight;
+	if (isRight)
+	{
+		item.currentFrameY = 1;
+	}
+	else
+	{
+		item.currentFrameY = 0;
+	}
 	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getWidth(), item.itemImage->getHeight());
 
 	_vLeaf.push_back(item);
@@ -301,7 +309,7 @@ void leaf::move()
 		switch (_viLeaf->state)
 		{
 		case ITEM_UP:
-			_viLeaf->y -= 5;
+			_viLeaf->y -=10;
 			break;
 		case ITEM_LEFT:
 			_viLeaf->angle += 0.1f;
@@ -319,10 +327,12 @@ void leaf::move()
 		{
 			if (_viLeaf->isRight)
 			{
+				_viLeaf->currentFrameY = 1;
 				_viLeaf->state = ITEM_RIGHT;
 			}
 			else
 			{
+				_viLeaf->currentFrameY = 0;
 				_viLeaf->state = ITEM_LEFT;
 			}
 		}
@@ -332,11 +342,13 @@ void leaf::move()
 			if (_viLeaf->x < _viLeaf->fireX)
 			{
 				_viLeaf->x = _viLeaf->fireX;
+				_viLeaf->currentFrameY = 1;
 				_viLeaf->state = ITEM_RIGHT;
 			}
 			else if (_viLeaf->x > _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.7f)
 			{
 				_viLeaf->x = _viLeaf->fireX + _viLeaf->itemImage->getWidth() * 1.7f;
+				_viLeaf->currentFrameY = 0;
 				_viLeaf->state = ITEM_LEFT;
 
 			}
@@ -346,11 +358,13 @@ void leaf::move()
 			if (_viLeaf->x > _viLeaf->fireX)
 			{
 				_viLeaf->x = _viLeaf->fireX;
+				_viLeaf->currentFrameY = 0;
 				_viLeaf->state = ITEM_LEFT;
 			}
 			else if (_viLeaf->x < _viLeaf->fireX - _viLeaf->itemImage->getWidth() * 1.7f)
 			{
 				_viLeaf->x = _viLeaf->fireX - _viLeaf->itemImage->getWidth() * 1.7f;
+				_viLeaf->currentFrameY = 1;
 				_viLeaf->state = ITEM_RIGHT;
 
 			}

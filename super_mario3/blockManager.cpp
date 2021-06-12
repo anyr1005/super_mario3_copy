@@ -9,7 +9,7 @@ HRESULT blockManager::init()
 	IMAGEMANAGER->addFrameImage("q_change", "img/block/question_box_change.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("q_change_complete", "img/block/question_box_change_complete.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("mushroom", "img/item/mushroom.bmp", 48, 48, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("leaf", "img/item/leaf.bmp", 48, 42, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("leaf", "img/item/leaf.bmp", 48, 84, 1, 2, true, RGB(255, 0, 255));
 
 	_coin = new coin;
 	_coin->init();
@@ -74,7 +74,7 @@ void blockManager::update()
 
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
-		_leaf->fire(1994, BACKGROUNDY - 168, true);
+		_leaf->fire(200, BACKGROUNDY - 168, true);
 	}
 }
 

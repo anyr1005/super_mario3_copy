@@ -2,6 +2,7 @@
 #include "playerIdle.h"
 #include "playerWalk.h"
 #include "playerJump.h"
+#include "playerAttack.h"
 
 playerState* playerIdle::handleInput(player * player)
 {
@@ -12,14 +13,22 @@ playerState* playerIdle::handleInput(player * player)
 		return new playerWalk;
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-	{
-		player->setIsRight(true);
+	{	
 		//걷는 상태로 바꾸기
 		return new playerWalk;
 	}
 	if (KEYMANAGER->isOnceKeyDown('X'))
 	{
+		
 		return new playerJump;
+	}
+	if (KEYMANAGER->isOnceKeyDown('Z'))
+	{
+		//꼬리 마리오 상태이면 공격
+		if (player->getPlayerShape() == TAIL)
+		{
+			return new playerAttack;
+		}
 	}
 	return nullptr;
 }

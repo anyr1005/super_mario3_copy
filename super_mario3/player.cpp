@@ -29,6 +29,7 @@ HRESULT player::init()
 	IMAGEMANAGER->addFrameImage("tail_skid", "img/mario/tail_mario_skid.bmp", 48, 180, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("tail_run_jump", "img/mario/tail_mario_run_jump.bmp", 72, 168, 1, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("tail_fly", "img/mario/tail_mario_fly.bmp", 216, 168, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("tail_attack", "img/mario/tail_mario_attack.bmp", 360, 168, 4, 2, true, RGB(255, 0, 255));
 
 	//º¯½Å
 	IMAGEMANAGER->addFrameImage("mario_grow", "img/mario/mario_grow_frame.bmp", 546, 162, 13, 2, true, RGB(255, 0, 255));
@@ -39,16 +40,19 @@ HRESULT player::init()
 
 	_isRight = true;
 
+	_shape = TAIL;
+
 	_state = new playerIdle;
 	_state->enter(this);
 
-	_shape = BASIC;
+	//_shape = BASIC;
+	
 
-	//_x = 100;
-	//_y = BACKGROUNDY - 72;
+	_x = 100;
+	_y = BACKGROUNDY - 72;
 
-	_x = 1649;
-	_y = 890;
+	//_x = 1649;
+	//_y = 890;
 
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 

@@ -27,7 +27,7 @@ playerState * playerGrow::handleInput(player * player)
 void playerGrow::update(player * player)
 {
 	_count++;
-	if (_count % 5 == 0)
+	if (_count % 3 == 0)
 	{
 		if (_index >= player->getImage()->getMaxFrameX()) _index = player->getImage()->getMaxFrameX();
 		else _index++;

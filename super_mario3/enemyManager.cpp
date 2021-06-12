@@ -31,9 +31,9 @@ HRESULT enemyManager::init()
 	IMAGEMANAGER->addImage("fire_red_right_down", "img/piranha_plant/fire_red_right_down.bmp", 48, 48, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255));
 
-	//setGoomba();
+	setGoomba();
 	//setKTroopa();
-	setFlower();
+	//setFlower();
 
 	_bullet = new bullet;
 	_bullet->init();
@@ -171,8 +171,26 @@ void enemyManager::goombaCollison()
 			}
 			else //ÁÂ¿ìÃæµ¹
 			{
-				if (_player->getPlayerShape() == BASIC)
+				if (_player->getPlayerState()->getStateName() == PLAYER_ATTACK)
 				{
+					if ((*_viGoomba)->getState() == ENEMY_LEFT_JUMP)
+					{
+						(*_viGoomba)->setState(ENEMY_LEFT_WALK);
+					}
+					else if ((*_viGoomba)->getState() == ENEMY_RIGHT_JUMP)
+					{
+						(*_viGoomba)->setState(ENEMY_RIGHT_WALK);
+					}
+					else
+					{
+						(*_viGoomba)->setJumpPower(7.0f);
+						(*_viGoomba)->setState(ENEMY_ATTACKED);
+					}
+					
+				}
+				else if (_player->getPlayerShape() == BASIC)
+				{
+					
 					_player->setPlayerState(new playerDie);
 					_player->getPlayerState()->enter(_player);
 				}
@@ -583,6 +601,23 @@ void enemyManager::troopaCollison()
 					}
 					else
 					{
+						if (_player->getPlayerState()->getStateName() == PLAYER_ATTACK)
+						{
+							if ((*_viKTroopa)->getState() == ENEMY_LEFT_JUMP)
+							{
+								(*_viKTroopa)->setState(ENEMY_LEFT_WALK);
+							}
+							else if ((*_viKTroopa)->getState() == ENEMY_RIGHT_JUMP)
+							{
+								(*_viKTroopa)->setState(ENEMY_RIGHT_WALK);
+							}
+							else
+							{
+								(*_viKTroopa)->setJumpPower(7.0f);
+								(*_viKTroopa)->setState(ENEMY_ATTACKED);
+							}
+
+						}
 						if (_player->getPlayerShape() == BASIC)
 						{
 							_player->setPlayerState(new playerDie);
@@ -614,7 +649,12 @@ void enemyManager::troopaCollison()
 					}
 					else
 					{
-						if (_player->getPlayerShape() == BASIC)
+						if (_player->getPlayerState()->getStateName() == PLAYER_ATTACK)
+						{
+							(*_viKTroopa)->setJumpPower(7.0f);
+							(*_viKTroopa)->setState(ENEMY_ATTACKED);
+						}
+						else if (_player->getPlayerShape() == BASIC)
 						{
 							_player->setPlayerState(new playerDie);
 							_player->getPlayerState()->enter(_player);
