@@ -34,9 +34,9 @@ HRESULT enemyManager::init()
 	IMAGEMANAGER->addImage("fire_red_right_down", "img/piranha_plant/fire_red_right_down.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
 	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
 
-	//setGoomba();
+	setGoomba();
 	setKTroopa();
-	//setFlower();
+	setFlower();
 
 	_bullet = new bullet;
 	_bullet->init();
@@ -120,17 +120,24 @@ void enemyManager::setKTroopa()
 	_vKTroopa.push_back(k);
 
 	k = new koopa_troopa;
-	k->init(ENEMY_LEFT_WALK, PointMake(4140, 1112));
+	k->init(ENEMY_LEFT_WALK, PointMake(4200, BACKGROUNDY - 48));
 	_vKTroopa.push_back(k);
 
 	k = new koopa_troopa;
 	k->init(ENEMY_LEFT_WALK, PointMake(BACKGROUNDX - 2136, BACKGROUNDY - 184), BACKGROUNDX- 2160, BACKGROUNDX - 2112);
 	_vKTroopa.push_back(k);
-	/*
+	
 	k = new koopa_troopa;
-	k->init(ENEMY_RIGHT_WALK, PointMake(BACKGROUNDX - 2500, BACKGROUNDY - 184));
+	k->init(ENEMY_LEFT_JUMP, PointMake(4050, 800));
 	_vKTroopa.push_back(k);
-	*/
+
+	k = new koopa_troopa;
+	k->init(ENEMY_LEFT_JUMP, PointMake(4200, 700));
+	_vKTroopa.push_back(k);
+	
+	k = new koopa_troopa;
+	k->init(ENEMY_LEFT_JUMP, PointMake(4350, 600));
+	_vKTroopa.push_back(k);
 }
 
 void enemyManager::setFlower()

@@ -18,7 +18,7 @@ HRESULT koopa_troopa::init(EnemyState es, POINT position)
 	case ENEMY_LEFT_JUMP:
 	case ENEMY_RIGHT_JUMP:
 		_image = IMAGEMANAGER->findImage("green_wing");
-		_jumpPower = 6.0f;
+		_jumpPower = -4.0f;
 		break;
 	}
 

@@ -71,4 +71,17 @@ void playerIdle::enter(player* player)
 	_count = 0;
 	_jumpPower = -4.0f;
 	_stateName = PLAYER_IDLE;
+
+	if (player->getIsRight())
+	{
+		player->getImage()->setFrameY(1);
+	}
+	else
+	{
+		player->getImage()->setFrameY(0);
+	}
+	if (player->getRunSpeed() < BASICSPEED)
+	{
+		player->setRunSpeed(BASICSPEED);
+	}
 }

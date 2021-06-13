@@ -45,11 +45,11 @@ HRESULT player::init()
 	_state = new playerIdle;
 	_state->enter(this);
 
-	_x = 100;
-	_y = BACKGROUNDY - 72;
+	//_x = 100;
+	//_y = BACKGROUNDY - 72;
 
-	//_x = 1649;
-	//_y = 890;
+	_x = 4169;
+	_y = 1034;
 
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 	_collisonRange = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
@@ -150,8 +150,12 @@ void player::render()
 		Rectangle(getMemDC(), _collisonRange);
 
 		char str[128];
-		sprintf_s(str, "¶¥¿¡ ÀÖ³ª? %d xÁÂÇ¥ : %f yÁÂÇ¥ : %f", _isOnGround, _x, _y);
-		TextOut(getMemDC(), _rc.left - 100, _rc.top - 20, str, strlen(str));
+		sprintf_s(str, "xÁÂÇ¥ : %f", _x);
+		TextOut(getMemDC(), _rc.left - 50, _rc.top - 60, str, strlen(str));
+		sprintf_s(str, "yÁÂÇ¥ : %f", _y);
+		TextOut(getMemDC(), _rc.left - 50, _rc.top - 40, str, strlen(str));
+		sprintf_s(str, "speed : %f", _runSpeed);
+		TextOut(getMemDC(), _rc.left - 50, _rc.top - 20, str, strlen(str));
 	}
 	_img->alphaFrameRender(getMemDC(), _rc.left, _rc.top, _alphaValue);
 }

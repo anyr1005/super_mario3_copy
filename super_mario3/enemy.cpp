@@ -65,7 +65,10 @@ void enemy::update()
 		_state = ENEMY_DIE;
 	}
 
-	move();
+	if (CAMERAMANAGER->getCameraRIGHT() > _x)
+	{
+		move();
+	}
 }
 
 void enemy::render()

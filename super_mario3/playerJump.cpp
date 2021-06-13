@@ -33,23 +33,117 @@ void playerJump::update(player * player)
 	player->setY(player->getY() - _jumpPower);
 	_jumpPower -= GRAVITY;
 	player->setJumpPower(_jumpPower);
+
+	//이미지 재설정
+	if (player->getRunSpeed() == SPEEDMAX)
+	{
+		switch (player->getPlayerShape())
+		{
+		case BASIC:
+			player->setImage("mario_run_jump");
+			break;
+		case SUPER:
+			player->setImage("super_run_jump");
+			break;
+		case TAIL:
+			player->setImage("tail_run_jump");
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		switch (player->getPlayerShape())
+		{
+		case BASIC:
+			player->setImage("mario_jump");
+			break;
+		case SUPER:
+			player->setImage("super_jump");
+			break;
+		case TAIL:
+			player->setImage("tail_jump");
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (_isRightAir)
+	{
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			player->setRunSpeed(0.1f);
+			player->setIsRight(false);
+		}
+		else
+		{
+			player->setX(player->getX() + player->getRunSpeed());
+		}
+		
+	}
+	if (_isLeftAir)
+	{
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			player->setRunSpeed(0.1f);
+			player->setIsRight(false);
+		}
+		else
+		{
+			player->setX(player->getX() - player->getRunSpeed());
+		}
+	}
+
+
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
-		player->setIsRight(false);
-		player->setX(player->getX() - player->getRunSpeed());
+		if (!_isLeftAir)
+		{
+			player->setIsRight(false);
+			player->setX(player->getX() - player->getRunSpeed());
+		}
 	}
+
+
+	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	{
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			player->setRunSpeed(0.1f);
+			_isRightAir = _isLeftAir = false;
+			player->setIsRight(true);
+		}
+		else
+		{
+			_isRightAir = true;
+		}
+	}
+	
 
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
-		player->setIsRight(true);
-		player->setX(player->getX() + player->getRunSpeed());
+		if (!_isRightAir)
+		{
+			player->setIsRight(true);
+			player->setX(player->getX() + player->getRunSpeed());
+		}
 	}
-
-	if (KEYMANAGER->isOnceKeyUp(VK_LEFT) || KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+	if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
 	{
-
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			player->setRunSpeed(0.1f);
+			_isRightAir = _isLeftAir = false;
+			player->setIsRight(false);
+		}
+		else
+		{
+			_isLeftAir = true;
+		}
 	}
-
+	
 	player->getImage()->setFrameX(0);
 	if (player->getIsRight())
 	{
@@ -100,4 +194,10 @@ void playerJump::enter(player * player)
 		}
 	}
 	_stateName = PLAYER_JUMP;
+	_isLeftAir = _isRightAir = false;
+	_isTurn = false;
+	if (player->getRunSpeed() < BASICSPEED)
+	{
+		player->setRunSpeed(BASICSPEED);
+	}
 }
