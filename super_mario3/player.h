@@ -96,6 +96,7 @@ public:
 	image* getImage() { return _img; }
 
 	RECT& getRect() { return _rc; }
+	RECT getCollisonRange() { return _collisonRange; }
 
 	float getRunSpeed() { return _runSpeed; }
 

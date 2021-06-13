@@ -142,7 +142,7 @@ void enemyManager::goombaCollison()
 		RECT temp;
 		RECT goombaRect = (*_viGoomba)->getCollisonRange();
 		
-		if (IntersectRect(&temp, &goombaRect, &_player->getRect()))
+		if (IntersectRect(&temp, &goombaRect, &_player->getCollisonRange()))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -520,7 +520,7 @@ void enemyManager::troopaCollison()
 		RECT temp;
 		RECT troopa = (*_viKTroopa)->getCollisonRange();
 		EnemyState es = (*_viKTroopa)->getState();
-		if (IntersectRect(&temp, &troopa, &_player->getRect()))
+		if (IntersectRect(&temp, &troopa, &_player->getCollisonRange()))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -649,7 +649,7 @@ void enemyManager::troopaCollison()
 			}
 		}
 		
-		if (IntersectRect(&temp, &(*_viKTroopa)->getRect(), &_player->getRect()) && !(*_viKTroopa)->getIsShell())
+		if (IntersectRect(&temp, &(*_viKTroopa)->getRect(), &_player->getCollisonRange()) && !(*_viKTroopa)->getIsShell())
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -1020,7 +1020,7 @@ void enemyManager::flowerCollison()
 		if (_player->getPlayerState()->getStateName() == PLAYER_DIE || _player->getPlayerState()->getStateName() == PLAYER_CHANGE || _player->getIsAttacked()) break;
 		RECT flowerRangeRect = (*_viFlower)->getCollisonRange();
 		RECT flowerRect = (*_viFlower)->getRect();
-		RECT playerRect = _player->getRect();
+		RECT playerRect = _player->getCollisonRange();
 
 		//꽃 나오지 않는 범위 확인용
 		if (playerRect.left >= flowerRangeRect.left && playerRect.right <= flowerRangeRect.right
@@ -1101,7 +1101,7 @@ void enemyManager::bulletCollison()
 	for (int i = 0; i < _bullet->getVBullet().size(); i++)
 	{
 		RECT temp;
-		if (IntersectRect(&temp, &_bullet->getVBullet()[i].rc, &_player->getRect()))
+		if (IntersectRect(&temp, &_bullet->getVBullet()[i].rc, &_player->getCollisonRange()))
 		{
 			if (_player->getPlayerShape() == BASIC)
 			{

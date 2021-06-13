@@ -46,7 +46,7 @@ HRESULT player::init()
 	_state->enter(this);
 
 	//_shape = BASIC;
-	
+
 
 	//_x = 100;
 	//_y = BACKGROUNDY - 72;
@@ -55,6 +55,7 @@ HRESULT player::init()
 	_y = 890;
 
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
+	_collisonRange = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 
 	_runSpeed = BASICSPEED;
 
@@ -89,10 +90,16 @@ void player::update()
 		collisonMushroom();
 		collisonLeaf();
 	}
-	
+
+	if (_rc.left < 10)
+	{
+		_x = _img->getFrameWidth() / 2 + 10;
+		_isLRCollison = true;
+	}
+
 	handleInput();
 	_state->update(this);
-	
+
 	if (_isAttacked)
 	{
 		_attackedCount++;
@@ -115,10 +122,25 @@ void player::update()
 	}
 
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
-
-	if (KEYMANAGER->isOnceKeyDown('A'))
+	if (_state->getStateName() == PLAYER_ATTACK)
 	{
-		_isAttacked = true;
+		_collisonRange = RectMakeCenter(_x, _y + _img->getFrameHeight() / 4, _img->getFrameWidth(), _img->getFrameHeight() / 2);
+	}
+	else if(_shape == TAIL)
+	{
+		if (_isRight)
+		{
+			_collisonRange = RectMakeCenter(_rc.right - 24, _y, 48, _img->getFrameHeight());
+		}
+		else
+		{
+			_collisonRange = RectMakeCenter(_rc.left + 24, _y, 48, _img->getFrameHeight());
+		}
+		
+	}
+	else
+	{
+		_collisonRange = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 	}
 }
 
@@ -127,6 +149,7 @@ void player::render()
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		Rectangle(getMemDC(), _rc);
+		Rectangle(getMemDC(), _collisonRange);
 
 		char str[128];
 		sprintf_s(str, "땅에 있나? %d x좌표 : %f y좌표 : %f", _isOnGround, _x, _y);
@@ -134,7 +157,6 @@ void player::render()
 	}
 	_img->alphaFrameRender(getMemDC(), _rc.left, _rc.top, _alphaValue);
 }
-
 
 void player::handleInput()
 {
@@ -148,16 +170,16 @@ void player::handleInput()
 }
 
 void player::collisonGround()
-{	
+{
 	for (int i = 0; i < _mManager->getGround().size(); i++)
 	{
 		RECT temp;
 		RECT ground = _mManager->getGround()[i];
-		if (_rc.bottom == ground.top && _rc.right > ground.left && _rc.left < ground.right)
+		if (_collisonRange.bottom == ground.top && _collisonRange.right > ground.left && _collisonRange.left < ground.right)
 		{
 			_isOnGround = true;
 		}
-		if (IntersectRect(&temp, &ground, &_rc))
+		if (IntersectRect(&temp, &ground, &_collisonRange))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -196,8 +218,10 @@ void player::collisonObject()
 	{
 		RECT temp;
 		RECT object = _mManager->getObject()[i];
-		if (_rc.bottom == object.top && _rc.right > object.left && _rc.left < object.right) _isOnGround = true;
-		if (IntersectRect(&temp, &object, &_rc))
+		if (_collisonRange.bottom == object.top && _collisonRange.right > object.left && _collisonRange.left < object.right) 
+			_isOnGround = true;
+		
+		if (IntersectRect(&temp, &object, &_collisonRange))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -205,7 +229,7 @@ void player::collisonObject()
 			if (width > height)
 			{
 				//위에서 아래로 충돌
-				if ((_rc.top + _rc.bottom) / 2 < (object.top + object.bottom) / 2 && _jumpPower < 0)
+				if ((_collisonRange.top + _collisonRange.bottom) / 2 < (object.top + object.bottom) / 2 && _jumpPower < 0)
 				{
 					_y -= height;
 					_isOnGround = true;
@@ -224,8 +248,8 @@ void player::collisonPipe()
 	{
 		RECT temp;
 		RECT head = _mManager->getPipe()[i].head;
-		if (_rc.bottom == head.top && _rc.right > head.left && _rc.left < head.right) _isOnGround = true;
-		if (IntersectRect(&temp, &head, &_rc))
+		if (_collisonRange.bottom == head.top && _collisonRange.right > head.left && _collisonRange.left < head.right) _isOnGround = true;
+		if (IntersectRect(&temp, &head, &_collisonRange))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -233,7 +257,7 @@ void player::collisonPipe()
 			if (width > height)
 			{
 				//위에서 아래로 충돌
-				if ((_rc.top + _rc.bottom) / 2 < (head.top + head.bottom) / 2)
+				if ((_collisonRange.top + _collisonRange.bottom) / 2 < (head.top + head.bottom) / 2)
 				{
 					_y -= height;
 					_isOnGround = true;
@@ -245,7 +269,7 @@ void player::collisonPipe()
 			{
 				_isLRCollison = true;
 				//왼쪽에서 충돌
-				if ((_rc.left + _rc.right) / 2 < (head.left + head.right) / 2)
+				if ((_collisonRange.left + _collisonRange.right) / 2 < (head.left + head.right) / 2)
 				{
 					_x -= width;
 					break;
@@ -263,7 +287,7 @@ void player::collisonPipe()
 	{
 		RECT temp;
 		RECT body = _mManager->getPipe()[i].body;
-		if (IntersectRect(&temp, &body, &_rc))
+		if (IntersectRect(&temp, &body, &_collisonRange))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -272,7 +296,7 @@ void player::collisonPipe()
 			{
 				_isLRCollison = true;
 				//왼쪽에서 충돌
-				if ((_rc.left + _rc.right) / 2 < (body.left + body.right) / 2)
+				if ((_collisonRange.left + _collisonRange.right) / 2 < (body.left + body.right) / 2)
 				{
 					_x -= width;
 					break;
@@ -286,7 +310,7 @@ void player::collisonPipe()
 			}
 		}
 	}
-	
+
 }
 
 void player::collisonWoodBlock()
@@ -295,11 +319,11 @@ void player::collisonWoodBlock()
 	{
 		RECT temp;
 		RECT block = _mManager->getWoodBlock()[i];
-		if (_rc.bottom == block.top && _rc.right > block.left && _rc.left < block.right)
+		if (_collisonRange.bottom == block.top && _collisonRange.right > block.left && _collisonRange.left < block.right)
 		{
 			_isOnGround = true;
 		}
-		if (IntersectRect(&temp, &block, &_rc))
+		if (IntersectRect(&temp, &block, &_collisonRange))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -340,12 +364,12 @@ void player::collisonQBlock()
 	{
 		RECT temp;
 		RECT qBlock = _bManager->getQBlock()[i]->getRect();
-		if (_rc.bottom == qBlock.top && _rc.right > qBlock.left && _rc.left < qBlock.right)
+		if (_collisonRange.bottom == qBlock.top && _collisonRange.right > qBlock.left && _collisonRange.left < qBlock.right)
 		{
 			_isOnGround = true;
 			break;
 		}
-		if (IntersectRect(&temp, &qBlock, &_rc))
+		if (IntersectRect(&temp, &qBlock, &_collisonRange))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -364,7 +388,7 @@ void player::collisonQBlock()
 				{
 					if (!_bManager->getQBlock()[i]->getIsFire())
 					{
-						if (_x < (qBlock.right + qBlock.left)/2)
+						if (_x < (qBlock.right + qBlock.left) / 2)
 						{
 							_bManager->setIsRight(true);
 						}
@@ -396,21 +420,52 @@ void player::collisonQBlock()
 			//좌우 충돌
 			else
 			{
-				_isLRCollison = true;
-				//왼쪽에서 충돌
-				if (_x < (qBlock.left + qBlock.right) / 2)
+				if (_state->getStateName() == PLAYER_ATTACK)
 				{
-					_x -= width;
-					break;
+					if (!_bManager->getQBlock()[i]->getIsFire())
+					{
+						if (_x < (qBlock.right + qBlock.left) / 2)
+						{
+							_bManager->setIsRight(true);
+						}
+						else
+						{
+							_bManager->setIsRight(false);
+						}
+						_bManager->getQBlock()[i]->setIsChange(true);
+						//코인
+						if (_bManager->getQBlock()[i]->getItem() == COIN)
+						{
+							_bManager->getCoin()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2);
+							_bManager->getQBlock()[i]->setIsFire(true);
+						}
+						else if (_bManager->getQBlock()[i]->getItem() == MUSHROOM && _shape != BASIC)
+						{
+							//나뭇잎
+							_bManager->getLeaf()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2 - IMAGEMANAGER->findImage("leaf")->getHeight() / 2, _isRight);
+							_bManager->getQBlock()[i]->setIsFire(true);
+						}
+						break;
+					}
 				}
-				//오른쪽에서 충돌
 				else
 				{
-					_x += width;
-					break;
+					_isLRCollison = true;
+					//왼쪽에서 충돌
+					if (_x < (qBlock.left + qBlock.right) / 2)
+					{
+						_x -= width;
+						break;
+					}
+					//오른쪽에서 충돌
+					else
+					{
+						_x += width;
+						break;
+					}
 				}
 			}
-			
+
 		}
 	}
 }
@@ -422,12 +477,12 @@ void player::collisonGBlock()
 	{
 		RECT temp;
 		RECT gBlock = _bManager->getGBlock()[i]->getRect();
-		if (_rc.bottom == gBlock.top && _rc.right > gBlock.left && _rc.left < gBlock.right)
+		if (_collisonRange.bottom == gBlock.top && _collisonRange.right > gBlock.left && _collisonRange.left < gBlock.right)
 		{
 			_isOnGround = true;
 			break;
 		}
-		if (IntersectRect(&temp, &gBlock, &_rc))
+		if (IntersectRect(&temp, &gBlock, &_collisonRange))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -435,7 +490,7 @@ void player::collisonGBlock()
 			if (width > height)
 			{
 				//위에서 아래로 충돌
-				if ((_rc.top + _rc.bottom) / 2 < (gBlock.top + gBlock.bottom) / 2)
+				if ((_collisonRange.top + _collisonRange.bottom) / 2 < (gBlock.top + gBlock.bottom) / 2)
 				{
 					_y -= height;
 					_isOnGround = true;
@@ -443,7 +498,7 @@ void player::collisonGBlock()
 				//아래에서 위로 충돌
 				else
 				{
-					_y+= height;
+					_y += height;
 					_state = new playerFall;
 					_state->enter(this);
 				}
@@ -484,7 +539,7 @@ void player::collisonMushroom()
 	{
 		RECT temp;
 		RECT mushroom = _bManager->getMushroom()->getVMushroom()[i].rc;
-		if (IntersectRect(&temp, &_rc, &mushroom))
+		if (IntersectRect(&temp, &_collisonRange, &mushroom))
 		{
 			_state = new playerChange;
 			_state->enter(this);
@@ -501,7 +556,7 @@ void player::collisonLeaf()
 	{
 		RECT temp;
 		RECT leaf = _bManager->getLeaf()->getVLeaf()[i].rc;
-		if (IntersectRect(&temp, &_rc, &leaf))
+		if (IntersectRect(&temp, &_collisonRange, &leaf))
 		{
 			_state = new playerChange;
 			_state->enter(this);
