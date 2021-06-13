@@ -323,7 +323,7 @@ void leaf::move()
 			break;
 		}
 
-		if (_viLeaf->y < _viLeaf->fireY - (_viLeaf->itemImage->getHeight() * 1.75f))
+		if (_viLeaf->y < _viLeaf->fireY - (_viLeaf->itemImage->getHeight() * 1.5f))
 		{
 			if (_viLeaf->isRight)
 			{
@@ -361,9 +361,9 @@ void leaf::move()
 				_viLeaf->currentFrameY = 0;
 				_viLeaf->state = ITEM_LEFT;
 			}
-			else if (_viLeaf->x < _viLeaf->fireX - _viLeaf->itemImage->getWidth() * 1.7f)
+			else if (_viLeaf->x < _viLeaf->fireX - _viLeaf->itemImage->getWidth())
 			{
-				_viLeaf->x = _viLeaf->fireX - _viLeaf->itemImage->getWidth() * 1.7f;
+				_viLeaf->x = _viLeaf->fireX - _viLeaf->itemImage->getWidth();
 				_viLeaf->currentFrameY = 1;
 				_viLeaf->state = ITEM_RIGHT;
 

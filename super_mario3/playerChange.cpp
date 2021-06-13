@@ -11,7 +11,7 @@ playerState * playerChange::handleInput(player * player)
 			player->setPlayerShape(SUPER);
 			return new playerIdle;
 		}
-		else if (_index <= 0)
+		else if (_index <= 0 && player->getPlayerShape() == SUPER)
 		{
 			player->setPlayerShape(BASIC);
 			return new playerIdle;

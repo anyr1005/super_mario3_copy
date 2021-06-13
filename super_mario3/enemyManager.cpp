@@ -5,6 +5,7 @@
 #include "piranha_plant.h"
 #include "playerJump.h"
 #include "playerDie.h"
+#include "playerChange.h"
 
 HRESULT enemyManager::init()
 {
@@ -194,6 +195,12 @@ void enemyManager::goombaCollison()
 				{
 					
 					_player->setPlayerState(new playerDie);
+					_player->getPlayerState()->enter(_player);
+				}
+				else
+				{
+					_player->setIsAttacked(true);
+					_player->setPlayerState(new playerChange);
 					_player->getPlayerState()->enter(_player);
 				}
 			}
@@ -602,6 +609,12 @@ void enemyManager::troopaCollison()
 								_player->setPlayerState(new playerDie);
 								_player->getPlayerState()->enter(_player);
 							}
+							else
+							{
+								_player->setIsAttacked(true);
+								_player->setPlayerState(new playerChange);
+								_player->getPlayerState()->enter(_player);
+							}
 						}
 					}
 				}
@@ -623,12 +636,20 @@ void enemyManager::troopaCollison()
 								_player->setPlayerState(new playerDie);
 								_player->getPlayerState()->enter(_player);
 							}
+							else
+							{
+								_player->setIsAttacked(true);
+								_player->setPlayerState(new playerChange);
+								_player->getPlayerState()->enter(_player);
+							}
 						}
 					}
 				}
+				(*_viKTroopa)->setState(es);
 			}
 		}
-		if (IntersectRect(&temp, &(*_viKTroopa)->getRect(), &_player->getRect()))
+		
+		if (IntersectRect(&temp, &(*_viKTroopa)->getRect(), &_player->getRect()) && !(*_viKTroopa)->getIsShell())
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
@@ -666,6 +687,12 @@ void enemyManager::troopaCollison()
 						_player->setPlayerState(new playerDie);
 						_player->getPlayerState()->enter(_player);
 					}
+					else
+					{
+						_player->setIsAttacked(true);
+						_player->setPlayerState(new playerChange);
+						_player->getPlayerState()->enter(_player);
+					}
 					(*_viKTroopa)->setState(es);
 					break;
 				}
@@ -695,12 +722,19 @@ void enemyManager::troopaCollison()
 						_player->setPlayerState(new playerDie);
 						_player->getPlayerState()->enter(_player);
 					}
+					else
+					{
+						_player->setIsAttacked(true);
+						_player->setPlayerState(new playerChange);
+						_player->getPlayerState()->enter(_player);
+					}
 				}
 				(*_viKTroopa)->setState(es);
 				break;
 			}
 
 		}
+		
 	}
 
 	//¶¥°ú Ãæµ¹
@@ -910,15 +944,6 @@ void enemyManager::troopaCollison()
 			}
 			if (IntersectRect(&temp, &troopaRect, &qBlock))
 			{
-				if (!_bManager->getQBlock()[i]->getIsCrashed() && (*_viKTroopa)->getIsShell())
-				{
-					_bManager->getQBlock()[i]->setIsChange(true);
-					//ÄÚÀÎ
-					if (_bManager->getQBlock()[i]->getItem() == COIN)
-					{
-						_bManager->getCoin()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2);
-					}
-				}
 				float width = temp.right - temp.left;
 				float height = temp.bottom - temp.top;
 				if (width > height)
@@ -965,6 +990,22 @@ void enemyManager::troopaCollison()
 							(*_viKTroopa)->setState(ENEMY_RIGHT_JUMP);
 						}
 						_bManager->setIsRight(false);
+					}
+					if (!_bManager->getQBlock()[i]->getIsFire() && (*_viKTroopa)->getIsShell())
+					{
+						_bManager->getQBlock()[i]->setIsChange(true);
+						//ÄÚÀÎ
+						if (_bManager->getQBlock()[i]->getItem() == COIN)
+						{
+							_bManager->getCoin()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2);
+							_bManager->getQBlock()[i]->setIsFire(true);
+						}
+						else if (_bManager->getQBlock()[i]->getItem() == MUSHROOM && _player->getPlayerShape() != BASIC)
+						{
+							//³ª¹µÀÙ
+							_bManager->getLeaf()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2 - IMAGEMANAGER->findImage("leaf")->getHeight() / 2, _bManager->getIsRight());
+							_bManager->getQBlock()[i]->setIsFire(true);
+						}
 					}
 				}
 			}

@@ -110,6 +110,7 @@ public:
 	void setPlayerState(playerState* state) { _state = state; }
 
 	bool getIsAttacked() { return _isAttacked; }
+	void setIsAttacked(bool b) { _isAttacked = b; }
 	//============================================
 };
 

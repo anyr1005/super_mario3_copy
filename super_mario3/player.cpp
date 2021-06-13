@@ -40,7 +40,7 @@ HRESULT player::init()
 
 	_isRight = true;
 
-	_shape = TAIL;
+	_shape = SUPER;
 
 	_state = new playerIdle;
 	_state->enter(this);
@@ -90,31 +90,16 @@ void player::update()
 		collisonLeaf();
 	}
 	
-	if (_shape == SUPER)
-	{
-		_bManager->setIsLeaf(true);
-	}
-	else
-	{
-		_bManager->setIsLeaf(false);
-	}
-
 	handleInput();
 	_state->update(this);
 	
-	if (KEYMANAGER->isOnceKeyDown('A'))
-	{
-		_isAttacked = true;
-		_state = new playerChange;
-		_state->enter(this);
-	}
-
 	if (_isAttacked)
 	{
 		_attackedCount++;
 		if (_attackedCount >= 200)
 		{
 			_isAttacked = false;
+			_attackedCount = 0;
 		}
 		if (_attackedCount % 5 == 0)
 		{
@@ -376,7 +361,7 @@ void player::collisonQBlock()
 				//아래에서 위로 충돌
 				else
 				{
-					if (!_bManager->getQBlock()[i]->getIsCrashed())
+					if (!_bManager->getQBlock()[i]->getIsFire())
 					{
 						if (_x < (qBlock.right + qBlock.left)/2)
 						{
@@ -391,6 +376,13 @@ void player::collisonQBlock()
 						if (_bManager->getQBlock()[i]->getItem() == COIN)
 						{
 							_bManager->getCoin()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2);
+							_bManager->getQBlock()[i]->setIsFire(true);
+						}
+						else if (_bManager->getQBlock()[i]->getItem() == MUSHROOM && _shape != BASIC)
+						{
+							//나뭇잎
+							_bManager->getLeaf()->fire((qBlock.right + qBlock.left) / 2, (qBlock.bottom + qBlock.top) / 2 - IMAGEMANAGER->findImage("leaf")->getHeight() / 2, _isRight);
+							_bManager->getQBlock()[i]->setIsFire(true);
 						}
 					}
 

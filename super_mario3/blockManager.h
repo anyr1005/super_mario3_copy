@@ -36,7 +36,6 @@ private:
 	mapManager* _mManager;
 
 	bool _isRight; //오른쪽 충돌인지 왼쪽 충돌인지(버섯과 나뭇잎 움직이는 방향 위해서)
-	bool _isLeaf;
 
 
 public :
@@ -66,7 +65,7 @@ public :
 	leaf* getLeaf() { return _leaf; }
 
 	void setIsRight(bool b) { _isRight = b; }
+	bool getIsRight() { return _isRight; }
 
-	void setIsLeaf(bool b) { _isLeaf = b; }
 };
 

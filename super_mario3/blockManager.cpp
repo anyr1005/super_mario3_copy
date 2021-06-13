@@ -40,18 +40,9 @@ void blockManager::update()
 			RECT rc = (*_viQBlock)->getRect();
 			if ((*_viQBlock)->getItem() == MUSHROOM)
 			{
-				if (_isLeaf)
-				{
-					//³ª¹µÀÙ
-					_leaf->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2 - IMAGEMANAGER->findImage("leaf")->getHeight()/2, _isRight);
-					(*_viQBlock)->setIsFire(true);
-				}
-				else
-				{
-					//½´ÆÛ¹ö¼¸
-					_mushroom->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, _isRight);
-					(*_viQBlock)->setIsFire(true);
-				}
+				//½´ÆÛ¹ö¼¸
+				_mushroom->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, _isRight);
+				(*_viQBlock)->setIsFire(true);
 			}
 		}
 		(*_viQBlock)->update();

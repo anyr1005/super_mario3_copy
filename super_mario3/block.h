@@ -55,5 +55,6 @@ public:
 	bool getIsFire() { return _isFire; }
 
 	item getItem() { return _item; }
+
 };
 
