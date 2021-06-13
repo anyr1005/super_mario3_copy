@@ -20,6 +20,8 @@ class player : public gameNode
 private:
 	image* _img; //플레이어 이미지
 	RECT _rc;
+	RECT _collisonRange;
+
 	float _x, _y; //중점 x, y 좌표
 	float _runSpeed; //달리는 속도
 	float _jumpPower; //점프

@@ -2,6 +2,7 @@
 #include "playerJump.h"
 #include "playerIdle.h"
 #include "playerFly.h"
+#include "playerAttack.h"
 
 playerState * playerJump::handleInput(player * player)
 {
@@ -14,6 +15,14 @@ playerState * playerJump::handleInput(player * player)
 		if (player->getRunSpeed() == SPEEDMAX && player->getPlayerShape() == TAIL)
 		{
 			return new playerFly;
+		}
+	}
+	if (KEYMANAGER->isOnceKeyDown('Z'))
+	{
+		//꼬리 마리오 상태이면 공격
+		if (player->getPlayerShape() == TAIL)
+		{
+			return new playerAttack;
 		}
 	}
 	return nullptr;

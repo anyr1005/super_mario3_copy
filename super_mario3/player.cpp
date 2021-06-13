@@ -306,7 +306,7 @@ void player::collisonWoodBlock()
 			if (width > height)
 			{
 				//위에서 아래로 충돌
-				if (_y < (block.top + block.bottom) / 2)
+				if (_y < (block.top + block.bottom) / 2 && _jumpPower < 0)
 				{
 					_y -= height;
 					_isOnGround = true;
@@ -320,6 +320,7 @@ void player::collisonWoodBlock()
 			}
 			else
 			{
+				_isLRCollison = true;
 				if (_x < (block.right + block.left) / 2)
 				{
 					_x -= width;
@@ -442,15 +443,6 @@ void player::collisonGBlock()
 				//아래에서 위로 충돌
 				else
 				{
-					/*
-					RECT rc = _bManager->getGBlock()[i]->getRect();
-					if (!_bManager->getGBlock()[i]->getIsCrashed())
-					{
-						_bManager->getGBlock()[i]->setIsChange(true);
-						//코인
-						_bManager->getCoin()->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2);
-					}
-					*/
 					_y+= height;
 					_state = new playerFall;
 					_state->enter(this);
@@ -459,16 +451,25 @@ void player::collisonGBlock()
 			//좌우 충돌
 			else
 			{
-				_isLRCollison = true;
-				//왼쪽에서 충돌
-				if ((_rc.left + _rc.right) / 2 < (gBlock.left + gBlock.right) / 2)
+				if (_state->getStateName() == PLAYER_ATTACK)
 				{
-					_x -= width;
+					_bManager->removeGoldenBlock(i);
+					_bManager->getParticle()->fire((gBlock.left + gBlock.right) / 2, gBlock.top);
+					break;
 				}
-				//오른쪽에서 충돌
 				else
 				{
-					_x += width;
+					_isLRCollison = true;
+					//왼쪽에서 충돌
+					if (_x < (gBlock.left + gBlock.right) / 2)
+					{
+						_x -= width;
+					}
+					//오른쪽에서 충돌
+					else
+					{
+						_x += width;
+					}
 				}
 			}
 

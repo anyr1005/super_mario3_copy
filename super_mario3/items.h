@@ -40,6 +40,19 @@ struct tagItem
 	ItemState state;
 };
 
+struct tagParticle
+{
+	image* itemImage;
+	RECT rc;
+	float x, y;
+	float angle;
+	float gravity;
+	bool isFire;
+	int currentFrameX;
+	int speed;
+	int count;
+};
+
 class coin : public gameNode
 {
 private:
@@ -93,8 +106,6 @@ private:
 	vector<tagItem> _vLeaf;
 	vector<tagItem>::iterator _viLeaf;
 
-	const char* _imageName;
-
 public:
 	HRESULT init();
 	virtual void release();
@@ -115,4 +126,20 @@ public:
 
 	vector<tagItem> getVLeaf() { return _vLeaf; }
 	vector<tagItem>::iterator getViLeaf() { return _viLeaf; }
+};
+
+class particle : public gameNode //금색 블록 터지면 나오는 조각
+{
+private:
+	tagParticle _particle[2][4];
+
+	int _fireCount;
+public:
+	HRESULT init();
+	virtual void release();
+	virtual void update();
+	virtual void render();
+
+	void fire(float x, float y);
+	void move();
 };

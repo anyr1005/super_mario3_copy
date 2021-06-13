@@ -31,6 +31,7 @@ private:
 	coin* _coin;
 	mushroom* _mushroom;
 	leaf* _leaf;
+	particle* _particle;
 
 	//item과 땅 충돌을 위해 mapManager 참조
 	mapManager* _mManager;
@@ -63,6 +64,7 @@ public :
 	coin* getCoin() { return _coin; }
 	mushroom* getMushroom() { return _mushroom; }
 	leaf* getLeaf() { return _leaf; }
+	particle* getParticle() { return _particle; }
 
 	void setIsRight(bool b) { _isRight = b; }
 	bool getIsRight() { return _isRight; }

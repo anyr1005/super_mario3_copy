@@ -43,6 +43,7 @@ public:
 	inline RECT getRect() { return _rc; }
 
 	inline void setImage(string imgName) { _imageName = IMAGEMANAGER->findImage(imgName); }
+	image* getImage() { return _imageName; }
 
 	void setIsChange(bool b) { _isChange = b; }
 

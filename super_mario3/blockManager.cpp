@@ -10,6 +10,7 @@ HRESULT blockManager::init()
 	IMAGEMANAGER->addFrameImage("q_change_complete", "img/block/question_box_change_complete.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255), FALSE);
 	IMAGEMANAGER->addImage("mushroom", "img/item/mushroom.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
 	IMAGEMANAGER->addFrameImage("leaf", "img/item/leaf.bmp", 48, 84, 1, 2, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("particle", "img/item/particle.bmp", 96, 24, 4, 1, true, RGB(255, 0, 255), FALSE);
 
 	_coin = new coin;
 	_coin->init();
@@ -19,6 +20,9 @@ HRESULT blockManager::init()
 
 	_leaf = new leaf;
 	_leaf->init();
+
+	_particle = new particle;
+	_particle->init();
 
 	setQuestionBlock();
 	setGoldenBlock();
@@ -59,9 +63,15 @@ void blockManager::update()
 	_coin->update();
 	_mushroom->update();
 	_leaf->update();
+	_particle->update();
 
 	mushroomCollision();
 	//leafCollision();
+
+	if (KEYMANAGER->isOnceKeyDown('A'))
+	{
+		_particle->fire(300, 1226);
+	}
 }
 
 void blockManager::render()
@@ -84,6 +94,7 @@ void blockManager::render()
 	}
 	
 	_leaf->render();
+	_particle->render();
 }
 
 void blockManager::setQuestionBlock()
