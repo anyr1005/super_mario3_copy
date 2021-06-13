@@ -5,6 +5,7 @@ HRESULT koopa_troopa::init(EnemyState es, POINT position)
 {
 	enemy::init(es, position);
 	
+	_isHaveRange = false;
 	_isShell = false;
 
 	switch (_state)
@@ -23,6 +24,31 @@ HRESULT koopa_troopa::init(EnemyState es, POINT position)
 
 	_rc = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
 	_collisonRange = RectMakeCenter(_rc.right - 13.5f, _rc.bottom - 36, 27, 36);
+	return E_NOTIMPL;
+}
+
+HRESULT koopa_troopa::init(EnemyState es, POINT position, float x1, float x2)
+{
+	enemy::init(es, position);
+	_rangeX1 = x1;
+	_rangeX2 = x2;
+	_isHaveRange = true;
+	_isShell = false;
+
+	switch (_state)
+	{
+	case ENEMY_LEFT_WALK:
+	case ENEMY_RIGHT_WALK:
+		_image = IMAGEMANAGER->findImage("green_walk");
+		_jumpPower = -4.0f;
+		break;
+	case ENEMY_LEFT_JUMP:
+	case ENEMY_RIGHT_JUMP:
+		_image = IMAGEMANAGER->findImage("green_wing");
+		_jumpPower = 6.0f;
+		break;
+	}
+
 	return E_NOTIMPL;
 }
 
@@ -56,6 +82,19 @@ void koopa_troopa::move()
 		}
 	}
 	
+	if (_isHaveRange && !_isShell)
+	{
+		if (_rc.left <= _rangeX1)
+		{
+			_x = _rangeX1 + _image->getFrameWidth() / 2;
+			_state = ENEMY_RIGHT_WALK;
+		}
+		else if (_rc.right >= _rangeX2)
+		{
+			_x = _rangeX2 - _image->getFrameWidth() / 2;
+			_state = ENEMY_LEFT_WALK;
+		}
+	}
 
 	//움직임 설정
 	switch (_state)
@@ -90,6 +129,8 @@ void koopa_troopa::move()
 	default:
 		break;
 	}
+
+	
 
 	//jump이면 땅에 닿았을 때 점프파워초기화
 	if (_isOnGround)

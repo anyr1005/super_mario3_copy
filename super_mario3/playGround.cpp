@@ -66,7 +66,14 @@ void playGround::update()
 	_bManager->update();
 	_player->update();
 	
-	CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0.3f, 0.7f);
+	if (_player->getPlayerShape() == TAIL)
+	{
+		CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0.3f, 0.7f);
+	}
+	else
+	{
+		CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0, 0);
+	}
 	
 }
 

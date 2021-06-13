@@ -23,7 +23,7 @@ void mapManager::update()
 
 void mapManager::render()
 {
-	for (int i = 0; i < _pipe.size(); i++)
+	for (int i = 0; i < _pipe.size()-1; i++)
 	{
 		IMAGEMANAGER->findImage("pipe_head")->render(getMemDC(), _pipe[i].head.left, _pipe[i].head.top);
 	}

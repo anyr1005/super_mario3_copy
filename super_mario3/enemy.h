@@ -1,7 +1,7 @@
 #pragma once
 #include "gameNode.h"
 
-#define ENEMYSPEED 4
+#define ENEMYSPEED 2
 
 //enemy는 jump인지 walk인지에 따라 이미지만 다르게 주면 됨
 enum EnemyState
@@ -47,6 +47,7 @@ protected:
 public:
 	virtual HRESULT init();
 	virtual HRESULT init(EnemyState es ,POINT position);
+	virtual HRESULT init(EnemyState es, POINT position, float x1, float x2) { return S_OK; };
 	virtual void release();
 	virtual void update();
 	virtual void render();

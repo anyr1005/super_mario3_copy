@@ -40,19 +40,16 @@ HRESULT player::init()
 
 	_isRight = true;
 
-	_shape = SUPER;
+	_shape = BASIC;
 
 	_state = new playerIdle;
 	_state->enter(this);
 
-	//_shape = BASIC;
+	_x = 100;
+	_y = BACKGROUNDY - 72;
 
-
-	//_x = 100;
-	//_y = BACKGROUNDY - 72;
-
-	_x = 1649;
-	_y = 890;
+	//_x = 1649;
+	//_y = 890;
 
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 	_collisonRange = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
@@ -86,12 +83,13 @@ void player::update()
 		collisonPipe();
 		collisonQBlock();
 		collisonGBlock();
+		collisonCoinBlock();
 		collisonWoodBlock();
 		collisonMushroom();
 		collisonLeaf();
 	}
 
-	if (_rc.left < 10)
+	if (_rc.left <= 10)
 	{
 		_x = _img->getFrameWidth() / 2 + 10;
 		_isLRCollison = true;
@@ -480,7 +478,6 @@ void player::collisonGBlock()
 		if (_collisonRange.bottom == gBlock.top && _collisonRange.right > gBlock.left && _collisonRange.left < gBlock.right)
 		{
 			_isOnGround = true;
-			break;
 		}
 		if (IntersectRect(&temp, &gBlock, &_collisonRange))
 		{
@@ -510,7 +507,6 @@ void player::collisonGBlock()
 				{
 					_bManager->removeGoldenBlock(i);
 					_bManager->getParticle()->fire((gBlock.left + gBlock.right) / 2, gBlock.top);
-					break;
 				}
 				else
 				{
@@ -528,6 +524,18 @@ void player::collisonGBlock()
 				}
 			}
 
+		}
+	}
+}
+
+void player::collisonCoinBlock()
+{
+	for (int i = 0; i < _bManager->getCoinBlock().size(); i++)
+	{
+		RECT temp;
+		if (IntersectRect(&temp, &_collisonRange, &_bManager->getCoinBlock()[i]->getRect()))
+		{
+			_bManager->removeCoinBlock(i);
 		}
 	}
 }

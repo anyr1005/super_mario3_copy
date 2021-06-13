@@ -60,6 +60,7 @@ public :
 
 	vector<block*> getQBlock() { return _vQBlock; }
 	vector<block*> getGBlock() { return _vGBlock; }
+	vector<block*> getCoinBlock() { return _vCoinBlock; }
 
 	coin* getCoin() { return _coin; }
 	mushroom* getMushroom() { return _mushroom; }

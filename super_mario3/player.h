@@ -60,6 +60,7 @@ public:
 
 	void collisonQBlock();
 	void collisonGBlock();
+	void collisonCoinBlock();
 
 	void collisonMushroom();
 	void collisonLeaf();
