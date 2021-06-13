@@ -9,30 +9,32 @@
 HRESULT enemyManager::init()
 {
 	//굼바 이미지
-	IMAGEMANAGER->addFrameImage("goomba_walk", "img/goomba/goomba_walk.bmp", 96, 48, 2, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("goomba_wing", "img/goomba/goomba_wing.bmp", 240, 72, 4, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("goomba_crush", "img/goomba/goomba_crush.bmp", 48, 27, 1, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("goomba_attacked", "img/goomba/goomba_attacked.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("goomba_walk", "img/goomba/goomba_walk.bmp", 96, 48, 2, 1, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("goomba_wing", "img/goomba/goomba_wing.bmp", 240, 72, 4, 1, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("goomba_crush", "img/goomba/goomba_crush.bmp", 48, 27, 1, 1, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("goomba_attacked", "img/goomba/goomba_attacked.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255), FALSE);
 
 	//엉금엉금 이미지
 	//초록색
-	IMAGEMANAGER->addFrameImage("green_walk", "img/koopa_troopa/green_walk.bmp", 96, 162, 2, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("green_wing", "img/koopa_troopa/green_wing.bmp", 192, 168, 4, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("green_shell", "img/koopa_troopa/green_shell.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("green_walk", "img/koopa_troopa/green_walk.bmp", 96, 162, 2, 2, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("green_wing", "img/koopa_troopa/green_wing.bmp", 192, 168, 4, 2, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("green_shell", "img/koopa_troopa/green_shell.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("green_shell_attacked", "img/koopa_troopa/green_shell_attacked.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255), FALSE);
+
 	//빨간색
-	IMAGEMANAGER->addFrameImage("red_walk", "img/koopa_troopa/red_walk.bmp", 96, 162, 2, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("red_wing", "img/koopa_troopa/red_wing.bmp", 192, 168, 4, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("red_shell", "img/koopa_troopa/red_shell.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("red_walk", "img/koopa_troopa/red_walk.bmp", 96, 162, 2, 2, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("red_wing", "img/koopa_troopa/red_wing.bmp", 192, 168, 4, 2, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("red_shell", "img/koopa_troopa/red_shell.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255), FALSE);
 
 	//뻐끔플라워 이미지
-	IMAGEMANAGER->addImage("fire_red_left_down", "img/piranha_plant/fire_red_left_down.bmp", 48, 48, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("fire_red_left_up", "img/piranha_plant/fire_red_left_up.bmp", 48, 48, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("fire_red_right_up", "img/piranha_plant/fire_red_right_up.bmp", 48, 48, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("fire_red_right_down", "img/piranha_plant/fire_red_right_down.bmp", 48, 48, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("fire_red_left_down", "img/piranha_plant/fire_red_left_down.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addImage("fire_red_left_up", "img/piranha_plant/fire_red_left_up.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addImage("fire_red_right_up", "img/piranha_plant/fire_red_right_up.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addImage("fire_red_right_down", "img/piranha_plant/fire_red_right_down.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
 
-	setGoomba();
-	//setKTroopa();
+	//setGoomba();
+	setKTroopa();
 	//setFlower();
 
 	_bullet = new bullet;
@@ -132,7 +134,7 @@ void enemyManager::goombaCollison()
 	for (_viGoomba = _vGoomba.begin(); _viGoomba != _vGoomba.end(); ++_viGoomba)
 	{
 		//플레이어가 죽은 상태면 충돌 확인 안함
-		if (_player->getPlayerState()->getStateName() == PLAYER_DIE || _player->getPlayerState()->getStateName() == PLAYER_GROW) break;
+		if (_player->getPlayerState()->getStateName() == PLAYER_DIE || _player->getPlayerState()->getStateName() == PLAYER_CHANGE || _player->getIsAttacked()) break;
 		//굼바가 죽은 상태면 충돌 확인 안함
 		if ((*_viGoomba)->getState() == ENEMY_DIE || (*_viGoomba)->getState() == ENEMY_ATTACKED) continue;
 
@@ -507,14 +509,16 @@ void enemyManager::troopaCollison()
 	//플레이어와 충돌
 	for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
 	{
-		if (_player->getPlayerState()->getStateName() == PLAYER_DIE || _player->getPlayerState()->getStateName() == PLAYER_GROW) break;
+		if (_player->getPlayerState()->getStateName() == PLAYER_DIE || _player->getPlayerState()->getStateName() == PLAYER_CHANGE || _player->getIsAttacked()) break;
 		RECT temp;
 		RECT troopa = (*_viKTroopa)->getCollisonRange();
+		EnemyState es = (*_viKTroopa)->getState();
 		if (IntersectRect(&temp, &troopa, &_player->getRect()))
 		{
 			float width = temp.right - temp.left;
 			float height = temp.bottom - temp.top;
-			EnemyState es = (*_viKTroopa)->getState();
+
+			//상하충돌
 			if (width > height)
 			{
 				//player가 위에서 충돌
@@ -544,7 +548,7 @@ void enemyManager::troopaCollison()
 					//등껍질 상태이면
 					else
 					{
-						if ((*_viKTroopa)->getState() == ENEMY_IDLE)
+						if ((*_viKTroopa)->getState() == ENEMY_IDLE || (*_viKTroopa)->getState() == ENEMY_ATTACKED)
 						{
 							if (_player->getX() < (*_viKTroopa)->getX())
 							{
@@ -576,6 +580,7 @@ void enemyManager::troopaCollison()
 					}
 				}
 			}
+			//좌우충돌
 			else
 			{
 				//왼쪽에서 충돌
@@ -585,7 +590,7 @@ void enemyManager::troopaCollison()
 					if ((*_viKTroopa)->getIsShell())
 					{
 						//멈춰있으면 등껍질 움직이게함
-						if ((*_viKTroopa)->getState() == ENEMY_IDLE)
+						if ((*_viKTroopa)->getState() == ENEMY_IDLE || (*_viKTroopa)->getState() == ENEMY_ATTACKED)
 						{
 							es = ENEMY_RIGHT_WALK;
 							_player->setX(_player->getX() - width);
@@ -599,33 +604,6 @@ void enemyManager::troopaCollison()
 							}
 						}
 					}
-					else
-					{
-						if (_player->getPlayerState()->getStateName() == PLAYER_ATTACK)
-						{
-							if ((*_viKTroopa)->getState() == ENEMY_LEFT_JUMP)
-							{
-								(*_viKTroopa)->setState(ENEMY_LEFT_WALK);
-							}
-							else if ((*_viKTroopa)->getState() == ENEMY_RIGHT_JUMP)
-							{
-								(*_viKTroopa)->setState(ENEMY_RIGHT_WALK);
-							}
-							else
-							{
-								(*_viKTroopa)->setJumpPower(7.0f);
-								(*_viKTroopa)->setState(ENEMY_ATTACKED);
-							}
-
-						}
-						if (_player->getPlayerShape() == BASIC)
-						{
-							_player->setPlayerState(new playerDie);
-							_player->getPlayerState()->enter(_player);
-						}
-					}
-					(*_viKTroopa)->setState(es);
-					break;
 				}
 				else //오른쪽에서 충돌
 				{
@@ -633,7 +611,7 @@ void enemyManager::troopaCollison()
 					if ((*_viKTroopa)->getIsShell())
 					{
 						//멈춰있으면 등껍질 움직이게함
-						if ((*_viKTroopa)->getState() == ENEMY_IDLE)
+						if ((*_viKTroopa)->getState() == ENEMY_IDLE || (*_viKTroopa)->getState() == ENEMY_ATTACKED)
 						{
 							es = ENEMY_LEFT_WALK;
 							_player->setX(_player->getX() + width);
@@ -647,24 +625,81 @@ void enemyManager::troopaCollison()
 							}
 						}
 					}
-					else
+				}
+			}
+		}
+		if (IntersectRect(&temp, &(*_viKTroopa)->getRect(), &_player->getRect()))
+		{
+			float width = temp.right - temp.left;
+			float height = temp.bottom - temp.top;
+			if (width > height)
+			{
+
+			}
+			else
+			{
+				//왼쪽에서 충돌
+				if (_player->getX() < (*_viKTroopa)->getX())
+				{
+					//플레이어가 공격한거라면
+					if (_player->getPlayerState()->getStateName() == PLAYER_ATTACK)
 					{
-						if (_player->getPlayerState()->getStateName() == PLAYER_ATTACK)
+						if ((*_viKTroopa)->getState() == ENEMY_LEFT_JUMP)
 						{
-							(*_viKTroopa)->setJumpPower(7.0f);
-							(*_viKTroopa)->setState(ENEMY_ATTACKED);
+							es = ENEMY_LEFT_WALK;
 						}
-						else if (_player->getPlayerShape() == BASIC)
+						else if ((*_viKTroopa)->getState() == ENEMY_RIGHT_JUMP)
 						{
-							_player->setPlayerState(new playerDie);
-							_player->getPlayerState()->enter(_player);
+							es = ENEMY_RIGHT_WALK;
 						}
+						else
+						{
+							es = ENEMY_ATTACKED;
+							(*_viKTroopa)->setJumpPower(6.0f);
+							(*_viKTroopa)->setIsShell(true);
+							(*_viKTroopa)->setIsOnGround(false);
+						}
+						_player->setX(_player->getX() - width - 21);
+					}
+					else if (_player->getPlayerShape() == BASIC)
+					{
+						_player->setPlayerState(new playerDie);
+						_player->getPlayerState()->enter(_player);
 					}
 					(*_viKTroopa)->setState(es);
 					break;
 				}
-				
+				else //오른쪽에서 충돌
+				{
+					if (_player->getPlayerState()->getStateName() == PLAYER_ATTACK)
+					{
+						if ((*_viKTroopa)->getState() == ENEMY_LEFT_JUMP)
+						{
+							es = ENEMY_LEFT_WALK;
+						}
+						else if ((*_viKTroopa)->getState() == ENEMY_RIGHT_JUMP)
+						{
+							es = ENEMY_RIGHT_WALK;
+						}
+						else
+						{
+							(*_viKTroopa)->setJumpPower(6.0f);
+							es = ENEMY_ATTACKED;
+							(*_viKTroopa)->setIsShell(true);
+							(*_viKTroopa)->setIsOnGround(false);
+						}
+						_player->setX(_player->getX() + width + 21);
+					}
+					else if (_player->getPlayerShape() == BASIC)
+					{
+						_player->setPlayerState(new playerDie);
+						_player->getPlayerState()->enter(_player);
+					}
+				}
+				(*_viKTroopa)->setState(es);
+				break;
 			}
+
 		}
 	}
 
@@ -746,7 +781,7 @@ void enemyManager::troopaCollison()
 				if (width > height)
 				{
 					//위에서 충돌
-					if ((*_viKTroopa)->getY() < (object.bottom + object.top) / 2)
+					if ((*_viKTroopa)->getY() < (object.bottom + object.top) / 2 && (*_viKTroopa)->getJumpPower() < 0)
 					{
 						(*_viKTroopa)->setY((*_viKTroopa)->getY() - height);
 						(*_viKTroopa)->setIsOnGround(true);
@@ -941,7 +976,7 @@ void enemyManager::flowerCollison()
 {
 	for (_viFlower = _vFlower.begin(); _viFlower != _vFlower.end(); ++_viFlower)
 	{
-		if (_player->getPlayerState()->getStateName() == PLAYER_DIE || _player->getPlayerState()->getStateName() == PLAYER_GROW) break;
+		if (_player->getPlayerState()->getStateName() == PLAYER_DIE || _player->getPlayerState()->getStateName() == PLAYER_CHANGE || _player->getIsAttacked()) break;
 		RECT flowerRangeRect = (*_viFlower)->getCollisonRange();
 		RECT flowerRect = (*_viFlower)->getRect();
 		RECT playerRect = _player->getRect();

@@ -3,13 +3,13 @@
 
 HRESULT blockManager::init()
 {
-	IMAGEMANAGER->addFrameImage("qBlock", "img/block/question_block.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("gBlock", "img/block/golden_block.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("coin", "img/block/coin.bmp", 168, 48, 4, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("q_change", "img/block/question_box_change.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("q_change_complete", "img/block/question_box_change_complete.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("mushroom", "img/item/mushroom.bmp", 48, 48, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("leaf", "img/item/leaf.bmp", 48, 84, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("qBlock", "img/block/question_block.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("gBlock", "img/block/golden_block.bmp", 192, 48, 4, 1, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("coin", "img/block/coin.bmp", 168, 48, 4, 1, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("q_change", "img/block/question_box_change.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("q_change_complete", "img/block/question_box_change_complete.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addImage("mushroom", "img/item/mushroom.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("leaf", "img/item/leaf.bmp", 48, 84, 1, 2, true, RGB(255, 0, 255), FALSE);
 
 	_coin = new coin;
 	_coin->init();
@@ -71,11 +71,6 @@ void blockManager::update()
 
 	mushroomCollision();
 	//leafCollision();
-
-	if (KEYMANAGER->isOnceKeyDown('A'))
-	{
-		_leaf->fire(200, BACKGROUNDY - 168, true);
-	}
 }
 
 void blockManager::render()

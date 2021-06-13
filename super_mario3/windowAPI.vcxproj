@@ -164,7 +164,7 @@
     <ClInclude Include="piranha_plant.h" />
     <ClInclude Include="playerAttack.h" />
     <ClInclude Include="playerFly.h" />
-    <ClInclude Include="playerGrow.h" />
+    <ClInclude Include="playerChange.h" />
     <ClInclude Include="playerDie.h" />
     <ClInclude Include="playerFall.h" />
     <ClInclude Include="playerIdle.h" />
@@ -203,7 +203,7 @@
     <ClCompile Include="piranha_plant.cpp" />
     <ClCompile Include="playerAttack.cpp" />
     <ClCompile Include="playerFly.cpp" />
-    <ClCompile Include="playerGrow.cpp" />
+    <ClCompile Include="playerChange.cpp" />
     <ClCompile Include="playerDie.cpp" />
     <ClCompile Include="playerFall.cpp" />
     <ClCompile Include="playerIdle.cpp" />

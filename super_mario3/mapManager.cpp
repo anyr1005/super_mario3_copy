@@ -3,7 +3,7 @@
 
 HRESULT mapManager::init()
 {
-	IMAGEMANAGER->addImage("pipe_head", "img/pipe_head.bmp", 96, 48, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("pipe_head", "img/pipe_head.bmp", 96, 48, true, RGB(255, 0, 255), FALSE);
 
 	setObject();
 	setWoodBlock();

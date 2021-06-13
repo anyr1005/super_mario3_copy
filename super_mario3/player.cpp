@@ -2,41 +2,41 @@
 #include "player.h"
 #include "playerIdle.h"
 #include "playerFall.h"
-#include "playerGrow.h"
+#include "playerChange.h"
 #include "playerDie.h"
 
 HRESULT player::init()
 {
 	//±âº» ¸¶¸®¿À
-	IMAGEMANAGER->addFrameImage("mario_walk", "img/mario/mario_walk.bmp", 90, 96, 2, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("mario_skid", "img/mario/mario_skid.bmp", 42, 96, 1, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("mario_run", "img/mario/mario_run.bmp", 96, 96, 2, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("mario_jump", "img/mario/mario_jump.bmp", 48, 96, 1, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("mario_run_jump", "img/mario/mario_run_jump.bmp", 48, 96, 1, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("mario_idle", "img/mario/mario_idle.bmp", 36, 90, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("mario_walk", "img/mario/mario_walk.bmp", 90, 96, 2, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("mario_skid", "img/mario/mario_skid.bmp", 42, 96, 1, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("mario_run", "img/mario/mario_run.bmp", 96, 96, 2, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("mario_jump", "img/mario/mario_jump.bmp", 48, 96, 1, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("mario_run_jump", "img/mario/mario_run_jump.bmp", 48, 96, 1, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("mario_idle", "img/mario/mario_idle.bmp", 36, 90, 1, 2, true, RGB(255, 0, 255), TRUE);
 
 	//½´ÆÛ¸¶¸®¿À
-	IMAGEMANAGER->addFrameImage("super_walk", "img/mario/super_mario_walk.bmp", 144, 162, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("super_run", "img/mario/super_mario_run.bmp", 171, 162, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("super_jump", "img/mario/super_mario_jump.bmp", 48, 156, 1, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("super_skid", "img/mario/super_mario_skid.bmp", 48, 168, 1, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("super_run_jump", "img/mario/super_mario_run_jump.bmp", 57, 156, 1, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("super_walk", "img/mario/super_mario_walk.bmp", 144, 162, 3, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("super_run", "img/mario/super_mario_run.bmp", 171, 162, 3, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("super_jump", "img/mario/super_mario_jump.bmp", 48, 156, 1, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("super_skid", "img/mario/super_mario_skid.bmp", 48, 168, 1, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("super_run_jump", "img/mario/super_mario_run_jump.bmp", 57, 156, 1, 2, true, RGB(255, 0, 255), TRUE);
 
 	//²¿¸®¸¶¸®¿À
-	IMAGEMANAGER->addFrameImage("tail_walk", "img/mario/tail_mario_walk.bmp", 207, 168, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("tail_run", "img/mario/tail_mario_run.bmp", 216, 168, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("tail_jump", "img/mario/tail_mario_jump.bmp", 69, 162, 1, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("tail_skid", "img/mario/tail_mario_skid.bmp", 48, 180, 1, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("tail_run_jump", "img/mario/tail_mario_run_jump.bmp", 72, 168, 1, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("tail_fly", "img/mario/tail_mario_fly.bmp", 216, 168, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("tail_attack", "img/mario/tail_mario_attack.bmp", 360, 168, 4, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("tail_walk", "img/mario/tail_mario_walk.bmp", 207, 168, 3, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("tail_run", "img/mario/tail_mario_run.bmp", 216, 168, 3, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("tail_jump", "img/mario/tail_mario_jump.bmp", 69, 162, 1, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("tail_skid", "img/mario/tail_mario_skid.bmp", 48, 180, 1, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("tail_run_jump", "img/mario/tail_mario_run_jump.bmp", 72, 168, 1, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("tail_fly", "img/mario/tail_mario_fly.bmp", 216, 168, 3, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("tail_attack", "img/mario/tail_mario_attack.bmp", 360, 168, 4, 2, true, RGB(255, 0, 255), TRUE);
 
 	//º¯½Å
-	IMAGEMANAGER->addFrameImage("mario_grow", "img/mario/mario_grow_frame.bmp", 546, 162, 13, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("mario_change", "img/mario/change_effect.bmp", 288, 48, 6, 1, true, RGB(0, 0, 0));
+	IMAGEMANAGER->addFrameImage("mario_grow", "img/mario/mario_grow_frame.bmp", 546, 162, 13, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("mario_change", "img/mario/change_effect.bmp", 288, 48, 6, 1, true, RGB(0, 0, 0), TRUE);
 
 	//Á×À½
-	IMAGEMANAGER->addFrameImage("mario_die", "img/mario/mario_die.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("mario_die", "img/mario/mario_die.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255), TRUE);
 
 	_isRight = true;
 
@@ -48,11 +48,11 @@ HRESULT player::init()
 	//_shape = BASIC;
 	
 
-	_x = 100;
-	_y = BACKGROUNDY - 72;
+	//_x = 100;
+	//_y = BACKGROUNDY - 72;
 
-	//_x = 1649;
-	//_y = 890;
+	_x = 1649;
+	_y = 890;
 
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 
@@ -60,6 +60,11 @@ HRESULT player::init()
 
 	_isLRCollison = false;
 	_isOnGround = true;
+
+	_isAttacked = false;
+	_attackedCount = 0;
+
+	_alphaValue = 255;
 
 	return S_OK;
 }
@@ -97,7 +102,39 @@ void player::update()
 	handleInput();
 	_state->update(this);
 	
+	if (KEYMANAGER->isOnceKeyDown('A'))
+	{
+		_isAttacked = true;
+		_state = new playerChange;
+		_state->enter(this);
+	}
+
+	if (_isAttacked)
+	{
+		_attackedCount++;
+		if (_attackedCount >= 200)
+		{
+			_isAttacked = false;
+		}
+		if (_attackedCount % 5 == 0)
+		{
+			if (_alphaValue == 255)
+				_alphaValue = 0;
+			else
+				_alphaValue = 255;
+		}
+	}
+	else
+	{
+		_alphaValue = 255;
+	}
+
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
+
+	if (KEYMANAGER->isOnceKeyDown('A'))
+	{
+		_isAttacked = true;
+	}
 }
 
 void player::render()
@@ -110,7 +147,7 @@ void player::render()
 		sprintf_s(str, "¶¥¿¡ ÀÖ³ª? %d xÁÂÇ¥ : %f yÁÂÇ¥ : %f", _isOnGround, _x, _y);
 		TextOut(getMemDC(), _rc.left - 100, _rc.top - 20, str, strlen(str));
 	}
-	_img->frameRender(getMemDC(), _rc.left, _rc.top);
+	_img->alphaFrameRender(getMemDC(), _rc.left, _rc.top, _alphaValue);
 }
 
 
@@ -456,9 +493,10 @@ void player::collisonMushroom()
 		RECT mushroom = _bManager->getMushroom()->getVMushroom()[i].rc;
 		if (IntersectRect(&temp, &_rc, &mushroom))
 		{
-			_state = new playerGrow;
+			_state = new playerChange;
 			_state->enter(this);
 			_bManager->getMushroom()->removeMushroom(i);
+			_isAttacked = false;
 			break;
 		}
 	}
@@ -472,9 +510,10 @@ void player::collisonLeaf()
 		RECT leaf = _bManager->getLeaf()->getVLeaf()[i].rc;
 		if (IntersectRect(&temp, &_rc, &leaf))
 		{
-			_state = new playerGrow;
+			_state = new playerChange;
 			_state->enter(this);
 			_bManager->getLeaf()->removeLeaf(i);
+			_isAttacked = false;
 			break;
 		}
 	}

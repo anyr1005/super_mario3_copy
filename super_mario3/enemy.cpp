@@ -75,11 +75,11 @@ void enemy::render()
 		Rectangle(getMemDC(), _rc);
 		char str[128];
 		sprintf_s(str, "xÁÂÇ¥ : %f", _x);
-		TextOut(getMemDC(), _rc.left, _rc.top - 50, str, strlen(str));
+		TextOut(getMemDC(), _rc.left, _rc.top - 60, str, strlen(str));
 		sprintf_s(str, "yÁÂÇ¥ : %f", _y);
-		TextOut(getMemDC(), _rc.left, _rc.top - 30, str, strlen(str));
+		TextOut(getMemDC(), _rc.left, _rc.top - 40, str, strlen(str));
 		sprintf_s(str, "jumpPower : %f", _jumpPower);
-		TextOut(getMemDC(), _rc.left, _rc.top - 10, str, strlen(str));
+		TextOut(getMemDC(), _rc.left, _rc.top - 20, str, strlen(str));
 	}
 	draw();
 }

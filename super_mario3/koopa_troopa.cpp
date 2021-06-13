@@ -41,11 +41,19 @@ void koopa_troopa::move()
 		case ENEMY_RIGHT_JUMP:
 			_image = IMAGEMANAGER->findImage("green_wing");
 			break;
+		
 		}
 	}
 	else
 	{
-		_image = IMAGEMANAGER->findImage("green_shell");
+		if (_state == ENEMY_ATTACKED)
+		{
+			_image = IMAGEMANAGER->findImage("green_shell_attacked");
+		}
+		else
+		{
+			_image = IMAGEMANAGER->findImage("green_shell");
+		}
 	}
 	
 
@@ -75,14 +83,25 @@ void koopa_troopa::move()
 		_jumpPower -= GRAVITY;
 		_x += ENEMYSPEED;
 		break;
+	case ENEMY_ATTACKED:
+		_y -= _jumpPower;
+		_jumpPower -= GRAVITY;
+	break;
 	default:
 		break;
 	}
 
 	//jump이면 땅에 닿았을 때 점프파워초기화
-	if ((_state == ENEMY_LEFT_JUMP || _state == ENEMY_RIGHT_JUMP) && _isOnGround)
+	if (_isOnGround)
 	{
-		_jumpPower = 6.0f;
+		if (_state == ENEMY_LEFT_JUMP || _state == ENEMY_RIGHT_JUMP)
+		{
+			_jumpPower = 6.0f;
+		}
+		else if (_state == ENEMY_ATTACKED)
+		{
+			_jumpPower = 0;
+		}
 	}
 	
 	_rc = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
@@ -94,7 +113,7 @@ void koopa_troopa::move()
 	case ENEMY_LEFT_JUMP:
 		_collisonRange = RectMakeCenter(_rc.right - 13.5f, _rc.bottom - 35, 27, 35);
 		_currentFrameY = 0;
-		break;
+	break;
 	case ENEMY_RIGHT_WALK:
 	case ENEMY_RIGHT_JUMP:
 		_collisonRange = RectMakeCenter(_rc.left + 13.5f, _rc.bottom - 35, 27, 35);
@@ -106,10 +125,14 @@ void koopa_troopa::move()
 		{
 			_currentFrameY = 1;
 		}
-		break;
+	break;
 	case ENEMY_IDLE:
 		_currentFrameY = 0;
-		break;
+	break;
+	case ENEMY_ATTACKED:
+		_currentFrameX = 0;
+		_currentFrameY = 0;
+	break;
 	}
 
 	if (_isShell)
@@ -118,7 +141,7 @@ void koopa_troopa::move()
 	}
 
 	//shell일 경우와 아닐 경우 프레임(x) 설정
-	if (_isShell && _state== ENEMY_IDLE)
+	if (_isShell && _state == ENEMY_IDLE)
 	{
 		_currentFrameX = 0;
 	}
@@ -139,4 +162,8 @@ void koopa_troopa::move()
 void koopa_troopa::draw()
 {
 	_image->frameRender(getMemDC(), _rc.left, _rc.top, _currentFrameX, _currentFrameY);
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		Rectangle(getMemDC(), _collisonRange);
+	}
 }

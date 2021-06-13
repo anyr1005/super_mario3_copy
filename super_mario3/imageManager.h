@@ -20,12 +20,12 @@ public:
 	void release();
 
 	//map에 이미지 추가
-	image* addImage(string strKey, int width, int height);
-	image* addImage(string strKey, const char* fileName, int width, int height, bool trans, COLORREF transColor);
+	image* addImage(string strKey, int width, int height, bool isBlend);
+	image* addImage(string strKey, const char* fileName, int width, int height, bool trans, COLORREF transColor, bool isBlend);
 
 	//map에 프레임 이미지 추가
-	image* addFrameImage(string strKey, const char* fileName, float x, float y, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor);
-	image* addFrameImage(string strKey, const char* fileName, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor);
+	image* addFrameImage(string strKey, const char* fileName, float x, float y, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor, bool isBlend);
+	image* addFrameImage(string strKey, const char* fileName, int width, int height, int frameX, int frameY, bool trans, COLORREF transColor, bool isBlend);
 
 	//map에서 이미지 찾기
 	image* findImage(string strKey);

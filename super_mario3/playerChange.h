@@ -1,6 +1,6 @@
 #pragma once
 #include "playerState.h"
-class playerGrow : public playerState
+class playerChange : public playerState
 {
 	virtual playerState* handleInput(player * player);
 	virtual void update(player * player);

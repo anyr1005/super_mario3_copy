@@ -162,13 +162,13 @@
     <ClInclude Include="playerDie.h">
       <Filter>playGround\playerState</Filter>
     </ClInclude>
-    <ClInclude Include="playerGrow.h">
-      <Filter>playGround\playerState</Filter>
-    </ClInclude>
     <ClInclude Include="playerFly.h">
       <Filter>playGround\playerState</Filter>
     </ClInclude>
     <ClInclude Include="playerAttack.h">
+      <Filter>playGround\playerState</Filter>
+    </ClInclude>
+    <ClInclude Include="playerChange.h">
       <Filter>playGround\playerState</Filter>
     </ClInclude>
   </ItemGroup>
@@ -269,13 +269,13 @@
     <ClCompile Include="playerDie.cpp">
       <Filter>playGround\playerState</Filter>
     </ClCompile>
-    <ClCompile Include="playerGrow.cpp">
-      <Filter>playGround\playerState</Filter>
-    </ClCompile>
     <ClCompile Include="playerFly.cpp">
       <Filter>playGround\playerState</Filter>
     </ClCompile>
     <ClCompile Include="playerAttack.cpp">
+      <Filter>playGround\playerState</Filter>
+    </ClCompile>
+    <ClCompile Include="playerChange.cpp">
       <Filter>playGround\playerState</Filter>
     </ClCompile>
   </ItemGroup>

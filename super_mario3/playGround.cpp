@@ -6,8 +6,8 @@ HRESULT playGround::init()
 {
 	gameNode::init(true);
 
-	IMAGEMANAGER->addImage("map", "img/map.bmp", BACKGROUNDX, BACKGROUNDY, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("background", "img/background.bmp", BACKGROUNDX, BACKGROUNDY, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("map", "img/map.bmp", BACKGROUNDX, BACKGROUNDY, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addImage("background", "img/background.bmp", BACKGROUNDX, BACKGROUNDY, true, RGB(255, 0, 255), FALSE);
 
 	_resetCount = 0;
 
@@ -79,7 +79,7 @@ void playGround::render()
 	IMAGEMANAGER->findImage("background")->render(getMemDC(), 0, 0);
 
 	IMAGEMANAGER->findImage("map")->render(getMemDC(), 0, 0);
-	
+	SetBkMode(getMemDC(), TRANSPARENT);
 	_eManager->render();
 	_bManager->render();
 	_mManager->render();

@@ -7,13 +7,13 @@ public:
 	{
 		LOAD_RESOURCE,		//리소스 파일로부터
 		LOAD_FILE,			//이미지 파일로부터
-		LOAD_EMPTY,			//빈 비트맵 이미지를 만듦
+		LOAD_EMPTY,			//빈 비트맵 이미지를 만들어야겠다
 		LOAD_END
 	};
 
 	typedef struct tagImageInfo
 	{
-		DWORD resID;	//리소스를 통해서 이미지 처리할 때 쓰는 변수
+		DWORD resID;	//리소스를 통해서 이미지 처리할땐 얘를 쓴다
 		HDC hMemDC;
 		HBITMAP hBit;
 		HBITMAP hOBit;
@@ -31,14 +31,14 @@ public:
 
 		tagImageInfo()
 		{
-			resID		= 0;
-			hMemDC		= NULL;
-			hBit		= NULL;
-			hOBit		= NULL;
-			x			= 0;
-			y			= 0;
-			width		= 0;
-			height		= 0;
+			resID = 0;
+			hMemDC = NULL;
+			hBit = NULL;
+			hOBit = NULL;
+			x = 0;
+			y = 0;
+			width = 0;
+			height = 0;
 			currentFrameX = 0;
 			currentFrameY = 0;
 			maxFrameX = 0;
@@ -54,32 +54,50 @@ private:
 	BOOL			_trans;			//특정 픽셀값을 제거할지 유무
 	COLORREF		_transColor;	//제거할 픽셀값
 
+	BLENDFUNCTION	_blendFunc;		//알파블렌드 함수
+	LPIMAGE_INFO	_blendImage;	//알파블렌드 먹일 이미지
+
+	bool _isBlend;
+
 public:
 	image();
 	~image();
 
-	//초기화
-	HRESULT init(int width, int height);
+	HRESULT init(int width, int height, bool isBlend = FALSE);
 	HRESULT init(const char* fileName, int width, int height,
-		BOOL trans = FALSE, COLORREF transColor = FALSE);
+		BOOL trans = FALSE, COLORREF transColor = FALSE, bool isBlend = FALSE);
 	HRESULT init(const char* fileName, float x, float y,
 		int width, int height, int frameX, int frameY,
-		BOOL trans = FALSE, COLORREF transColor = FALSE);
+		BOOL trans = FALSE, COLORREF transColor = FALSE, bool isBlend = FALSE);
 	HRESULT init(const char* fileName, int width, int height,
-		int frameX, int frameY, BOOL trans = FALSE, COLORREF transColor = FALSE);
+		int frameX, int frameY, BOOL trans = FALSE, COLORREF transColor = FALSE, bool isBlend = FALSE);
 
-	//메모리 해제
+	//블렌드 관련 내용 따로 빼는 용(init 안에 공통된 내용을 복사해서 쓰는걸 방지)
+	void alphaBlendFunction(HDC hdc, int width, int height);
+
 	void release();
 
-	//이미지 출력
 	void render(HDC hdc);
 	void render(HDC hdc, int destX, int destY);
 	void render(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight);
 
-	//프레임 이미지 출력
 	void frameRender(HDC hdc, int destX, int destY);
 	void frameRender(HDC hdc, int destX, int destY,
 		int currentFrameX, int currentFrameY);
+
+	void loopRender(HDC hdc, const LPRECT drawArea, int offSetX, int offSetY);
+
+
+	void alphaRender(HDC hdc, BYTE alpha);
+	void alphaRender(HDC hdc, int destX, int destY, BYTE alpha);
+	void alphaRender(HDC hdc, int destX, int destY, int sourX, int sourY,
+		int sourWidth, int sourHeight, BYTE alpha);
+
+	void alphaFrameRender(HDC hdc, int destX, int destY, BYTE alpha);
+	void alphaFrameRender(HDC hdc, int destX, int destY,
+		int currentFrameX, int currentFrameY, BYTE alpha);
+
+
 
 	//혹시나 런타임 도중에 제거할 픽셀값을 바꿔야한다면
 	void setTransColor(BOOL trans, COLORREF transColor);

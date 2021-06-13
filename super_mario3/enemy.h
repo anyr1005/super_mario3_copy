@@ -79,5 +79,7 @@ public:
 	void setIsOnGround(bool b) { _isOnGround = b; }
 
 	void setJumpPower(float f) { _jumpPower = f; }
+
+	float getJumpPower() { return _jumpPower; }
 };
 

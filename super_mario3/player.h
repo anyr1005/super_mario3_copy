@@ -38,6 +38,11 @@ private:
 
 	bool _isOnGround; //땅에 있는지
 
+	bool _isAttacked;
+	int _attackedCount;
+
+	int _alphaValue; //enemy에게 맞을 경우 깜박거리는 효과 위해서
+
 public:
 	virtual HRESULT init();
 	virtual void release();
@@ -103,6 +108,8 @@ public:
 	playerState* getPlayerState() { return _state; }
 
 	void setPlayerState(playerState* state) { _state = state; }
+
+	bool getIsAttacked() { return _isAttacked; }
 	//============================================
 };
 

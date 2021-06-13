@@ -3,7 +3,7 @@
 
 #define GRAVITY 0.2f
 
-static image* _backBuffer = IMAGEMANAGER->addImage("backBuffer", BACKGROUNDX, BACKGROUNDY);
+static image* _backBuffer = IMAGEMANAGER->addImage("backBuffer", BACKGROUNDX, BACKGROUNDY, FALSE);
 
 class gameNode
 {

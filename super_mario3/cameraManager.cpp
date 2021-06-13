@@ -59,7 +59,7 @@ void cameraManager::updateCamera(float x, float y)
 
 void cameraManager::updateCamera(float x, float y, float ratioX, float ratioY)
 {
-	int cX, cY;
+	float cX, cY;
 	if (ratioX > 0 && ratioY > 0 && ratioX < 1.0f && ratioY < 1.0f)
 	{
 		if (x == 0.5f)
