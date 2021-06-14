@@ -87,6 +87,14 @@ void playerWalk::update(player * player)
 		default:
 			break;
 		}
+		if (player->getIsRight())
+		{
+			player->getImage()->setFrameY(1);
+		}
+		else
+		{
+			player->getImage()->setFrameY(0);
+		}
 	}
 	else
 	{
@@ -103,6 +111,14 @@ void playerWalk::update(player * player)
 			break;
 		default:
 			break;
+		}
+		if (player->getIsRight())
+		{
+			player->getImage()->setFrameY(1);
+		}
+		else
+		{
+			player->getImage()->setFrameY(0);
 		}
 	}
 	if (!player->getIsOnGround())
@@ -145,6 +161,16 @@ void playerWalk::enter(player * player)
 	default:
 		break;
 	}
+
+	if (player->getIsRight())
+	{
+		player->getImage()->setFrameY(1);
+	}
+	else
+	{
+		player->getImage()->setFrameY(0);
+	}
+
 	_count = _index = 0;
 	_jumpPower = -4.0f;
 }

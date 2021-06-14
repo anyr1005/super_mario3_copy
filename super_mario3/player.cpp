@@ -30,6 +30,7 @@ HRESULT player::init()
 	IMAGEMANAGER->addFrameImage("tail_run_jump", "img/mario/tail_mario_run_jump.bmp", 72, 168, 1, 2, true, RGB(255, 0, 255), TRUE);
 	IMAGEMANAGER->addFrameImage("tail_fly", "img/mario/tail_mario_fly.bmp", 216, 168, 3, 2, true, RGB(255, 0, 255), TRUE);
 	IMAGEMANAGER->addFrameImage("tail_attack", "img/mario/tail_mario_attack.bmp", 360, 168, 4, 2, true, RGB(255, 0, 255), TRUE);
+	IMAGEMANAGER->addFrameImage("tail_wag", "img/mario/tail_mario_wag.bmp", 207, 168, 3, 2, true, RGB(255, 0, 255), TRUE);
 
 	//º¯½Å
 	IMAGEMANAGER->addFrameImage("mario_grow", "img/mario/mario_grow_frame.bmp", 546, 162, 13, 2, true, RGB(255, 0, 255), TRUE);
@@ -45,12 +46,12 @@ HRESULT player::init()
 	_state = new playerIdle;
 	_state->enter(this);
 
-	//_x = 100;
-	//_y = BACKGROUNDY - 72;
+	_x = 100;
+	_y = BACKGROUNDY - 72;
 
-	_x = 4169;
-	_y = 1034;
-
+	//_x = BACKGROUNDX / 2 + 168;
+	//_y = 408;
+	
 	_rc = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 	_collisonRange = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
 
@@ -63,6 +64,8 @@ HRESULT player::init()
 	_attackedCount = 0;
 
 	_alphaValue = 255;
+
+	_flyCount = 0;
 
 	return S_OK;
 }
@@ -139,6 +142,14 @@ void player::update()
 	else
 	{
 		_collisonRange = RectMakeCenter(_x, _y, _img->getFrameWidth(), _img->getFrameHeight());
+	}
+	if (_state->getStateName() == PLAYER_FLY)
+	{
+		_flyCount++;
+	}
+	else
+	{
+		_flyCount = 0;
 	}
 }
 
@@ -553,8 +564,11 @@ void player::collisonMushroom()
 		RECT mushroom = _bManager->getMushroom()->getVMushroom()[i].rc;
 		if (IntersectRect(&temp, &_collisonRange, &mushroom))
 		{
-			_state = new playerChange;
-			_state->enter(this);
+			if (!_bManager->getMushroom()->getVMushroom()[i].isLife)
+			{
+				_state = new playerChange;
+				_state->enter(this);
+			}
 			_bManager->getMushroom()->removeMushroom(i);
 			_isAttacked = false;
 			break;

@@ -35,4 +35,13 @@ void playerFall::enter(player * player)
 	_jumpPower = -4.0f;
 	player->setJumpPower(_jumpPower);
 	_stateName = PLAYER_FALL;
+
+	if (player->getIsRight())
+	{
+		player->getImage()->setFrameY(1);
+	}
+	else
+	{
+		player->getImage()->setFrameY(0);
+	}
 }

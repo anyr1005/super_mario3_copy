@@ -4,12 +4,16 @@
 
 playerState * playerFly::handleInput(player * player)
 {
-	if (KEYMANAGER->isOnceKeyDown('X'))
+	if (player->getFlyCount() <= 500)
 	{
-		return new playerFly;
+		if (KEYMANAGER->isOnceKeyDown('X'))
+		{
+			return new playerFly;
+		}
 	}
 	if (player->getIsOnGround())
 	{
+		player->setFlyCount(0);
 		return new playerIdle;
 	}
 	return nullptr;
@@ -17,6 +21,7 @@ playerState * playerFly::handleInput(player * player)
 
 void playerFly::update(player * player)
 {
+
 	player->setY(player->getY() - _jumpPower);
 	_jumpPower -= GRAVITY;
 	player->setJumpPower(_jumpPower);
@@ -40,7 +45,15 @@ void playerFly::update(player * player)
 	_count++;
 	if (_count % 10 == 0)
 	{
-		if (_index >= player->getImage()->getMaxFrameX()) _index = 0;
+		if (_index >= player->getImage()->getMaxFrameX())
+		{
+			if (_isStart)
+			{
+				player->setImage("tail_wag");
+				_isStart = false;
+			}
+			_index = 0;
+		}
 		else _index++;
 		player->getImage()->setFrameX(_index);
 		if (player->getIsRight())
@@ -60,4 +73,14 @@ void playerFly::enter(player * player)
 	_stateName = PLAYER_FLY;
 	player->setImage("tail_fly");
 	_count = _index = 0;
+	_isStart = true;
+
+	if (player->getIsRight())
+	{
+		player->getImage()->setFrameY(1);
+	}
+	else
+	{
+		player->getImage()->setFrameY(0);
+	}
 }

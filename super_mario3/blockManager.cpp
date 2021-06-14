@@ -8,9 +8,11 @@ HRESULT blockManager::init()
 	IMAGEMANAGER->addFrameImage("coin", "img/block/coin.bmp", 168, 48, 4, 1, true, RGB(255, 0, 255), FALSE);
 	IMAGEMANAGER->addFrameImage("q_change", "img/block/question_box_change.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255), FALSE);
 	IMAGEMANAGER->addFrameImage("q_change_complete", "img/block/question_box_change_complete.bmp", 48, 48, 1, 1, true, RGB(255, 0, 255), FALSE);
+
 	IMAGEMANAGER->addImage("mushroom", "img/item/mushroom.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
 	IMAGEMANAGER->addFrameImage("leaf", "img/item/leaf.bmp", 48, 84, 1, 2, true, RGB(255, 0, 255), FALSE);
 	IMAGEMANAGER->addFrameImage("particle", "img/item/particle.bmp", 96, 24, 4, 1, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addImage("life", "img/item/life.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
 
 	_coin = new coin;
 	_coin->init();
@@ -45,7 +47,13 @@ void blockManager::update()
 			if ((*_viQBlock)->getItem() == MUSHROOM)
 			{
 				//½´ÆÛ¹ö¼¸
-				_mushroom->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, _isRight);
+				_mushroom->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, _isRight, false);
+				(*_viQBlock)->setIsFire(true);
+			}
+			else if ((*_viQBlock)->getItem() == LIFE)
+			{
+				//½´ÆÛ¹ö¼¸
+				_mushroom->fire((rc.right + rc.left) / 2, (rc.bottom + rc.top) / 2, _isRight, true);
 				(*_viQBlock)->setIsFire(true);
 			}
 		}
@@ -133,11 +141,16 @@ void blockManager::setQuestionBlock()
 
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		question_block* qBlock;
 		qBlock = new question_block;
-		if (i == 2)
+		if (i == 3)
+		{
+			qBlock->init("gBlock", PointMake(BACKGROUNDX / 2 + 168, 408));
+			qBlock->setItem(LIFE);
+		}
+		else if (i == 2)
 		{
 			qBlock->init("qBlock", PointMake(BACKGROUNDX / 2 + 264, BACKGROUNDY - 168));
 			qBlock->setItem(MUSHROOM);
@@ -191,18 +204,11 @@ void blockManager::setGoldenBlock()
 		_vGBlock.push_back(gBlock);
 	}
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		golden_block* gBlock;
 		gBlock = new golden_block;
-		if (i == 4)
-		{
-			gBlock->init("gBlock", PointMake(BACKGROUNDX / 2 + 168, 408));
-		}
-		else
-		{
 		gBlock->init("gBlock", PointMake(BACKGROUNDX - 2472 + 48 * i, BACKGROUNDY - 168));
-		}
 
 		_vGBlock.push_back(gBlock);
 	}

@@ -18,6 +18,8 @@ private:
 	enemyManager* _eManager;
 
 	int _resetCount;
+
+	bool _isStart;
 public:
 	virtual HRESULT init();
 	virtual void release();

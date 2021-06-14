@@ -17,6 +17,8 @@ HRESULT playGround::init()
 
 	CAMERAMANAGER->setCameraCenter(_player->getX(), _player->getY());
 
+	CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0, 0);
+
 	//¸Ê ÃÊ±âÈ­
 	_mManager = new mapManager;
 	_mManager->init();
@@ -52,29 +54,36 @@ void playGround::update()
 {
 	gameNode::update();
 
-	if (_player->getRect().top >= BACKGROUNDY)
+	if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 	{
-		_resetCount++;
-		if (_resetCount % 50 == 0)
-		{
-			this->init();
-		}
+		if (!_isStart) _isStart = true;
 	}
 
-	_eManager->update();
-	_mManager->update();
-	_bManager->update();
-	_player->update();
-	
-	if (_player->getPlayerShape() == TAIL)
+	if (_isStart)
 	{
-		CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0.3f, 0.7f);
+		if (_player->getRect().top >= BACKGROUNDY)
+		{
+			_resetCount++;
+			if (_resetCount % 50 == 0)
+			{
+				this->init();
+			}
+		}
+
+		_eManager->update();
+		_mManager->update();
+		_bManager->update();
+		_player->update();
+
+		if (_player->getPlayerShape() == TAIL)
+		{
+			CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0.3f, 0.7f);
+		}
+		else
+		{
+			CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0, 0);
+		}
 	}
-	else
-	{
-		CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0, 0);
-	}
-	
 }
 
 

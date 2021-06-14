@@ -96,41 +96,42 @@ void koopa_troopa::move()
 		}
 	}
 
-	//움직임 설정
-	switch (_state)
+	if (CAMERAMANAGER->getCameraRIGHT() > _x || _isShell)
 	{
-	case ENEMY_LEFT_WALK:
-		if (_isShell)
-			_x -= 7;
-		else
-			_x -= ENEMYSPEED;
-		
-		break;
-	case ENEMY_RIGHT_WALK:
-		if (_isShell)
-			_x += 7;
-		else
-			_x += ENEMYSPEED;
-		break;
-	case ENEMY_LEFT_JUMP:
-		_y -= _jumpPower;
-		_jumpPower -= GRAVITY;
-		_x -= ENEMYSPEED;
-		break;
-	case ENEMY_RIGHT_JUMP:
-		_y -= _jumpPower;
-		_jumpPower -= GRAVITY;
-		_x += ENEMYSPEED;
-		break;
-	case ENEMY_ATTACKED:
-		_y -= _jumpPower;
-		_jumpPower -= GRAVITY;
-	break;
-	default:
-		break;
-	}
+		//움직임 설정
+		switch (_state)
+		{
+		case ENEMY_LEFT_WALK:
+			if (_isShell)
+				_x -= 7;
+			else
+				_x -= ENEMYSPEED;
 
-	
+			break;
+		case ENEMY_RIGHT_WALK:
+			if (_isShell)
+				_x += 7;
+			else
+				_x += ENEMYSPEED;
+			break;
+		case ENEMY_LEFT_JUMP:
+			_y -= _jumpPower;
+			_jumpPower -= GRAVITY;
+			_x -= ENEMYSPEED;
+			break;
+		case ENEMY_RIGHT_JUMP:
+			_y -= _jumpPower;
+			_jumpPower -= GRAVITY;
+			_x += ENEMYSPEED;
+			break;
+		case ENEMY_ATTACKED:
+			_y -= _jumpPower;
+			_jumpPower -= GRAVITY;
+			break;
+		default:
+			break;
+		}
+	}
 
 	//jump이면 땅에 닿았을 때 점프파워초기화
 	if (_isOnGround)
@@ -152,12 +153,12 @@ void koopa_troopa::move()
 	{
 	case ENEMY_LEFT_WALK:
 	case ENEMY_LEFT_JUMP:
-		_collisonRange = RectMakeCenter(_rc.right - 13.5f, _rc.bottom - 35, 27, 35);
+		_collisonRange = RectMakeCenter(_x, _rc.bottom - 35, _image->getFrameWidth(), 35);
 		_currentFrameY = 0;
 	break;
 	case ENEMY_RIGHT_WALK:
 	case ENEMY_RIGHT_JUMP:
-		_collisonRange = RectMakeCenter(_rc.left + 13.5f, _rc.bottom - 35, 27, 35);
+		_collisonRange = RectMakeCenter(_x, _rc.bottom - 35, _image->getFrameWidth(), 35);
 		if (_isShell)
 		{
 			_currentFrameY = 0;
@@ -180,6 +181,13 @@ void koopa_troopa::move()
 	{
 		_collisonRange = RectMakeCenter(_x, _y, _image->getFrameWidth(), _image->getFrameHeight());
 	}
+
+	if (_rc.top >= BACKGROUNDY)
+	{
+		_state = ENEMY_DIE;
+		_isVisible = false;
+	}
+
 
 	//shell일 경우와 아닐 경우 프레임(x) 설정
 	if (_isShell && _state == ENEMY_IDLE)

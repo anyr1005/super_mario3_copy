@@ -42,31 +42,35 @@ void goomba::move()
 	{
 		_image = IMAGEMANAGER->findImage("goomba_attacked");
 	}
-	switch (_state)
+	if (CAMERAMANAGER->getCameraRIGHT() > _x)
 	{
-	case ENEMY_LEFT_WALK:
-		_x -= ENEMYSPEED;
-		break;
-	case ENEMY_RIGHT_WALK:
-		_x += ENEMYSPEED;
-		break;
-	case ENEMY_LEFT_JUMP:
-		_y -= _jumpPower;
-		_jumpPower -= GRAVITY;
-		_x -= 2;
-		break;
-	case ENEMY_RIGHT_JUMP:
-		_y -= _jumpPower;
-		_jumpPower -= GRAVITY;
-		_x += 2;
-		break;
-	case ENEMY_ATTACKED:
-		_y -= _jumpPower;
-		_jumpPower -= GRAVITY;
-		break;
-	default:
-		break;
+		switch (_state)
+		{
+		case ENEMY_LEFT_WALK:
+			_x -= ENEMYSPEED;
+			break;
+		case ENEMY_RIGHT_WALK:
+			_x += ENEMYSPEED;
+			break;
+		case ENEMY_LEFT_JUMP:
+			_y -= _jumpPower;
+			_jumpPower -= GRAVITY;
+			_x -= 2;
+			break;
+		case ENEMY_RIGHT_JUMP:
+			_y -= _jumpPower;
+			_jumpPower -= GRAVITY;
+			_x += 2;
+			break;
+		case ENEMY_ATTACKED:
+			_y -= _jumpPower;
+			_jumpPower -= GRAVITY;
+			break;
+		default:
+			break;
+		}
 	}
+	
 	_count++;
 	if (_count % 10 == 0)
 	{ 
@@ -99,13 +103,14 @@ void goomba::move()
 
 void goomba::draw()
 {
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		Rectangle(getMemDC(), _collisonRange);
+	}
 	if (_isVisible)
 	{
 		_image->frameRender(getMemDC(), _rc.left, _rc.top, _currentFrameX, _currentFrameY);
 	}
 
-	if (KEYMANAGER->isToggleKey(VK_TAB))
-	{
-		Rectangle(getMemDC(), _collisonRange);
-	}
+	
 }

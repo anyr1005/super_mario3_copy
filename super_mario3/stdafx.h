@@ -24,11 +24,11 @@ using namespace UTIL;
 // ## 매크로 처리 ## 21.04.23 ##
 //==================================
 
-#define WINNAME (LPTSTR)(TEXT("Super Mario Bros.3"))
+#define WINNAME (LPTSTR)(TEXT("Super Mario Bros.3 모작"))
 #define WINSTARTX 50	//윈도우 창 시작좌표 (left)
 #define WINSTARTY 50	//윈도우 창 시작좌표 (top)
 #define WINSIZEX 768	//윈도우 가로크기
-#define WINSIZEY 700	//윈도우 세로크기
+#define WINSIZEY 600	//윈도우 세로크기
 #define CAMERAX 768 
 #define CAMERAY 600
 

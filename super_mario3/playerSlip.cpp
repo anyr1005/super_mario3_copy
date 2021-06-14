@@ -66,6 +66,15 @@ void playerSlip::enter(player * player)
 	default:
 		break;
 	}
+
+	if (player->getIsRight())
+	{
+		player->getImage()->setFrameY(1);
+	}
+	else
+	{
+		player->getImage()->setFrameY(0);
+	}
 	_count = _index = 0;
 	_jumpPower = -4.0f;
 	_stateName = PLAYER_SLIP;

@@ -110,6 +110,15 @@ void playerChange::enter(player * player)
 		}
 		_count = _index = 0;
 	}
+
+	if (player->getIsRight())
+	{
+		player->getImage()->setFrameY(1);
+	}
+	else
+	{
+		player->getImage()->setFrameY(0);
+	}
 	
 	_stateName = PLAYER_CHANGE;
 }

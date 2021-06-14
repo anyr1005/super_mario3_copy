@@ -163,18 +163,26 @@ void mushroom::render()
 	}
 }
 
-void mushroom::fire(float x, float y, bool isRight)
+void mushroom::fire(float x, float y, bool isRight, bool isLife)
 {
 	//버섯 생성 및 vector에 담음
 	tagItem item;
 	ZeroMemory(&item, sizeof(tagItem));
-	item.itemImage = IMAGEMANAGER->findImage("mushroom");
+	if (isLife)
+	{
+		item.itemImage = IMAGEMANAGER->findImage("life");
+	}
+	else
+	{
+		item.itemImage = IMAGEMANAGER->findImage("mushroom");
+	}
 	item.x = item.fireX = x;
 	item.y = item.fireY = y;
 	item.isOnGround = false;
 	item.state = ITEM_UP;
 	item.fallSpeed = 4.0f;
 	item.isRight = isRight;
+	item.isLife = isLife;
 	item.rc = RectMakeCenter(item.x, item.y, item.itemImage->getWidth(), item.itemImage->getHeight());
 
 	_vMushroom.push_back(item);

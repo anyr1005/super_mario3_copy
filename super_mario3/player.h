@@ -45,6 +45,8 @@ private:
 
 	int _alphaValue; //enemy에게 맞을 경우 깜박거리는 효과 위해서
 
+	int _flyCount;
+
 public:
 	virtual HRESULT init();
 	virtual void release();
@@ -115,6 +117,9 @@ public:
 
 	bool getIsAttacked() { return _isAttacked; }
 	void setIsAttacked(bool b) { _isAttacked = b; }
+
+	int getFlyCount() { return _flyCount; }
+	void setFlyCount(int i) { _flyCount = i; }
 	//============================================
 };
 

@@ -17,4 +17,13 @@ void playerDie::enter(player * player)
 	player->setImage("mario_die");
 	_jumpPower = 7.0f;
 	_stateName = PLAYER_DIE;
+
+	if (player->getIsRight())
+	{
+		player->getImage()->setFrameY(1);
+	}
+	else
+	{
+		player->getImage()->setFrameY(0);
+	}
 }

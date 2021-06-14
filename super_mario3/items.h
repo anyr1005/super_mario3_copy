@@ -36,6 +36,7 @@ struct tagItem
 	bool isRight;
 	bool isOnGround; //땅 위에 있는지 확인
 	bool currentFrameY; //나뭇잎 왼쪽 오른쪽 이미지 구분
+	bool isLife;
 
 	ItemState state;
 };
@@ -85,7 +86,7 @@ public:
 	virtual void update();
 	virtual void render();
 
-	void fire(float x, float y, bool isRight); //x,y : 아이템 나올 장소, isRight -> 아이템이 오른쪽으로 움직일 지 왼쪽으로 움직일 지 설정
+	void fire(float x, float y, bool isRight, bool isLife); //x,y : 아이템 나올 장소, isRight -> 아이템이 오른쪽으로 움직일 지 왼쪽으로 움직일 지 설정
 	void move();
 
 	void removeMushroom(int arrNum);

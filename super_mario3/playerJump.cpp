@@ -30,6 +30,7 @@ playerState * playerJump::handleInput(player * player)
 
 void playerJump::update(player * player)
 {
+
 	player->setY(player->getY() - _jumpPower);
 	_jumpPower -= GRAVITY;
 	player->setJumpPower(_jumpPower);
@@ -51,6 +52,14 @@ void playerJump::update(player * player)
 		default:
 			break;
 		}
+		if (player->getIsRight())
+		{
+			player->getImage()->setFrameY(1);
+		}
+		else
+		{
+			player->getImage()->setFrameY(0);
+		}
 	}
 	else
 	{
@@ -68,13 +77,21 @@ void playerJump::update(player * player)
 		default:
 			break;
 		}
+		if (player->getIsRight())
+		{
+			player->getImage()->setFrameY(1);
+		}
+		else
+		{
+			player->getImage()->setFrameY(0);
+		}
 	}
 
 	if (_isRightAir)
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
-			player->setRunSpeed(0.1f);
+			player->setRunSpeed(0.5f);
 			player->setIsRight(false);
 		}
 		else
@@ -87,8 +104,8 @@ void playerJump::update(player * player)
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
-			player->setRunSpeed(0.1f);
-			player->setIsRight(false);
+			player->setRunSpeed(0.5f);
+			player->setIsRight(true);
 		}
 		else
 		{

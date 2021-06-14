@@ -59,5 +59,15 @@ void playerSkid::enter(player * player)
 	default:
 		break;
 	}
+
+	if (player->getIsRight())
+	{
+		player->getImage()->setFrameY(1);
+	}
+	else
+	{
+		player->getImage()->setFrameY(0);
+	}
+
 	_stateName = PLAYER_SKID;
 }

@@ -50,4 +50,13 @@ void playerAttack::enter(player * player)
 	player->setImage("tail_attack");
 	_count = _index = 0;
 	_stateName = PLAYER_ATTACK;
+
+	if (player->getIsRight())
+	{
+		player->getImage()->setFrameY(1);
+	}
+	else
+	{
+		player->getImage()->setFrameY(0);
+	}
 }
