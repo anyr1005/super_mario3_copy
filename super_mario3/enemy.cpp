@@ -48,6 +48,10 @@ void enemy::update()
 			_x = _spawnX;
 			_y = _spawnY;
 			_state = _firstState;
+			if (_state == ENEMY_LEFT_JUMP)
+			{
+				_state = ENEMY_RIGHT_JUMP;
+			}
 			_isVisible = true;
 		}
 		else

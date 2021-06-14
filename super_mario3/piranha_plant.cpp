@@ -12,7 +12,7 @@ HRESULT piranha_plant::init(EnemyState es, POINT position)
 	_rc = RectMakeCenter(_x, _y, _image->getWidth(), _image->getHeight());
 	_body = RectMakeCenter(_x, _y + _image->getHeight(), _bodyImage->getWidth(), _bodyImage->getHeight());
 
-	_collisonRange = RectMake(_x - 100, _rc.top - _image->getHeight() , 200, 200);
+	_collisonRange = RectMake(_x - 125, _rc.top - _image->getHeight() * 2 , 250, 250);
 	return S_OK;
 }
 

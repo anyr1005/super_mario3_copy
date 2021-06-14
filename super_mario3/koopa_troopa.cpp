@@ -188,7 +188,6 @@ void koopa_troopa::move()
 		_isVisible = false;
 	}
 
-
 	//shell일 경우와 아닐 경우 프레임(x) 설정
 	if (_isShell && _state == ENEMY_IDLE)
 	{
@@ -197,7 +196,7 @@ void koopa_troopa::move()
 	else
 	{
 		_count++;
-		if (_count % 10 == 0)
+		if (_count % 5 == 0)
 		{
 			if (_currentFrameX >= _image->getMaxFrameX()) _currentFrameX = 0;
 			else _currentFrameX++;

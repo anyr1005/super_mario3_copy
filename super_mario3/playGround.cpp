@@ -69,15 +69,14 @@ void playGround::update()
 				this->init();
 			}
 		}
-
 		_eManager->update();
 		_mManager->update();
 		_bManager->update();
 		_player->update();
 
-		if (_player->getPlayerShape() == TAIL)
+		if (_player->getPlayerState()->getStateName() == PLAYER_FLY || _player->getPlayerState()->getStateName() == PLAYER_FALL)
 		{
-			CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0.3f, 0.7f);
+			CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0.3f, 0.75f);
 		}
 		else
 		{

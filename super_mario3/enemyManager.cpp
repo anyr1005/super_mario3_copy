@@ -34,9 +34,9 @@ HRESULT enemyManager::init()
 	IMAGEMANAGER->addImage("fire_red_right_down", "img/piranha_plant/fire_red_right_down.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
 	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
 
-	setGoomba();
-	setKTroopa();
-	setFlower();
+	//setGoomba();
+	//setKTroopa();
+	//setFlower();
 
 	_bullet = new bullet;
 	_bullet->init();
@@ -110,18 +110,14 @@ void enemyManager::setGoomba()
 	g = new goomba;
 	g->init(ENEMY_LEFT_JUMP, PointMake(2945, BACKGROUNDY - 96 - 24));
 	_vGoomba.push_back(g);
-	
 }
 
 void enemyManager::setKTroopa()
 {
 	
 	koopa_troopa* k; 
-	/*
-	k = new koopa_troopa;
-	k->init(ENEMY_LEFT_JUMP, PointMake(600, 1112), 400, 700);
-	_vKTroopa.push_back(k);
-	*/
+
+	
 	k = new koopa_troopa;
 	k->init(ENEMY_LEFT_WALK, PointMake(1500, 1112), 1536, 1824);
 	_vKTroopa.push_back(k);
@@ -145,6 +141,7 @@ void enemyManager::setKTroopa()
 	k = new koopa_troopa;
 	k->init(ENEMY_LEFT_JUMP, PointMake(4350, 600));
 	_vKTroopa.push_back(k);
+	
 }
 
 void enemyManager::setFlower()
@@ -1000,6 +997,72 @@ void enemyManager::troopaCollison()
 		}
 	}
 
+	//woodBlock과 충돌
+	for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
+	{
+		RECT troopaRect = (*_viKTroopa)->getRect();
+		for (int i = 0; i < _mManager->getWoodBlock().size(); i++)
+		{
+			RECT woodBlock = _mManager->getWoodBlock()[i];
+			RECT temp;
+			if (troopaRect.bottom == woodBlock.top && troopaRect.right > woodBlock.left && troopaRect.left < woodBlock.right)
+			{
+				(*_viKTroopa)->setIsOnGround(true);
+				break;
+			}
+			if (IntersectRect(&temp, &troopaRect, &woodBlock))
+			{
+				float width = temp.right - temp.left;
+				float height = temp.bottom - temp.top;
+				if (width > height)
+				{
+					//위에서 충돌
+					if ((*_viKTroopa)->getY() < (woodBlock.bottom + woodBlock.top) / 2)
+					{
+						(*_viKTroopa)->setY((*_viKTroopa)->getY() - height);
+						(*_viKTroopa)->setIsOnGround(true);
+					}
+					//아래에서 충돌
+					else
+					{
+						(*_viKTroopa)->setY((*_viKTroopa)->getY() + height);
+					}
+				}
+				//좌우 충돌
+				else
+				{
+					//왼쪽에서 충돌
+					if ((*_viKTroopa)->getX() < (woodBlock.left + woodBlock.right) / 2)
+					{
+						(*_viKTroopa)->setX((*_viKTroopa)->getX() - width);
+						if ((*_viKTroopa)->getState() == ENEMY_RIGHT_WALK || (*_viKTroopa)->getIsShell())
+						{
+							(*_viKTroopa)->setState(ENEMY_LEFT_WALK);
+						}
+						else
+						{
+							(*_viKTroopa)->setState(ENEMY_LEFT_JUMP);
+						}
+					}
+					//오른쪽에서 충돌
+					else
+					{
+						(*_viKTroopa)->setX((*_viKTroopa)->getX() + width);
+						if ((*_viKTroopa)->getState() == ENEMY_LEFT_WALK || (*_viKTroopa)->getIsShell())
+						{
+							(*_viKTroopa)->setState(ENEMY_RIGHT_WALK);
+						}
+						else
+						{
+							(*_viKTroopa)->setState(ENEMY_RIGHT_JUMP);
+						}
+					}
+				}
+			}
+
+		}
+	}
+
 	//question_block과 충돌
 	for (_viKTroopa = _vKTroopa.begin(); _viKTroopa != _vKTroopa.end(); ++_viKTroopa)
 	{
@@ -1186,7 +1249,7 @@ void enemyManager::flowerCollison()
 
 		//플레이어 꽃과 충돌
 		RECT temp;
-		if (IntersectRect(&temp, &flowerRect, &playerRect))
+		if (IntersectRect(&temp, &flowerRect, &playerRect) && (*_viFlower)->getIsVisible())
 		{
 			if (_player->getPlayerShape() == BASIC)
 			{

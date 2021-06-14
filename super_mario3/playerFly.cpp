@@ -43,7 +43,7 @@ void playerFly::update(player * player)
 	}
 
 	_count++;
-	if (_count % 10 == 0)
+	if (_count % 5 == 0)
 	{
 		if (_index >= player->getImage()->getMaxFrameX())
 		{

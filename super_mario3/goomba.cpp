@@ -76,7 +76,7 @@ void goomba::move()
 	if (_state != ENEMY_DIE)
 	{
 		_count++;
-		if (_count % 10 == 0)
+		if (_count % 5 == 0)
 		{
 			if (_currentFrameX >= _image->getMaxFrameX()) _currentFrameX = 0;
 			else _currentFrameX++;

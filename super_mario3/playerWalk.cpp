@@ -4,6 +4,7 @@
 #include "playerSkid.h"
 #include "playerJump.h"
 #include "playerAttack.h"
+#include "playerFall.h"
 
 playerState * playerWalk::handleInput(player * player)
 {
@@ -38,6 +39,11 @@ playerState * playerWalk::handleInput(player * player)
 		{
 			return new playerAttack;
 		}
+	}
+
+	if (!player->getIsOnGround())
+	{
+		return new playerFall;
 	}
 	return nullptr;
 	
@@ -121,15 +127,9 @@ void playerWalk::update(player * player)
 			player->getImage()->setFrameY(0);
 		}
 	}
-	if (!player->getIsOnGround())
-	{
-		player->setY(player->getY() - _jumpPower);
-		_jumpPower -= GRAVITY;
-		player->setJumpPower(_jumpPower);
-	}
 
 	_count++;
-	if (_count % 10 == 0)
+	if (_count % 5 == 0)
 	{
 		if (_index >= player->getImage()->getMaxFrameX()) _index = 0;
 		else _index++;
