@@ -37,6 +37,8 @@ void goomba::move()
 	else if (_state == ENEMY_DIE)
 	{
 		_image = IMAGEMANAGER->findImage("goomba_crush");
+		_currentFrameX = 0;
+		_currentFrameY = 0;
 	}
 	else if (_state == ENEMY_ATTACKED)
 	{
@@ -71,14 +73,17 @@ void goomba::move()
 		}
 	}
 	
-	_count++;
-	if (_count % 10 == 0)
-	{ 
-		if (_currentFrameX >= _image->getMaxFrameX()) _currentFrameX = 0;
-		else _currentFrameX++;
-		_image->setFrameX(_currentFrameX);
-		
-		_count = 0;
+	if (_state != ENEMY_DIE)
+	{
+		_count++;
+		if (_count % 10 == 0)
+		{
+			if (_currentFrameX >= _image->getMaxFrameX()) _currentFrameX = 0;
+			else _currentFrameX++;
+			_image->setFrameX(_currentFrameX);
+
+			_count = 0;
+		}
 	}
 
 

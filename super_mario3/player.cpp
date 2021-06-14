@@ -47,7 +47,7 @@ HRESULT player::init()
 	_state->enter(this);
 
 	_x = 100;
-	_y = BACKGROUNDY - 72;
+	_y = BACKGROUNDY - 70;
 
 	//_x = BACKGROUNDX / 2 + 168;
 	//_y = 408;
@@ -167,6 +167,43 @@ void player::render()
 		TextOut(getMemDC(), _rc.left - 50, _rc.top - 40, str, strlen(str));
 		sprintf_s(str, "speed : %f", _runSpeed);
 		TextOut(getMemDC(), _rc.left - 50, _rc.top - 20, str, strlen(str));
+
+		switch (_state->getStateName())
+		{
+		case PLAYER_IDLE:
+			sprintf_s(str, "상태 : IDLE");
+		break;
+		case PLAYER_WALK:
+			sprintf_s(str, "상태 : WALK");
+		break;
+		case PLAYER_SLIP:
+			sprintf_s(str, "상태 : SLIP");
+		break;
+		case PLAYER_SKID:
+			sprintf_s(str, "상태 : SKID");
+		break;
+		case PLAYER_JUMP:
+			sprintf_s(str, "상태 : JUMP");
+		break;
+		case PLAYER_FALL:
+			sprintf_s(str, "상태 : FALL");
+		break;
+		case PLAYER_DIE:
+			sprintf_s(str, "상태 : DIE");
+		break;
+		case PLAYER_CHANGE:
+			sprintf_s(str, "상태 : CHANGE");
+		break;
+		case PLAYER_FLY:
+			sprintf_s(str, "상태 : FLY");
+		break;
+		case PLAYER_ATTACK:
+			sprintf_s(str, "상태 : ATTACK");
+		break;
+		}
+
+		TextOut(getMemDC(), _rc.left - 50, _rc.top - 80, str, strlen(str));
+		
 	}
 	_img->alphaFrameRender(getMemDC(), _rc.left, _rc.top, _alphaValue);
 }

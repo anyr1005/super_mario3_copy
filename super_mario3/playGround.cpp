@@ -96,8 +96,8 @@ void playGround::render()
 
 	IMAGEMANAGER->findImage("map")->render(getMemDC(), 0, 0);
 	SetBkMode(getMemDC(), TRANSPARENT);
-	_eManager->render();
 	_bManager->render();
+	_eManager->render();
 	_mManager->render();
 	_player->render();
 	//==================================================
