@@ -224,16 +224,25 @@ void enemyManager::goombaCollison()
 				{
 					if ((*_viGoomba)->getState() == ENEMY_LEFT_JUMP)
 					{
-						(*_viGoomba)->setState(ENEMY_LEFT_WALK);
+						(*_viGoomba)->setState(ENEMY_RIGHT_WALK);
 					}
 					else if ((*_viGoomba)->getState() == ENEMY_RIGHT_JUMP)
 					{
-						(*_viGoomba)->setState(ENEMY_RIGHT_WALK);
+						(*_viGoomba)->setState(ENEMY_LEFT_WALK);
 					}
 					else
 					{
 						(*_viGoomba)->setJumpPower(7.0f);
 						(*_viGoomba)->setState(ENEMY_ATTACKED);
+					}
+
+					if (_player->getX() < (*_viGoomba)->getX())
+					{
+						_player->setX(_player->getX() - width);
+					}
+					else
+					{
+						_player->setX(_player->getX() + width);
 					}
 					
 				}
@@ -251,7 +260,6 @@ void enemyManager::goombaCollison()
 						_player->getPlayerState()->enter(_player);
 					}
 				}
-				
 			}
 		}
 
