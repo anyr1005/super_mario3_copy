@@ -96,7 +96,7 @@ void koopa_troopa::move()
 		}
 	}
 
-	if (CAMERAMANAGER->getCameraRIGHT() > _x || _isShell)
+	if (CAMERAMANAGER->getCameraRIGHT() + 100 > _x || _isShell)
 	{
 		//움직임 설정
 		switch (_state)

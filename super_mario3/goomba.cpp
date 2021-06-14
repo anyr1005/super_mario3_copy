@@ -44,7 +44,7 @@ void goomba::move()
 	{
 		_image = IMAGEMANAGER->findImage("goomba_attacked");
 	}
-	if (CAMERAMANAGER->getCameraRIGHT() > _x)
+	if (CAMERAMANAGER->getCameraRIGHT() + 100 > _x)
 	{
 		switch (_state)
 		{

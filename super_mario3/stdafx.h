@@ -28,9 +28,9 @@ using namespace UTIL;
 #define WINSTARTX 50	//윈도우 창 시작좌표 (left)
 #define WINSTARTY 50	//윈도우 창 시작좌표 (top)
 #define WINSIZEX 768	//윈도우 가로크기
-#define WINSIZEY 600	//윈도우 세로크기
+#define WINSIZEY 576	//윈도우 세로크기
 #define CAMERAX 768 
-#define CAMERAY 600
+#define CAMERAY 576
 
 #define BACKGROUNDX 8352 //배경 가로 크기
 #define BACKGROUNDY 1296  //배경 세로 크기

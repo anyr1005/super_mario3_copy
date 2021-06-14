@@ -8,14 +8,16 @@ HRESULT playGround::init()
 
 	IMAGEMANAGER->addImage("map", "img/map.bmp", BACKGROUNDX, BACKGROUNDY, true, RGB(255, 0, 255), FALSE);
 	IMAGEMANAGER->addImage("background", "img/background.bmp", BACKGROUNDX, BACKGROUNDY, true, RGB(255, 0, 255), FALSE);
-
+	IMAGEMANAGER->addImage("title", "img/title.bmp", 768, 576, true, RGB(255, 0, 255), FALSE);
+	IMAGEMANAGER->addFrameImage("title_number", "img/title number.bmp", 576, 144, 6, 1, true, RGB(255, 0, 255), FALSE);
+	
 	_resetCount = 0;
 
 	//플레이어 초기화
 	_player = new player;
 	_player->init();
 
-	CAMERAMANAGER->setCameraCenter(_player->getX(), _player->getY());
+	CAMERAMANAGER->setCamera(_player->getX(), _player->getY());
 
 	CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0, 0);
 
@@ -40,6 +42,8 @@ HRESULT playGround::init()
 	_eManager->setMapManagerMemoryAddressLink(_mManager);
 	_eManager->setBlockManagerMemoryAddressLink(_bManager);
 	
+	_count = 0;
+
 	return S_OK;
 }
 
@@ -74,13 +78,25 @@ void playGround::update()
 		_bManager->update();
 		_player->update();
 
-		if (_player->getPlayerState()->getStateName() == PLAYER_FLY || _player->getPlayerState()->getStateName() == PLAYER_FALL)
+		if (_player->getPlayerState()->getStateName() == PLAYER_FLY || CAMERAMANAGER->getCameraBOTTOM() < BACKGROUNDY )
 		{
 			CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0.3f, 0.75f);
 		}
 		else
 		{
 			CAMERAMANAGER->updateCamera(_player->getRect(), 0.42f, 0.57f, 0, 0);
+		}
+	}
+	else
+	{
+		_count++;
+		if (_count % 10 == 0)
+		{
+			IMAGEMANAGER->findImage("title_number")->setFrameX(IMAGEMANAGER->findImage("title_number")->getFrameX() + 1);
+			if (IMAGEMANAGER->findImage("title_number")->getFrameX() >= IMAGEMANAGER->findImage("title_number")->getMaxFrameX())
+			{
+				IMAGEMANAGER->findImage("title_number")->setFrameX(0);
+			}
 		}
 	}
 }
@@ -91,14 +107,23 @@ void playGround::render()
 	PatBlt(getMemDC(), 0, 0, BACKGROUNDX, BACKGROUNDY, WHITENESS);
 	//==================================================
 
-	IMAGEMANAGER->findImage("background")->render(getMemDC(), 0, 0);
+	if (!_isStart)
+	{
+		IMAGEMANAGER->findImage("title")->render(getMemDC(), _player->getX()-100, _player->getY() - 506);
+		IMAGEMANAGER->findImage("title_number")->frameRender(getMemDC(), _player->getX() + 236, _player->getY() - 506 + 288, IMAGEMANAGER->findImage("title_number")->getFrameX(), 0);
+	}
+	else
+	{
+		IMAGEMANAGER->findImage("background")->render(getMemDC(), 0, 0);
 
-	IMAGEMANAGER->findImage("map")->render(getMemDC(), 0, 0);
-	SetBkMode(getMemDC(), TRANSPARENT);
-	_bManager->render();
-	_eManager->render();
-	_mManager->render();
-	_player->render();
+		IMAGEMANAGER->findImage("map")->render(getMemDC(), 0, 0);
+		SetBkMode(getMemDC(), TRANSPARENT);
+		_bManager->render();
+		_eManager->render();
+		_mManager->render();
+		_player->render();
+	}
+	
 	//==================================================
 	CAMERAMANAGER->render(this->getBackBuffer(), getHDC());
 }

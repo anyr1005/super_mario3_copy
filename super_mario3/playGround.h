@@ -20,6 +20,8 @@ private:
 	int _resetCount;
 
 	bool _isStart;
+
+	int _count; //타이틀 용 카운터
 public:
 	virtual HRESULT init();
 	virtual void release();
