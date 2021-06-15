@@ -53,6 +53,7 @@ void enemy::update()
 				_state = ENEMY_RIGHT_JUMP;
 			}
 			_isVisible = true;
+			_isShell = false;
 		}
 		else
 		{

@@ -128,7 +128,7 @@ void playerJump::update(player * player)
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
-			player->setRunSpeed(0.1f);
+			player->setRunSpeed(0.5f);
 			_isRightAir = _isLeftAir = false;
 			player->setIsRight(true);
 		}
@@ -151,7 +151,7 @@ void playerJump::update(player * player)
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
-			player->setRunSpeed(0.1f);
+			player->setRunSpeed(0.5f);
 			_isRightAir = _isLeftAir = false;
 			player->setIsRight(false);
 		}

@@ -35,8 +35,8 @@ HRESULT enemyManager::init()
 	IMAGEMANAGER->addImage("long_leaf_green", "img/piranha_plant/leaf_long_green.bmp", 48, 48, true, RGB(255, 0, 255), FALSE);
 
 	setGoomba();
-	setKTroopa();
-	setFlower();
+	//setKTroopa();
+	//setFlower();
 
 	_bullet = new bullet;
 	_bullet->init();
@@ -107,9 +107,11 @@ void enemyManager::setGoomba()
 	g->init(ENEMY_LEFT_WALK, PointMake(2795, BACKGROUNDY - 96 - 24));
 	_vGoomba.push_back(g);
 
+	/*
 	g = new goomba;
 	g->init(ENEMY_LEFT_JUMP, PointMake(2945, BACKGROUNDY - 96 - 24));
 	_vGoomba.push_back(g);
+	*/
 }
 
 void enemyManager::setKTroopa()

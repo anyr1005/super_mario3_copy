@@ -31,10 +31,6 @@ playerState* playerIdle::handleInput(player * player)
 			return new playerAttack;
 		}
 	}
-	if (!player->getIsOnGround())
-	{
-		return new playerFall;
-	}
 	return nullptr;
 }
 
@@ -48,6 +44,12 @@ void playerIdle::update(player* player)
 	else
 	{
 		player->getImage()->setFrameY(0);
+	}
+	if (!player->getIsOnGround())
+	{
+		player->setY(player->getY() - _jumpPower);
+		_jumpPower -= GRAVITY;
+		player->setJumpPower(_jumpPower);
 	}
 }
 

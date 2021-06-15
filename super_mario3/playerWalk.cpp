@@ -40,11 +40,6 @@ playerState * playerWalk::handleInput(player * player)
 			return new playerAttack;
 		}
 	}
-
-	if (!player->getIsOnGround())
-	{
-		return new playerFall;
-	}
 	return nullptr;
 	
 }
@@ -126,6 +121,13 @@ void playerWalk::update(player * player)
 		{
 			player->getImage()->setFrameY(0);
 		}
+	}
+
+	if (!player->getIsOnGround())
+	{
+		player->setY(player->getY() - _jumpPower);
+		_jumpPower -= GRAVITY;
+		player->setJumpPower(_jumpPower);
 	}
 
 	_count++;

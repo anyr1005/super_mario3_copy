@@ -41,7 +41,7 @@ HRESULT player::init()
 
 	_isRight = true;
 
-	_shape = BASIC;
+	_shape = TAIL;
 
 	_state = new playerIdle;
 	_state->enter(this);

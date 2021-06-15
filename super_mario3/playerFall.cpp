@@ -33,7 +33,7 @@ void playerFall::update(player * player)
 		player->setIsRight(true);
 		player->setX(player->getX() + player->getRunSpeed());
 	}
-
+	/*
 	if (_isFrame)
 	{
 		_count++;
@@ -64,14 +64,14 @@ void playerFall::update(player * player)
 			player->getImage()->setFrameY(0);
 		}
 	}
-
+	*/
 }
 
 void playerFall::enter(player * player)
 {
 	_jumpPower = -4.0f;
 	player->setJumpPower(_jumpPower);
-
+	/*
 	if (_stateName == PLAYER_WALK)
 	{
 		_isFrame = true;
@@ -108,6 +108,7 @@ void playerFall::enter(player * player)
 			break;
 		}
 	}
+	*/
 	_stateName = PLAYER_FALL;
 
 	if (player->getIsRight())

@@ -14,6 +14,7 @@ playerState * playerFly::handleInput(player * player)
 	if (player->getIsOnGround())
 	{
 		player->setFlyCount(0);
+		player->setRunSpeed(BASICSPEED);
 		return new playerIdle;
 	}
 	return nullptr;
