@@ -24,12 +24,9 @@ class player;
 class playerState
 {
 protected:
-	int _count, _index;
-	float _jumpPower;
-	playerStateName _stateName;
 public:
-	virtual playerState* handleInput(player * player) { return nullptr; }
-	virtual void update(player * player) {}
-	virtual void enter(player * player) {}
-	playerStateName getStateName() { return _stateName; }
+	virtual playerState* handleInput(player * player) = 0;
+	virtual void update(player * player) = 0;
+	virtual void enter(player * player) = 0;
+	virtual playerStateName getStateName() = 0;
 };
